@@ -1,0 +1,27 @@
+obj_xono#:#OnlyOffice
+obj_xono_duplicate#:#OnlyOffice kopieren
+objs_xono#:#OnlyOffice's
+objs_xono_duplicate#:#OnlyOffice's kopieren
+rbac_create_xono#:#OnlyOffice anlegen
+xono_add#:#Hinzufügen
+xono_delete#:#Löschen
+xono_edit_permission#:#Rechte bearbeiten
+xono_new#:#OnlyOffice anlegen
+xono_read#:#Lesen
+xono_visible#:#Sichtbar
+xono_write#:#Bearbeiten
+config_configuration#:#Konfiguration
+config_configuration_saved#:#Konfiguration gespeichert
+config_save#:#Speichern
+object_manage_contents#:#Bearbeiten
+object_offline#:#Offline
+object_permission_denied#:#Zugriff verweigert
+object_show_contents#:#Inhalte
+object_status#:#Status
+settings_cancel#:#Abbrechen
+settings_description#:#Beschreibung
+settings_online#:#Online
+settings_save#:#Speichern
+settings_saved#:#Einstellungen gespeichert
+settings_settings#:#Einstellungen
+settings_title#:#Titel

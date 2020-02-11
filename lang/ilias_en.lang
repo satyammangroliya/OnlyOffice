@@ -1,0 +1,27 @@
+obj_xono#:#OnlyOffice
+obj_xono_duplicate#:#Copy OnlyOffice
+objs_xono#:#OnlyOffice's
+objs_xono_duplicate#:#Copy OnlyOffice's
+rbac_create_xono#:#Create OnlyOffice
+xono_add#:#Add
+xono_delete#:#Delete
+xono_edit_permission#:#Edit permission
+xono_new#:#Create OnlyOffice
+xono_read#:#Read
+xono_visible#:#visible
+xono_write#:#Edit
+config_configuration#:#Configuration
+config_configuration_saved#:#Configuration saved
+config_save#:#Save
+object_manage_contents#:#Edit
+object_offline#:#Offline
+object_permission_denied#:#Permission denied
+object_show_contents#:#Contents
+object_status#:#Status
+settings_cancel#:#Cancel
+settings_description#:#Description
+settings_online#:#Online
+settings_save#:#Save
+settings_saved#:#Settings saved
+settings_settings#:#Settings
+settings_title#:#Title
