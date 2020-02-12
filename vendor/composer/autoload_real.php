@@ -23,9 +23,16 @@ class ComposerAutoloaderInitdeddd02a31326b02407601afe4c5b12b
         self::$loader = $loader = new \Composer\Autoload\ClassLoader();
         spl_autoload_unregister(array('ComposerAutoloaderInitdeddd02a31326b02407601afe4c5b12b', 'loadClassLoader'));
 
-        $classMap = require __DIR__ . '/autoload_classmap.php';
-        if ($classMap) {
-            $loader->addClassMap($classMap);
+        $useStaticLoader = PHP_VERSION_ID >= 50600 && !defined('HHVM_VERSION') && (!function_exists('zend_loader_file_encoded') || !zend_loader_file_encoded());
+        if ($useStaticLoader) {
+            require_once __DIR__ . '/autoload_static.php';
+
+            call_user_func(\Composer\Autoload\ComposerStaticInitdeddd02a31326b02407601afe4c5b12b::getInitializer($loader));
+        } else {
+            $classMap = require __DIR__ . '/autoload_classmap.php';
+            if ($classMap) {
+                $loader->addClassMap($classMap);
+            }
         }
 
         $loader->setClassMapAuthoritative(true);

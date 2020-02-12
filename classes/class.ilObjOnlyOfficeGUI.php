@@ -1,6 +1,11 @@
 <?php
 
+use ILIAS\Filesystem\Exception\IOException;
+use ILIAS\FileUpload\Exception\IllegalStateException;
 use srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettingsFormGUI;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
+use srag\Plugins\OnlyOffice\StorageService\StorageService;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
 
@@ -30,16 +35,28 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     const CMD_SETTINGS = "settings";
     const CMD_SETTINGS_STORE = "settingsStore";
     const CMD_SHOW_CONTENTS = "showContents";
+    const CMD_SAVE = 'save';
+    const CMD_CANCEL = 'cancel';
     const LANG_MODULE_OBJECT = "object";
     const LANG_MODULE_SETTINGS = "settings";
     const TAB_CONTENTS = "contents";
     const TAB_PERMISSIONS = "perm_settings";
     const TAB_SETTINGS = "settings";
+
     const TAB_SHOW_CONTENTS = "show_contents";
+    const POST_VAR_FILE = 'upload_files';
     /**
      * @var ilObjOnlyOffice
      */
     public $object;
+    /**
+     * @var StorageService
+     */
+    protected $storage_service;
+    /**
+     * @var ilOnlyOfficePlugin
+     */
+    protected $plugin;
 
 
     /**
@@ -47,7 +64,11 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
      */
     protected function afterConstructor()/*: void*/
     {
-
+        $this->storage_service = new StorageService(
+            self::dic()->dic(),
+            new ilDBFileVersionRepository(),
+            new ilDBFileRepository()
+        );
     }
 
 
@@ -62,6 +83,8 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
 
     /**
      * @param string $cmd
+     *
+     * @throws ilCtrlException
      */
     public function performCommand(string $cmd)/*: void*/
     {
@@ -70,6 +93,10 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $next_class = self::dic()->ctrl()->getNextClass($this);
 
         switch (strtolower($next_class)) {
+            case xonoContentGUI::class:
+                $xonoContentGUI = new xonoContentGUI(self::dic()->dic(), $this->plugin);
+                self::dic()->ctrl()->forwardCommand($xonoContentGUI);
+                break;
             default:
                 switch ($cmd) {
                     case self::CMD_SHOW_CONTENTS:
@@ -134,6 +161,10 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     {
         $form = parent::initCreateForm($a_new_type);
 
+        $file_input = new ilFileInputGUI($this->txt('form_input_file'), self::POST_VAR_FILE);
+        $file_input->setRequired(true);
+        $form->addItem($file_input);
+
         return $form;
     }
 
@@ -141,10 +172,19 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     /**
      * @inheritDoc
      *
-     * @param ilObjOnlyOffice $a_new_object
+     * @param ilObject $a_new_object
+     *
+     * @throws IllegalStateException
+     * @throws IOException
+     * @throws ilDateTimeException
      */
     public function afterSave(/*ilObjOnlyOffice*/ ilObject $a_new_object)/*: void*/
     {
+        $form = $this->initCreateForm($a_new_object->getType());
+        $form->checkInput();
+        self::dic()->upload()->process();
+        $result = end(self::dic()->upload()->getResults());
+        $this->storage_service->createNewFileFromUpload($result, $a_new_object->getId());
         parent::afterSave($a_new_object);
     }
 

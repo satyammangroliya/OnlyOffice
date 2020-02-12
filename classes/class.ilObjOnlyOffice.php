@@ -23,6 +23,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
     protected $object_settings;
 
 
+
     /**
      * ilObjOnlyOffice constructor
      *
