@@ -7,16 +7,13 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 
 /**
  * Class FileAR
- *
  * @package srag\Plugins\OnlyOffice\StorageService\Infrastructure\File
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class FileAR extends ActiveRecord
 {
 
     const TABLE_NAME = 'xono_file';
-
 
     /**
      * @return string
@@ -26,56 +23,42 @@ class FileAR extends ActiveRecord
         return self::TABLE_NAME;
     }
 
-
     /**
      * @var UUID
-     *
      * @con_has_field    true
      * @con_fieldtype    text
      * @con_length       256
-     * @con_is_notnull   true
-     * @con_is_primary   true
-     * @con_sequence     true
-     */
-    protected $id;
-    /**
-     * @var UUID
-     *
-     * @con_has_field    true
-     * @con_fieldtype    text
-     * @con_length       256
-     * @con_is_notnull   true
      * @con_is_unique    true
+     * @con_is_notnull   true
      */
     protected $uuid;
+
     /**
      * @var int
-     *
      * @con_has_field    true
      * @con_fieldtype    integer
      * @con_length       8
-     * @con_is_notnull   true
+     * @con_is_primary   true
      */
     protected $obj_id;
+
     /**
      * @var String
-     *
      * @db_has_field        true
      * @db_fieldtype        text
      * @con_is_notnull      true
      * @db_length           256
      */
     protected $title;
+
     /**
      * @var String
-     *
      * @db_has_field        true
      * @db_fieldtype        text
      * @con_is_notnull      true
      * @db_length           256
      */
     protected $file_type;
-
 
     /**
      * @return UUID
@@ -85,7 +68,6 @@ class FileAR extends ActiveRecord
         return $this->uuid;
     }
 
-
     /**
      * @param UUID $uuid
      */
@@ -93,7 +75,6 @@ class FileAR extends ActiveRecord
     {
         $this->uuid = $uuid;
     }
-
 
     /**
      * @return UUID
@@ -103,7 +84,6 @@ class FileAR extends ActiveRecord
         return $this->id;
     }
 
-
     /**
      * @param UUID $id
      */
@@ -111,7 +91,6 @@ class FileAR extends ActiveRecord
     {
         $this->id = $id;
     }
-
 
     /**
      * @return int
@@ -121,7 +100,6 @@ class FileAR extends ActiveRecord
         return $this->obj_id;
     }
 
-
     /**
      * @param int $obj_id
      */
@@ -130,46 +108,40 @@ class FileAR extends ActiveRecord
         $this->obj_id = $obj_id;
     }
 
-
     /**
      * @return String
      */
-    public function getTitle() : String
+    public function getTitle() : string
     {
         return $this->title;
     }
 
-
     /**
      * @param String $title
      */
-    public function setTitle(String $title)
+    public function setTitle(string $title)
     {
         $this->title = $title;
     }
 
-
     /**
      * @return String
      */
-    public function getFileType() : String
+    public function getFileType() : string
     {
         return $this->file_type;
     }
 
-
     /**
      * @param String $file_type
      */
-    public function setFileType(String $file_type)
+    public function setFileType(string $file_type)
     {
         $this->file_type = $file_type;
     }
 
-
     /**
      * @param $field_name
-     *
      * @return mixed
      */
     public function sleep($field_name)
@@ -182,11 +154,9 @@ class FileAR extends ActiveRecord
         }
     }
 
-
     /**
      * @param $field_name
      * @param $field_value
-     *
      * @return mixed
      */
     public function wakeUp($field_name, $field_value)

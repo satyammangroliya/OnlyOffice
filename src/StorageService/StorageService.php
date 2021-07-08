@@ -16,9 +16,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionReposi
 
 /**
  * Class StorageService
- *
  * @package srag\Plugins\OnlyOffice\StorageService
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class StorageService
@@ -40,27 +38,26 @@ class StorageService
      */
     protected $file_repository;
 
-
     /**
      * StorageService constructor.
-     *
      * @param Container             $dic
      * @param FileVersionRepository $file_version_repository
      * @param FileRepository        $file_repository
      */
-    public function __construct(Container $dic, FileVersionRepository $file_version_repository, FileRepository $file_repository)
-    {
+    public function __construct(
+        Container $dic,
+        FileVersionRepository $file_version_repository,
+        FileRepository $file_repository
+    ) {
         $this->dic = $dic;
         $this->file_version_repository = $file_version_repository;
         $this->file_repository = $file_repository;
         $this->file_system_service = new FileSystemService($dic);
     }
 
-
     /**
      * @param UploadResult $upload_result
      * @param int          $obj_id
-     *
      * @return File
      * @throws IOException
      * @throws ilDateTimeException
@@ -68,12 +65,13 @@ class StorageService
     public function createNewFileFromUpload(UploadResult $upload_result, int $obj_id) : File
     {
         $new_file_id = new UUID();
-        $this->file_system_service->storeUpload($upload_result, $obj_id, $new_file_id->asString());
+        $path = $this->file_system_service->storeUpload($upload_result, $obj_id, $new_file_id->asString());
         $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $upload_result->getMimeType());
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
-        $version = $this->file_version_repository->create($new_file_id, $this->dic->user()->getId(), $created_at);
+        $version = $this->file_version_repository->create($new_file_id, $this->dic->user()->getId(), $created_at,
+            $path);
 
-        $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), '');
+        $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
         $file = new File(
             $new_file_id,
             $obj_id,
@@ -81,7 +79,23 @@ class StorageService
             $upload_result->getMimeType(),
             [$file_version]
         );
-
         return $file;
     }
+
+    public function getVersions(int $object_id) : array
+    {
+        $file_version = $this->file_version_repository->getByObjectID($object_id);
+        return $this->file_version_repository->getAllVersions($file_version->getFileUuid());
+    }
+
+    public function getFileVersion(int $file_id) : FileVersion
+    {
+        $fileVersion = $this->file_version_repository->getByObjectID($file_id);
+    }
+
+    public function getFile(string $file_uuid) : File
+    {
+
+    }
+
 }

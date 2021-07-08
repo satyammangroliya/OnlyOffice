@@ -9,16 +9,13 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 
 /**
  * Class File
- *
  * @package srag\Plugins\OnlyOffice\StorageService\Infrastructure
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class FileVersionAR extends ActiveRecord
 {
 
     const TABLE_NAME = 'xono_file_version';
-
 
     /**
      * @return string
@@ -28,10 +25,8 @@ class FileVersionAR extends ActiveRecord
         return self::TABLE_NAME;
     }
 
-
     /**
      * @var int
-     *
      * @con_has_field    true
      * @con_fieldtype    integer
      * @con_length       8
@@ -42,7 +37,6 @@ class FileVersionAR extends ActiveRecord
     protected $id;
     /**
      * @var UUID
-     *
      * @con_has_field    true
      * @con_fieldtype    text
      * @con_length       256
@@ -51,7 +45,6 @@ class FileVersionAR extends ActiveRecord
     protected $file_uuid;
     /**
      * @var int
-     *
      * @con_has_field    true
      * @con_fieldtype    integer
      * @con_length       8
@@ -60,7 +53,6 @@ class FileVersionAR extends ActiveRecord
     protected $version;
     /**
      * @var int
-     *
      * @con_has_field    true
      * @con_fieldtype    integer
      * @con_length       8
@@ -69,13 +61,18 @@ class FileVersionAR extends ActiveRecord
     protected $user_id;
     /**
      * @var ilDateTime
-     *
      * @db_has_field         true
      * @db_fieldtype         timestamp
      * @con_is_notnull       true
      */
     protected $created_at;
-
+    /**
+     * @var string
+     * @db_has_field         true
+     * @db_fieldtype         text
+     * @con_is_notnull       true
+     */
+    protected $url;
 
     /**
      * @return int
@@ -85,7 +82,6 @@ class FileVersionAR extends ActiveRecord
         return $this->user_id;
     }
 
-
     /**
      * @param int $user_id
      */
@@ -93,7 +89,6 @@ class FileVersionAR extends ActiveRecord
     {
         $this->user_id = $user_id;
     }
-
 
     /**
      * @return int
@@ -103,7 +98,6 @@ class FileVersionAR extends ActiveRecord
         return $this->id;
     }
 
-
     /**
      * @param int $id
      */
@@ -111,7 +105,6 @@ class FileVersionAR extends ActiveRecord
     {
         $this->id = $id;
     }
-
 
     /**
      * @return UUID
@@ -121,7 +114,6 @@ class FileVersionAR extends ActiveRecord
         return $this->file_uuid;
     }
 
-
     /**
      * @param UUID $file_uuid
      */
@@ -129,7 +121,6 @@ class FileVersionAR extends ActiveRecord
     {
         $this->file_uuid = $file_uuid;
     }
-
 
     /**
      * @return ilDateTime
@@ -139,7 +130,6 @@ class FileVersionAR extends ActiveRecord
         return $this->created_at;
     }
 
-
     /**
      * @param ilDateTime $created_at
      */
@@ -148,8 +138,6 @@ class FileVersionAR extends ActiveRecord
         $this->created_at = $created_at;
     }
 
-
-
     /**
      * @return int
      */
@@ -157,7 +145,6 @@ class FileVersionAR extends ActiveRecord
     {
         return $this->version;
     }
-
 
     /**
      * @param int $version
@@ -168,8 +155,23 @@ class FileVersionAR extends ActiveRecord
     }
 
     /**
+     * @return string
+     */
+    public function getUrl() : string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl(string $url)
+    {
+        $this->url = $url;
+    }
+
+    /**
      * @param $field_name
-     *
      * @return mixed
      */
     public function sleep($field_name)
@@ -184,11 +186,9 @@ class FileVersionAR extends ActiveRecord
         }
     }
 
-
     /**
      * @param $field_name
      * @param $field_value
-     *
      * @return mixed
      * @throws ilDateTimeException
      */
@@ -198,7 +198,7 @@ class FileVersionAR extends ActiveRecord
             case 'file_uuid':
                 return new UUID($field_value);
             case 'created_at':
-                return new ilDateTime($field_value, IL_CAL_FKT_DATE, 'Y-m-d H:i:s');
+                return new ilDateTime($field_value, IL_CAL_FKT_DATE);
             default:
                 return parent::wakeUp($field_name, $field_value);
         }

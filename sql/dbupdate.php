@@ -6,4 +6,7 @@
 <?php
 \srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileAR::updateDB();
 \srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionAR::updateDB();
+\srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionAR::updateDB();
+\srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionAR::updateDB();
+\srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionAR::updateDB();
 ?>

@@ -6,9 +6,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 
 /**
  * interface FileRepository
- *
  * @package srag\Plugins\OnlyOffice\StorageService\Infrastructure\File
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 interface FileRepository
@@ -19,8 +17,10 @@ interface FileRepository
      * @param int    $obj_id
      * @param string $getName
      * @param string $file_type
-     *
      * @return mixed
      */
     public function create(UUID $file_uuid, int $obj_id, string $getName, string $file_type);
+
+    public function getFile(string $file_uuid) : File;
+
 }

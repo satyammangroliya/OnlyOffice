@@ -3,12 +3,11 @@
 namespace srag\Plugins\OnlyOffice\StorageService\DTO;
 
 use ilDateTime;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 
 /**
  * Class FileVersion
- *
  * @package srag\Plugins\OnlyOffice\StorageService\DTO
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class FileVersion
@@ -31,24 +30,26 @@ class FileVersion
      * @var string
      */
     protected $url;
-
+    /**
+     * @var UUID
+     */
+    protected $file_uuid;
 
     /**
      * FileVersion constructor.
-     *
      * @param int        $version
      * @param ilDateTime $created_at
      * @param int        $user_id
      * @param string     $url
      */
-    public function __construct(int $version, ilDateTime $created_at, int $user_id, string $url)
+    public function __construct(int $version, ilDateTime $created_at, int $user_id, string $url, UUID $file_uuid)
     {
         $this->version = $version;
         $this->created_at = $created_at;
         $this->user_id = $user_id;
         $this->url = $url;
+        $this->file_uuid = $file_uuid;
     }
-
 
     /**
      * @return int
@@ -58,6 +59,13 @@ class FileVersion
         return $this->version;
     }
 
+    /**
+     * @param int $version
+     */
+    public function setVersion(int $version)
+    {
+        $this->version = $version;
+    }
 
     /**
      * @return ilDateTime
@@ -67,6 +75,13 @@ class FileVersion
         return $this->created_at;
     }
 
+    /**
+     * @param ilDateTime $date
+     */
+    public function setCreatedAt(ilDateTime $date)
+    {
+        $this->created_at = $date;
+    }
 
     /**
      * @return int
@@ -76,6 +91,13 @@ class FileVersion
         return $this->user_id;
     }
 
+    /**
+     * @param int $user_id
+     */
+    public function setUserId(int $user_id)
+    {
+        $this->user_id = $user_id;
+    }
 
     /**
      * @return string
@@ -83,5 +105,29 @@ class FileVersion
     public function getUrl() : string
     {
         return $this->url;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl(string $url)
+    {
+        $this->url = url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileUuid() : string
+    {
+        return $this->file_uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setFileUuid(string $uuid)
+    {
+        $this->file_uuid = $uuid;
     }
 }
