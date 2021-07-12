@@ -106,15 +106,8 @@ class xonoContentGUI extends xonoAbstractGUI
     {
         $fileVersions = $this->storage_service->getAllVersions($this->file_id);
         $fileVersionsString = '';
-        for ($i = 0; $i<sizeof($fileVersions); $i++) {
-            /** @var FileVersion $fV */
-            $fV = $fileVersions[$i];
-            $fVString = $this->buildJSONforFileVesion($fV);
-            $fileVersionsString .= $fVString;
-            //array_push($fileVersionsString, $fVString);
-        }
         $r = new FileVersionRenderer($this->dic, $this->file_id,  $fileVersions);
-        $content = $r->renderTable();
+        $content = $r->renderUglyTable();
         //$tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
         //$tpl->setVariable('DATA_SRC', $fileVersionsString);
         //$content = $tpl->get();
