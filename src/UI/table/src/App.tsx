@@ -1,11 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import VersionTable from "./VersionTable";
+//import VersionTable from './Components/VersionTable';
 
 function App() {
   return (
-      <VersionTable/>
+      <div className='document_history'>
+          <h1>Hello World!</h1>
+      </div>
   );
 }
 

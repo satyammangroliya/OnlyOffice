@@ -4,6 +4,9 @@ namespace srag\Plugins\OnlyOffice\UI;
 use ILIAS\DI\Container;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
 
+// If rendering with React.js
+use ilTemplate;
+
 /*
  * UGLY HANDCODED UI FOR MANUAL TESTING
  */
@@ -42,6 +45,7 @@ class FileVersionRenderer
     public function renderUglyTable() : string {
         /** @var string $result */
         $result = '<div id="document_history">' .
+            '<button>Editor öffnen</button>'.
             '<table><tr><th width="25%">Version</th><th width=25%>Date</th><th>Editor</th><th width=25%>Dateigrösse</th><th width=25%>Aktion</th></tr>';
         for ($i = 0; $i < count($this->data); $i++) {
             /** @var FileVersion $fileVersion */
@@ -50,6 +54,23 @@ class FileVersionRenderer
                 '<td>' . $fileVersion->getUserId() . '</td><td></td><td><button>Download</button></td></tr>';
         }
         $result .= '</table></div>';
+        return $result;
+    }
+
+    /**
+     * Render with React.js
+     * Does not work yet!
+     *
+     * @return string
+     */
+    public function renderReactTable(): string {
+        $tpl = new ilTemplate(__DIR__ . '/table/build/index.html', false, false);
+        $json = json_encode(array_values($this->data));
+        $result = '<script type="application/javascript">' .
+            'window.exod_log_data = ' . $json . ';' .
+            //'window.lng = "' . $this->dic->language()->getLangKey() . '";' .
+            '</script>'
+            . $tpl->get();
         return $result;
     }
 
@@ -126,7 +147,7 @@ class FileVersionRenderer  extends T\DataRetrieval
 
 
 /* IMPLEMENTATION WITH REACT.JS
-use ILIAS\DI\Container;
+
 use ilTemplate;
 
 class FileVersionRenderer
@@ -149,15 +170,6 @@ class FileVersionRenderer
         $this->data = $data;
     }
 
-    public function renderTable(): string {
-        $tpl = new ilTemplate(__DIR__ . '/table/build/index.html', false, false);
-        $json = json_encode(array_values($this->data));
-        $result = '<script type="application/javascript">' .
-            'window.exod_log_data = ' . $json . ';' .
-            //'window.lng = "' . $this->dic->language()->getLangKey() . '";' .
-            '</script>'
-            . $tpl->get();
-        return $result;
-    }
+
 
 }*/
