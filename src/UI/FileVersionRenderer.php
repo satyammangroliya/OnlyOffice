@@ -1,14 +1,14 @@
 <?php
 namespace srag\Plugins\OnlyOffice\UI;
 
-use ILIAS\UI\Implementation\Component\Table as T;
-use ILIAS\UI\Component\Table as I;
-use ILIAS\Data\Range;
-use ILIAS\Data\Order;
 use ILIAS\DI\Container;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
 
-class FileVersionRenderer  //extends T\DataRetrieval
+/*
+ * UGLY HANDCODED UI FOR MANUAL TESTING
+ */
+
+class FileVersionRenderer
 {
 
     /**
@@ -57,14 +57,29 @@ class FileVersionRenderer  //extends T\DataRetrieval
 
 }
 
-    /*protected $f;
+
+
+/*  IMPLEMENTATION WITH ILIAS UI-COMPONENTS
+
+use ILIAS\UI\Implementation\Component\Table as T;
+use ILIAS\UI\Component\Table as I;
+use ILIAS\Data\Range;
+use ILIAS\Data\Order;
+use ILIAS\DI\Container;
+use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
+
+class FileVersionRenderer  extends T\DataRetrieval
+{
+
+    protected $data;
+    protected $dic;
+    protected $obj_id;
+
+    protected $f;
     protected $r;
-    protected $columns;*/
+    protected $columns;
 
-
-
-
-    /*public function __construct(Container $dic, int $obj_id, array $data)
+    public function __construct(Container $dic, int $obj_id, array $data)
     {
         $this->dic = $dic;
         $this->obj_id = $obj_id;
@@ -108,9 +123,9 @@ class FileVersionRenderer  //extends T\DataRetrieval
     }
 }*/
 
-/*
 
 
+/* IMPLEMENTATION WITH REACT.JS
 use ILIAS\DI\Container;
 use ilTemplate;
 
