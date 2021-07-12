@@ -73,10 +73,8 @@ class ilDBFileVersionRepository implements FileVersionRepository
             'desc')->get();
         $length = count($all_file_version_ar);
         $result = array();
-        for ($i = 1; $i <= $length; $i++) { //TODO: Warum beginnt der Index hier bei 1?
-            /** @var FileVersionAR $next_ar */
-            $next_ar = $all_file_version_ar[$i];
-            $fileVersion = $this->buildFileVersionFromAR($next_ar);
+        foreach ($all_file_version_ar as $fileVersionAr) {
+            $fileVersion = $this->buildFileVersionFromAR($fileVersionAr);
             array_push($result, $fileVersion);
         }
         return $result;
