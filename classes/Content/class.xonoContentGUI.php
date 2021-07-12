@@ -6,6 +6,7 @@ use srag\DIC\OnlyOffice\DICStatic;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 use srag\Plugins\OnlyOffice\UI\FileVersionRenderer;
+use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
 
 /**
  * Class xonoContentGUI
@@ -103,16 +104,21 @@ class xonoContentGUI extends xonoAbstractGUI
 
     protected function showVersions()
     {
-        //$fileVersions = $this->storage_service->getVersions($this->file_id);
-        //$tpl = $this->plugin->getTemplate('html/tpl.file_history.html', false, true);
-        $fileVersions = array('a', 'b');
-        $r = new FileVersionRenderer($this->dic, $fileVersions);
+        $fileVersions = $this->storage_service->getAllVersions($this->file_id);
+        $fileVersionsString = '';
+        for ($i = 0; $i<sizeof($fileVersions); $i++) {
+            /** @var FileVersion $fV */
+            $fV = $fileVersions[$i];
+            $fVString = $this->buildJSONforFileVesion($fV);
+            $fileVersionsString .= $fVString;
+            //array_push($fileVersionsString, $fVString);
+        }
+        $r = new FileVersionRenderer($this->dic, $this->file_id,  $fileVersions);
         $content = $r->renderTable();
+        //$tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
+        //$tpl->setVariable('DATA_SRC', $fileVersionsString);
         //$content = $tpl->get();
         $this->dic->ui()->mainTemplate()->setContent($content);
-
-        /**
-         * $this->dic->ui()->mainTemplate()->printToStdOut();**/
 
     }
 
@@ -168,4 +174,15 @@ class xonoContentGUI extends xonoAbstractGUI
         return DICStatic::dic();
     }
 
+    protected function buildJSONforFileVesion(FileVersion $fv) : string {
+        $json = '{
+        Version: ' . $fv->getVersion() .',
+        CreatedAt: ' . $fv->getCreatedAt() . ',
+        UserID: ' .$fv->getUserId() . ',
+        URL: ' . $fv->getUrl() . '
+        }';
+        // 'UUID ' . $fv->getFileUuid() .'
+        return $json;
+
+    }
 }

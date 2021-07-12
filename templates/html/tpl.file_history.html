@@ -1,4 +1,18 @@
 <div id="document_history">
     <h1>This is Document History.</h1>
+
+    <!-- Load React -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <?php> {DATA_SRC} <?>
+
+    <!-- Load Component -->
+    <script src="../js/Table.tsx">
+      window.exod_log_data = {DATA_SRC};
+    </script>
+    <p>Got here.</p>
+
+
+
 </div>
 

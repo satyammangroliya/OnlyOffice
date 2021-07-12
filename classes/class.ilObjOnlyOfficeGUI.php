@@ -88,7 +88,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
 
         switch (strtolower($next_class)) {
             case strtolower(xonoContentGUI::class):
-                $xonoContentGUI = new xonoContentGUI(self::dic()->dic(), $this->plugin, 1);
+                $xonoContentGUI = new xonoContentGUI(self::dic()->dic(), $this->plugin, $this->object_id);
                 self::dic()->ctrl()->forwardCommand($xonoContentGUI);
                 break;
             default:

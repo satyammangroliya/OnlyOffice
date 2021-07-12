@@ -68,13 +68,12 @@ class ilDBFileVersionRepository implements FileVersionRepository
      */
     public function getAllVersions(UUID $file_uuid) : array
     {
-        // TODO: Implement getAllVersions() method.
         /** @var array $all_file_version_ar */
         $all_file_version_ar = FileVersionAR::where(['file_uuid' => $file_uuid->asString()])->orderBy('version',
             'desc')->get();
         $length = count($all_file_version_ar);
         $result = array();
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 1; $i <= $length; $i++) { //TODO: Warum beginnt der Index hier bei 1?
             /** @var FileVersionAR $next_ar */
             $next_ar = $all_file_version_ar[$i];
             $fileVersion = $this->buildFileVersionFromAR($next_ar);

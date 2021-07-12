@@ -118,7 +118,7 @@ class FileVersion
     /**
      * @return string
      */
-    public function getFileUuid() : string
+    public function getFileUuid() : UUID
     {
         return $this->file_uuid;
     }
@@ -126,7 +126,7 @@ class FileVersion
     /**
      * @param string $uuid
      */
-    public function setFileUuid(string $uuid)
+    public function setFileUuid(UUID $uuid)
     {
         $this->file_uuid = $uuid;
     }

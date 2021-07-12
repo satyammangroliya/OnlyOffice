@@ -3,6 +3,7 @@
 namespace srag\Plugins\OnlyOffice\StorageService\Infrastructure\File;
 
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
+use srag\Plugins\OnlyOffice\StorageService\DTO\File;
 
 /**
  * interface FileRepository
@@ -21,6 +22,6 @@ interface FileRepository
      */
     public function create(UUID $file_uuid, int $obj_id, string $getName, string $file_type);
 
-    public function getFile(string $file_uuid) : File;
+    public function getFile(int $obj_id) : File;
 
 }

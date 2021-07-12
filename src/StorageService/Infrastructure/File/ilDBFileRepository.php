@@ -3,6 +3,7 @@
 namespace srag\Plugins\OnlyOffice\StorageService\Infrastructure\File;
 
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
+use srag\Plugins\OnlyOffice\StorageService\DTO\File;
 
 /**
  * Class ilDBFileRepository
@@ -25,20 +26,20 @@ class ilDBFileRepository implements FileRepository
         $file_AR->create();
     }
 
-    public function getFile(string $file_uuid) : File
+    public function getFile(int $obj_id) : File
     {
         // TODO: Implement getFile() method.
-        $file_ar = FileAR::where(['uuid' => $file_uuid])->first();
-        $file = $this->buildFileFromAR($file_ar);
+        $file_ar = FileAR::where(['obj_id' => $obj_id])->first();
+        return $this->buildFileFromAR($file_ar);
     }
 
-    protected function buildFileFromAR(FileAR $ar)
+    protected function buildFileFromAR(FileAR $ar) : File
     {
         $uuid = $ar->getUUID();
         $obj_id = $ar->getObjId();
         $title = $ar->getTitle();
         $file_type = $ar->getFileType();
-        $file_versions = array(1, 2); // ToDo: Fragen wegen doppelter Verlinkung?
+        return new File($uuid, $obj_id, $title, $file_type);
 
     }
 }

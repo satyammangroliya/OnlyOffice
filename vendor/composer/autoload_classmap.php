@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'ilObjOnlyOffice' => $baseDir . '/classes/class.ilObjOnlyOffice.php',
     'ilObjOnlyOfficeAccess' => $baseDir . '/classes/class.ilObjOnlyOfficeAccess.php',
     'ilObjOnlyOfficeGUI' => $baseDir . '/classes/class.ilObjOnlyOfficeGUI.php',
@@ -13,10 +14,8 @@ return array(
     'ilOnlyOfficeConfigGUI' => $baseDir . '/classes/class.ilOnlyOfficeConfigGUI.php',
     'ilOnlyOfficePlugin' => $baseDir . '/classes/class.ilOnlyOfficePlugin.php',
     'srag\\ActiveRecordConfig\\OnlyOffice\\ActiveRecordConfig' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfig.php',
-    'srag\\ActiveRecordConfig\\OnlyOffice\\ActiveRecordConfigFactory' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfig.php',
     'srag\\ActiveRecordConfig\\OnlyOffice\\ActiveRecordConfigFormGUI' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfigFormGUI.php',
     'srag\\ActiveRecordConfig\\OnlyOffice\\ActiveRecordConfigGUI' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfigGUI.php',
-    'srag\\ActiveRecordConfig\\OnlyOffice\\ActiveRecordConfigRepository' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfig.php',
     'srag\\ActiveRecordConfig\\OnlyOffice\\ActiveRecordConfigTableGUI' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfigTableGUI.php',
     'srag\\ActiveRecordConfig\\OnlyOffice\\ActiveRecordObjectFormGUI' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordObjectFormGUI.php',
     'srag\\ActiveRecordConfig\\OnlyOffice\\Config\\AbstractFactory' => $vendorDir . '/srag/activerecordconfig/src/Config/AbstractFactory.php',
@@ -85,7 +84,6 @@ return array(
     'srag\\CustomInputGUIs\\OnlyOffice\\TextInputGUI\\TextInputGUIWithModernAutoComplete' => $vendorDir . '/srag/custominputguis/src/TextInputGUI/TextInputGUIWithModernAutoComplete.php',
     'srag\\CustomInputGUIs\\OnlyOffice\\UIInputComponentWrapperInputGUI\\UIInputComponentWrapperInputGUI' => $vendorDir . '/srag/custominputguis/src/UIInputComponentWrapperInputGUI/UIInputComponentWrapperInputGUI.php',
     'srag\\CustomInputGUIs\\OnlyOffice\\UIInputComponentWrapperInputGUI\\UIInputComponentWrapperNameSource' => $vendorDir . '/srag/custominputguis/src/UIInputComponentWrapperInputGUI/UIInputComponentWrapperNameSource.php',
-    'srag\\CustomInputGUIs\\OnlyOffice\\ViewControlModeUI\\ViewControlModeUI' => $vendorDir . '/srag/custominputguis/src/ViewControlModeGUI/ViewControlModeUI.php',
     'srag\\CustomInputGUIs\\OnlyOffice\\Waiter\\Waiter' => $vendorDir . '/srag/custominputguis/src/Waiter/Waiter.php',
     'srag\\CustomInputGUIs\\OnlyOffice\\WeekdayInputGUI\\WeekdayInputGUI' => $vendorDir . '/srag/custominputguis/src/WeekdayInputGUI/WeekdayInputGUI.php',
     'srag\\DIC\\OnlyOffice\\DICStatic' => $vendorDir . '/srag/dic/src/DICStatic.php',
@@ -132,10 +130,10 @@ return array(
     'srag\\Plugins\\OnlyOffice\\StorageService\\Infrastructure\\File\\ilDBFileRepository' => $baseDir . '/src/StorageService/Infrastructure/File/ilDBFileRepository.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\Infrastructure\\File\\ilDBFileVersionRepository' => $baseDir . '/src/StorageService/Infrastructure/File/ilDBFileVersionRepository.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\StorageService' => $baseDir . '/src/StorageService/StorageService.php',
+    'srag\\Plugins\\OnlyOffice\\UI\\FileVersionRenderer' => $baseDir . '/src/UI/FileVersionRenderer.php',
     'srag\\Plugins\\OnlyOffice\\Utils\\OnlyOfficeTrait' => $baseDir . '/src/Utils/OnlyOfficeTrait.php',
     'srag\\RemovePluginDataConfirm\\OnlyOffice\\BasePluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/BasePluginUninstallTrait.php',
     'srag\\RemovePluginDataConfirm\\OnlyOffice\\PluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/PluginUninstallTrait.php',
-    'srag\\RemovePluginDataConfirm\\OnlyOffice\\RemovePluginDataConfirmCtrl' => $vendorDir . '/srag/removeplugindataconfirm/src/class.RemovePluginDataConfirmCtrl.php',
     'srag\\RemovePluginDataConfirm\\OnlyOffice\\RepositoryObjectPluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/RepositoryObjectPluginUninstallTrait.php',
     'xonoAbstractGUI' => $baseDir . '/classes/xonoAbstractGUI.php',
     'xonoContentGUI' => $baseDir . '/classes/Content/class.xonoContentGUI.php',

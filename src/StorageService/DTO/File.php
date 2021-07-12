@@ -43,14 +43,12 @@ class File
      * @param int           $obj_id
      * @param string        $title
      * @param string        $file_type
-     * @param FileVersion[] $file_versions
      */
-    public function __construct(UUID $uuid, int $obj_id, string $title, string $file_type, array $file_versions = [])
+    public function __construct(UUID $uuid, int $obj_id, string $title, string $file_type)
     {
         $this->uuid = $uuid;
         $this->title = $title;
         $this->file_type = $file_type;
-        $this->file_versions = $file_versions;
         $this->obj_id = $obj_id;
     }
 
@@ -89,20 +87,9 @@ class File
         return $this->file_type;
     }
 
-    /**
-     * @return FileVersion[]
-     */
-    public function getFileVersions() : array
+    public function getFileUuid(): UUID
     {
-        return $this->file_versions;
+        return $this->uuid;
     }
 
-
-    /**
-     * @param FileVersion[] $file_versions
-     */
-    public function setFileVersions(array $file_versions)
-    {
-        $this->file_versions = $file_versions;
-    }
 }
