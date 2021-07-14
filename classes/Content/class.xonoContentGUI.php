@@ -1,5 +1,7 @@
 <?php
 
+
+
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
 use srag\DIC\OnlyOffice\DIC\DICInterface;
 use srag\DIC\OnlyOffice\DICStatic;
@@ -105,10 +107,16 @@ class xonoContentGUI extends xonoAbstractGUI
     protected function showVersions()
     {
         $fileVersions = $this->storage_service->getAllVersions($this->file_id);
-        $fileVersionsString = '';
-        $r = new FileVersionRenderer($this->dic, $this->file_id,  $fileVersions);
+        $fvArray = array();
+        foreach($fileVersions as $fv) {
+            $fva = array('version' => $fv->getVersion(), 'createdAt' => $fv->getCreatedAt()->__toString(), 'userId'=>$fv->getUserId());
+            array_push($fvArray, $fva);
+        }
+
+        //$fileVersionsString = '';
+        $r = new FileVersionRenderer($this->dic, $this->file_id,  $fvArray);
         //$content = $r->renderUglyTable();
-        $content = $r->renderReactTable();
+        $content = $r->renderIliasTable();
         //$tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
         //$tpl->setVariable('DATA_SRC', $fileVersionsString);
         //$content = $tpl->get();

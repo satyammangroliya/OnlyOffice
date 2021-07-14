@@ -1,12 +1,58 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "1fd60cccc43334c7220e3a9e88c37dcc",
-    "content-hash": "c0af18e686e3b370d9a651a88226edd1",
+    "content-hash": "50df7fe743fa3968f2fb54b1230e5600",
     "packages": [
+        {
+            "name": "jetbrains/phpstorm-stubs",
+            "version": "v2021.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JetBrains/phpstorm-stubs.git",
+                "reference": "ec9e109d9416203870109e464f8c8931474d404e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/ec9e109d9416203870109e464f8c8931474d404e",
+                "reference": "ec9e109d9416203870109e464f8c8931474d404e",
+                "shasum": ""
+            },
+            "require-dev": {
+                "nikic/php-parser": "@stable",
+                "php": "^8.0",
+                "phpdocumentor/reflection-docblock": "@stable",
+                "phpunit/phpunit": "@stable"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "PhpStormStubsMap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "PHP runtime & extensions header files for PhpStorm",
+            "homepage": "https://www.jetbrains.com/phpstorm",
+            "keywords": [
+                "autocomplete",
+                "code",
+                "inference",
+                "inspection",
+                "jetbrains",
+                "phpstorm",
+                "stubs",
+                "type"
+            ],
+            "support": {
+                "source": "https://github.com/JetBrains/phpstorm-stubs/tree/v2021.1"
+            },
+            "time": "2021-03-03T10:43:38+00:00"
+        },
         {
             "name": "srag/activerecordconfig",
             "version": "v0.19.5",
@@ -51,7 +97,7 @@
                 "activerecord",
                 "config"
             ],
-            "time": "2020-02-05 06:16:30"
+            "time": "2020-02-05T06:16:30+00:00"
         },
         {
             "name": "srag/custominputguis",
@@ -98,7 +144,7 @@
                 "input",
                 "table"
             ],
-            "time": "2020-02-10 11:31:05"
+            "time": "2020-02-10T11:31:05+00:00"
         },
         {
             "name": "srag/dic",
@@ -143,7 +189,7 @@
                 "globals",
                 "trait"
             ],
-            "time": "2020-02-05 07:30:05"
+            "time": "2020-02-05T07:30:05+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
@@ -186,7 +232,7 @@
                 "ILIAS",
                 "libraries"
             ],
-            "time": "2019-12-11 08:38:08"
+            "time": "2019-12-11T08:38:08+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",
@@ -233,7 +279,7 @@
                 "plugin",
                 "uninstall"
             ],
-            "time": "2020-01-21 08:23:18"
+            "time": "2020-01-21T08:23:18+00:00"
         }
     ],
     "packages-dev": [],
@@ -245,5 +291,6 @@
     "platform": {
         "php": ">=7.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
 }

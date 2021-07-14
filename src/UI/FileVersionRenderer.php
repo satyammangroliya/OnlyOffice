@@ -1,4 +1,5 @@
 <?php
+
 namespace srag\Plugins\OnlyOffice\UI;
 
 use ILIAS\DI\Container;
@@ -6,10 +7,15 @@ use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
 
 // If rendering with React.js
 use ilTemplate;
+use Matrix\Exception;
+use V8Js;
 
-/*
- * UGLY HANDCODED UI FOR MANUAL TESTING
- */
+
+// If rendering with ILIAS
+use ILIAS\UI\Implementation\Component\Table as T;
+use ILIAS\UI\Component\Table as I;
+use ILIAS\Data\Range;
+use ILIAS\Data\Order;
 
 class FileVersionRenderer
 {
@@ -27,10 +33,20 @@ class FileVersionRenderer
      */
     protected $obj_id;
 
+    //If rendering with ILIAS
+    protected $f;
+    protected $r;
+    protected $columns;
+
     public function __construct(Container $dic, int $obj_id, array $data){
         $this->dic = $dic;
         $this->obj_id = $obj_id;
         $this->data = $data;
+
+        // If rendering withILIAS
+        $this->f = $this->dic->ui()->factory();
+        $this->r = $this->dic->ui()->renderer();
+        //$this->initiateColumns();
     }
 
     /**
@@ -59,66 +75,77 @@ class FileVersionRenderer
 
     /**
      * Render with React.js
-     * Does not work yet!
+     * TODO: Does not work yet!
      *
      * @return string
      */
     public function renderReactTable(): string {
         $tpl = new ilTemplate(__DIR__ . '/table/build/index.html', false, false);
-        $json = json_encode(array_values($this->data));
-        $result = '<script type="application/javascript">' .
+        $json = json_encode($this->data);
+
+        $v8 = new V8Js(); // TODO Why cant V8Js not be found at runtime?
+
+
+        $react = [
+            file_get_contents(__DIR__.'/table/node_modules/react/dist/react.min.js'),
+            file_get_contents(__DIR__.'/table/node_modules/react-dom/dist/react-dom.min.js'),
+            file_get_contents(__DIR__.'/table/bundle.js'),
+            'React.renderToString(React.createElement(App,' . $json . '))'];
+
+        try {
+            $reactString = $v8->executeString(implode(PHP_EOL, $react));
+        } catch (Exception $e) {
+           $reactString = '<h1>'.$e->getMessage().'</h1>
+                            <p>'.$e->getTraceAsString().'</p>';
+        }
+
+        return $reactString.$tpl->get();
+
+        /**$result = '<script type="application/javascript">' .
             'window.exod_log_data = ' . $json . ';' .
             //'window.lng = "' . $this->dic->language()->getLangKey() . '";' .
             '</script>'
             . $tpl->get();
-        return $result;
+        return $result;**/
     }
 
+    public function renderIliasTable() :string{
+        $actions = array("All" => "#",	"Upcoming events" => "#");
+        $aria_label = "filter entries";
+        $view_controls = array(
+            $this->f->viewControl()->mode($actions, $aria_label)->withActive("All")
+        );
+
+        //build table
+        $table = $this->f->table()->presentation(
+            'Document History', //title
+            $view_controls,
+            function ($row, $record, $ui_factory, $environment) { //mapping-closure
+                return $row
+                    ->withImportantFields(
+                        array(
+                            $record['Version'],
+                            'Datum' => $record['createdAt'],
+                            $record['userId']
+                        )
+                    )
+
+                    ->withFurtherFieldsHeadline('Detailed Information')
+                    ->withAction(
+                        $ui_factory->button()->standard('Download', '#')
+                    );
+            }
+        );
+        return $this->r->render($table->withData($this->data));
 
 
-}
-
-
-
-/*  IMPLEMENTATION WITH ILIAS UI-COMPONENTS
-
-use ILIAS\UI\Implementation\Component\Table as T;
-use ILIAS\UI\Component\Table as I;
-use ILIAS\Data\Range;
-use ILIAS\Data\Order;
-use ILIAS\DI\Container;
-use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
-
-class FileVersionRenderer  extends T\DataRetrieval
-{
-
-    protected $data;
-    protected $dic;
-    protected $obj_id;
-
-    protected $f;
-    protected $r;
-    protected $columns;
-
-    public function __construct(Container $dic, int $obj_id, array $data)
-    {
-        $this->dic = $dic;
-        $this->obj_id = $obj_id;
-        $this->data = $data;
-        $this->f = $this->dic['ui.factory'];
-        $this->r = $this->dic['ui.renderer'];
-        $this->initiateColumns();
-    }
-
-    public function render() {
-        //setup the table
-        $table = $this->f->table()->data('Document History', 50)
-                   ->withColumns($this->columns)
-                   ->withData($this->getRows()); //TODO: Does this work?
+/*        $table = $this->f->table()->data('Document History', 50)
+                         ->withColumns($this->columns)
+                         ->withData($this->getRows());
 
         //apply request and render
         $request = $this->dic->http()->request();
-        return $this->r->render($table->withRequest($request));
+        return $this->r->render($table->withRequest($request));*/
 
     }
 
@@ -142,34 +169,4 @@ class FileVersionRenderer  extends T\DataRetrieval
             'user' => $this->f->table()->column()->text("Editor")->withIsSortable(false)
         ];
     }
-}*/
-
-
-
-/* IMPLEMENTATION WITH REACT.JS
-
-use ilTemplate;
-
-class FileVersionRenderer
-{
-    /**
-     * @var array
-
-    protected $data;
-
-    /**
-     * @var Container
-
-    protected $dic;
-
-
-    public function __construct(Container $dic, int $obj_id, array $data)
-    {
-        $this->dic = $dic;
-        $this->obj_id = $obj_id;
-        $this->data = $data;
-    }
-
-
-
-}*/
+}

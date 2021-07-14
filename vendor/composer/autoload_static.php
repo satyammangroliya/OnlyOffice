@@ -6,6 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
 {
+    public static $files = array (
+        'fe1d4898277c26748a003292f432cd3b' => __DIR__ . '/..' . '/jetbrains/phpstorm-stubs/PhpStormStubsMap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
