@@ -10,13 +10,19 @@ use srag\DIC\OnlyOffice\DICTrait;
  * Class MultilangualTabsInputGUI
  *
  * @package srag\CustomInputGUIs\OnlyOffice\TabsInputGUI
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class MultilangualTabsInputGUI
 {
 
     use DICTrait;
+
+    /**
+     * MultilangualTabsInputGUI constructor
+     */
+    private function __construct()
+    {
+
+    }
 
 
     /**
@@ -71,7 +77,7 @@ class MultilangualTabsInputGUI
                 $tab_input = clone $input;
 
                 if ($default_required && $lang_key === "default") {
-                    $input->setRequired(true);
+                    $tab_input->setRequired(true);
                 }
 
                 $tab->addInput($tab_input);
@@ -161,15 +167,6 @@ class MultilangualTabsInputGUI
         } else {
             $values[$lang_key] = $value;
         }
-    }
-
-
-    /**
-     * MultilangualTabsInputGUI constructor
-     */
-    private function __construct()
-    {
-
     }
 }
 

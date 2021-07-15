@@ -15,8 +15,6 @@ use stdClass;
  * Class DatabaseDetector
  *
  * @package srag\DIC\OnlyOffice\Database
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class DatabaseDetector extends AbstractILIASDatabaseDetector
 {
@@ -69,6 +67,26 @@ class DatabaseDetector extends AbstractILIASDatabaseDetector
             default:
                 $this->manipulate('ALTER TABLE ' . $table_name_q . ' MODIFY COLUMN ' . $field_q . ' INT NOT NULL AUTO_INCREMENT');
                 break;
+        }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function createOrUpdateTable(string $table_name, array $columns, array $primary_columns)/*: void*/
+    {
+        if (!$this->tableExists($table_name)) {
+            $this->createTable($table_name, $columns);
+            if (!empty($primary_columns)) {
+                $this->addPrimaryKey($table_name, $primary_columns);
+            }
+        } else {
+            foreach ($columns as $column_name => $column) {
+                if (!$this->tableColumnExists($table_name, $column_name)) {
+                    $this->addTableColumn($table_name, $column_name, $column);
+                }
+            }
         }
     }
 
@@ -138,6 +156,23 @@ class DatabaseDetector extends AbstractILIASDatabaseDetector
         } else {
             return null;
         }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function multipleInsert(string $table_name, array $columns, array $values)/*:void*/
+    {
+        if (empty($columns) || empty($values)) {
+            return;
+        }
+
+        $this->manipulate('INSERT INTO ' . $this->quoteIdentifier($table_name) . ' (' . implode(',', $columns) . ') VALUES ' . implode(',', array_map(function (array $values2) : string {
+                return '(' . implode(',', array_map(function (array $value) : string {
+                        return $this->quote($value[0], $value[1]);
+                    }, $values2)) . ')';
+            }, $values)));
     }
 
 

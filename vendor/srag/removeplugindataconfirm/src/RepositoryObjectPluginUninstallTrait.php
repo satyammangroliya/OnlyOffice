@@ -6,13 +6,19 @@ namespace srag\RemovePluginDataConfirm\OnlyOffice;
  * Trait RepositoryObjectPluginUninstallTrait
  *
  * @package srag\RemovePluginDataConfirm\OnlyOffice
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 trait RepositoryObjectPluginUninstallTrait
 {
 
     use BasePluginUninstallTrait;
+
+    /**
+     * @internal
+     */
+    protected final function afterUninstall()/*: void*/
+    {
+
+    }
 
 
     /**
@@ -40,14 +46,5 @@ trait RepositoryObjectPluginUninstallTrait
         }
 
         RemovePluginDataConfirmCtrl::removeUninstallRemovesData();
-    }
-
-
-    /**
-     * @internal
-     */
-    protected final function afterUninstall()/*: void*/
-    {
-
     }
 }

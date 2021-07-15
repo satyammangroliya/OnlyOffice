@@ -1,5 +1,99 @@
 # Changelog
 
+## [0.32.4]
+- Change utils url
+
+## [0.32.3]
+- Update urls
+
+## [0.32.2]
+- Update readme
+
+## [0.32.1]
+- `PluginVersionParameter`
+
+## [0.32.0]
+- `PluginVersionParameter`
+
+## [0.31.5]
+- Update project url
+
+## [0.31.4]
+- Remove `Ilias7PreWarn`
+
+## [0.31.3]
+- Cache `ilMMItemRepository`
+
+## [0.31.2]
+- Fix no DIC index for `ilTemplate` in `FixUITemplateInCronContext`
+
+## [0.31.1]
+- Not call `ilTemplate` constructor in `FixUITemplateInCronContext`
+
+## [0.31.0]
+- `FixUITemplateInCronContext`
+
+## [0.30.2]
+- Move doc/DESCRIPTION.md to src/LONG_DESCRIPTION.md
+
+## [0.30.1]
+- Generate readme
+
+## [0.30.0]
+- Generate readme
+
+## [0.29.0]
+- Move DevTools to separate package
+- Move LibraryLanguageInstaller to separate package
+
+## [0.28.0]
+- `DataFactory`
+
+## [0.27.0]
+- `Ilias7PreWarn`
+
+## [0.26.0]
+- `DevToolsCtrl`
+
+## [0.25.1]
+- Fix
+
+## [0.25.0]
+- `rendererLoader`
+- `javaScriptBinding`
+- `templateFactory`
+- `resourceRegistry`
+- `AbstractLoaderDetector`
+
+## [0.24.0]
+- `ilCertificateActiveValidator`
+- `ilObjUseBookDBRepository`
+- `ilBookingReservationDBRepositoryFactory`
+- `ilMMItemRepository`
+
+## [0.23.0]
+- `createOrUpdateTable`
+- `multipleInsert`
+
+## [0.22.0]
+- `ilFavouritesDBRepository`
+
+## [0.21.0]
+- Remove ILIAS 5.3 support
+- Deprecate `self::dic()->tree()` (> `self::dic()->repositoryTree()`)
+
+## [0.20.5]
+- Fix ILIAS 6
+
+## [0.20.4]
+- Fix
+
+## [0.20.3]
+- `rbac` changes
+
+## [0.20.2]
+- Auto replace manually line breaks text in language files to real line breaks
+
 ## [0.20.1]
 - Fix
 

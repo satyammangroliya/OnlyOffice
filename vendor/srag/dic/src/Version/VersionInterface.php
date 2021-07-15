@@ -6,15 +6,13 @@ namespace srag\DIC\OnlyOffice\Version;
  * Interface VersionInterface
  *
  * @package srag\DIC\OnlyOffice\Version
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 interface VersionInterface
 {
 
-    const ILIAS_VERSION_5_3 = "5.3.0";
     const ILIAS_VERSION_5_4 = "5.4.0";
-    const ILIAS_VERSION_6_0 = "6.0";
+    const ILIAS_VERSION_6 = "6.0";
+    const ILIAS_VERSION_7 = "7.0";
 
 
     /**
@@ -26,47 +24,57 @@ interface VersionInterface
     /**
      * @return bool
      */
-    public function isEqual(string $version) : bool;
-
-
-    /**
-     * @return bool
-     */
-    public function isGreater(string $version) : bool;
-
-
-    /**
-     * @return bool
-     */
-    public function isLower(string $version) : bool;
-
-
-    /**
-     * @return bool
-     */
-    public function isMaxVersion(string $version) : bool;
-
-
-    /**
-     * @return bool
-     */
-    public function isMinVersion(string $version) : bool;
-
-
-    /**
-     * @return bool
-     */
-    public function is53() : bool;
-
-
-    /**
-     * @return bool
-     */
     public function is54() : bool;
 
 
     /**
      * @return bool
      */
-    public function is60() : bool;
+    public function is6() : bool;
+
+
+    /**
+     * @return bool
+     */
+    public function is7() : bool;
+
+
+    /**
+     * @param string $version
+     *
+     * @return bool
+     */
+    public function isEqual(string $version) : bool;
+
+
+    /**
+     * @param string $version
+     *
+     * @return bool
+     */
+    public function isGreater(string $version) : bool;
+
+
+    /**
+     * @param string $version
+     *
+     * @return bool
+     */
+    public function isLower(string $version) : bool;
+
+
+    /**
+     * @param string $version
+     *
+     * @return bool
+     */
+    public function isMaxVersion(string $version) : bool;
+
+
+    /**
+     * @param string $version
+     *
+     * @return bool
+     */
+    public function isMinVersion(string $version) : bool;
 }

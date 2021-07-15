@@ -75,4 +75,9 @@ class ilOnlyOfficePlugin extends ilRepositoryObjectPlugin
     {
         self::onlyOffice()->dropTables();
     }
+
+    protected function shouldUseOneUpdateStepOnly() : bool
+    {
+        // TODO: Implement shouldUseOneUpdateStepOnly() method.
+    }
 }

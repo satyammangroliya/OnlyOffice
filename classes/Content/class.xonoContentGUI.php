@@ -116,7 +116,7 @@ class xonoContentGUI extends xonoAbstractGUI
         //$fileVersionsString = '';
         $r = new FileVersionRenderer($this->dic, $this->file_id,  $fvArray);
         //$content = $r->renderUglyTable();
-        $content = $r->renderIliasTable();
+        $content = $r->renderReactTable();
         //$tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
         //$tpl->setVariable('DATA_SRC', $fileVersionsString);
         //$content = $tpl->get();

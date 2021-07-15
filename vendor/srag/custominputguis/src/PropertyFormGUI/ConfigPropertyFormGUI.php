@@ -9,8 +9,6 @@ use srag\CustomInputGUIs\OnlyOffice\PropertyFormGUI\Exception\PropertyFormGUIExc
  *
  * @package    srag\CustomInputGUIs\OnlyOffice\PropertyFormGUI
  *
- * @author     studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- *
  * @deprecated Please use PropertyFormGUI instead
  */
 abstract class ConfigPropertyFormGUI extends PropertyFormGUI
@@ -33,7 +31,7 @@ abstract class ConfigPropertyFormGUI extends PropertyFormGUI
      *
      * @deprecated
      */
-    public function __construct($parent)
+    public function __construct(/*object*/ $parent)
     {
         $this->checkConfigClassNameConst();
 
@@ -46,7 +44,7 @@ abstract class ConfigPropertyFormGUI extends PropertyFormGUI
      *
      * @deprecated
      */
-    protected function getValue(/*string*/ $key)
+    protected function getValue(string $key)
     {
         //return (static::CONFIG_CLASS_NAME)::getField($key);
         return call_user_func(static::CONFIG_CLASS_NAME . "::getField", $key);
@@ -58,7 +56,7 @@ abstract class ConfigPropertyFormGUI extends PropertyFormGUI
      *
      * @deprecated
      */
-    protected function storeValue(/*string*/ $key, $value)/*: void*/
+    protected function storeValue(string $key, $value)/*: void*/
     {
         //(static::CONFIG_CLASS_NAME)::setField($key, $value);
         call_user_func(static::CONFIG_CLASS_NAME . "::setField", $key, $value);

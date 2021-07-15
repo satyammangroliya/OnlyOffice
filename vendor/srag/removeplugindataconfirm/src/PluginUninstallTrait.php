@@ -6,13 +6,19 @@ namespace srag\RemovePluginDataConfirm\OnlyOffice;
  * Trait PluginUninstallTrait
  *
  * @package srag\RemovePluginDataConfirm\OnlyOffice
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 trait PluginUninstallTrait
 {
 
     use BasePluginUninstallTrait;
+
+    /**
+     * @internal
+     */
+    protected final function afterUninstall()/*: void*/
+    {
+
+    }
 
 
     /**
@@ -23,14 +29,5 @@ trait PluginUninstallTrait
     protected final function beforeUninstall() : bool
     {
         return $this->pluginUninstall();
-    }
-
-
-    /**
-     * @internal
-     */
-    protected final function afterUninstall()/*: void*/
-    {
-
     }
 }

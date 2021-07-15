@@ -10,9 +10,6 @@ use srag\DIC\OnlyOffice\DICTrait;
  *
  * @package srag\CustomInputGUIs\OnlyOffice\GlyphGUI
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Fabian Schmid <fs@studer-raimann.ch>
- *
  * @deprecated
  */
 class GlyphGUI extends ilGlyphGUI
@@ -20,8 +17,9 @@ class GlyphGUI extends ilGlyphGUI
 
     use DICTrait;
 
-
     /**
+     * @inheritDoc
+     *
      * Get glyph html
      *
      * @param string $a_glyph glyph constant
@@ -31,7 +29,7 @@ class GlyphGUI extends ilGlyphGUI
      *
      * @deprecated
      */
-    static function get($a_glyph, $a_text = "")
+    static function get(/*string*/ $a_glyph, /*string*/ $a_text = "") : string
     {
         if ($a_glyph == 'remove') {
             self::$map[$a_glyph]['class'] = 'glyphicon glyphicon-' . $a_glyph;
@@ -51,7 +49,7 @@ class GlyphGUI extends ilGlyphGUI
      *
      * @deprecated
      */
-    static function gets($a_glyph)
+    static function gets(string $a_glyph) : string
     {
         self::$map[$a_glyph]['class'] = 'glyphicons glyphicons-' . $a_glyph;
 

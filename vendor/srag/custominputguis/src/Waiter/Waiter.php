@@ -2,51 +2,34 @@
 
 namespace srag\CustomInputGUIs\OnlyOffice\Waiter;
 
+use ilGlobalTemplateInterface;
+use ilTemplate;
 use srag\DIC\OnlyOffice\DICTrait;
+use srag\DIC\OnlyOffice\Plugin\PluginInterface;
+use srag\DIC\OnlyOffice\Version\PluginVersionParameter;
 
 /**
  * Class Waiter
  *
  * @package srag\CustomInputGUIs\OnlyOffice\Waiter
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 final class Waiter
 {
 
     use DICTrait;
-    /**
-     * @var string
-     */
-    const TYPE_WAITER = "waiter";
+
     /**
      * @var string
      */
     const TYPE_PERCENTAGE = "percentage";
     /**
+     * @var string
+     */
+    const TYPE_WAITER = "waiter";
+    /**
      * @var bool
      */
     protected static $init = false;
-
-
-    /**
-     * @param string $type
-     */
-    public static final function init(/*string*/ $type)/*: void*/
-    {
-        if (self::$init === false) {
-            self::$init = true;
-
-            $dir = __DIR__;
-            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
-
-            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/waiter.css");
-
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/js/waiter.min.js");
-        }
-
-        self::dic()->ui()->mainTemplate()->addOnLoadCode('il.waiter.init("' . $type . '");');
-    }
 
 
     /**
@@ -55,5 +38,34 @@ final class Waiter
     private function __construct()
     {
 
+    }
+
+
+    /**
+     * @param string                                    $type
+     * @param ilTemplate|ilGlobalTemplateInterface|null $tpl
+     * @param PluginInterface|null                      $plugin
+     */
+    public static final function init(string $type, /*?ilGlobalTemplateInterface*/ $tpl = null,/*?*/ PluginInterface $plugin = null)/*: void*/
+    {
+        $tpl = $tpl ?? self::dic()->ui()->mainTemplate();
+
+        if (self::$init === false) {
+            self::$init = true;
+
+            $version_parameter = PluginVersionParameter::getInstance();
+            if ($plugin !== null) {
+                $version_parameter = $version_parameter->withPlugin($plugin);
+            }
+
+            $dir = __DIR__;
+            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
+
+            $tpl->addCss($version_parameter->appendToUrl($dir . "/css/waiter.css"));
+
+            $tpl->addJavaScript($version_parameter->appendToUrl($dir . "/js/waiter.min.js", $dir . "/js/waiter.js"));
+        }
+
+        $tpl->addOnLoadCode('il.waiter.init("' . $type . '");');
     }
 }

@@ -11,18 +11,18 @@ use ilTemplate;
 use srag\DIC\OnlyOffice\DICTrait;
 use srag\DIC\OnlyOffice\Plugin\Pluginable;
 use srag\DIC\OnlyOffice\Plugin\PluginInterface;
+use srag\DIC\OnlyOffice\Version\PluginVersionParameter;
 
 /**
  * Class ScreenshotsInputGUI
  *
  * @package srag\CustomInputGUIs\OnlyOffice\ScreenshotsInputGUI
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
 {
 
     use DICTrait;
+
     const LANG_MODULE = "screenshotsinputgui";
     /**
      * @var bool
@@ -33,13 +33,13 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
      */
     protected $allowed_formats = ["bmp", "gif", "jpg", "png"];
     /**
-     * @var UploadResult[]
-     */
-    protected $screenshots = [];
-    /**
      * @var PluginInterface|null
      */
     protected $plugin = null;
+    /**
+     * @var UploadResult[]
+     */
+    protected $screenshots = [];
 
 
     /**
@@ -81,6 +81,19 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
 
 
     /**
+     * @param string[] $allowed_formats
+     *
+     * @return self
+     */
+    public function setAllowedFormats(array $allowed_formats) : self
+    {
+        $this->allowed_formats = $allowed_formats;
+
+        return $this;
+    }
+
+
+    /**
      * @return string
      */
     public function getJSOnLoadCode() : string
@@ -111,6 +124,8 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
      */
     public function getValue() : array
     {
+        $this->processScreenshots();
+
         return $this->screenshots;
     }
 
@@ -123,14 +138,16 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
         if (self::$init === false) {
             self::$init = true;
 
+            $version_parameter = PluginVersionParameter::getInstance()->withPlugin($this->getPlugin());
+
             $dir = __DIR__;
             $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
 
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/es6-promise/dist/es6-promise.auto.min.js");
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/canvas-toBlob/canvas-toBlob.js");
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/../../node_modules/html2canvas/dist/html2canvas.min.js");
+            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/../../node_modules/es6-promise/dist/es6-promise.auto.min.js"));
+            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/../../node_modules/canvas-toBlob/canvas-toBlob.js"));
+            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/../../node_modules/html2canvas/dist/html2canvas.min.js"));
 
-            self::dic()->ui()->mainTemplate()->addJavaScript($dir . "/js/ScreenshotsInputGUI.min.js", false);
+            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/js/ScreenshotsInputGUI.min.js", $dir . "/js/ScreenshotsInputGUI.js"), false);
             self::dic()->ui()->mainTemplate()->addOnLoadCode($this->getJSOnLoadCode());
         }
     }
@@ -139,44 +156,13 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
     /**
      * @param ilTemplate $tpl
      */
-    public function insert(ilTemplate $tpl) /*: void*/
+    public function insert(ilTemplate $tpl)/*: void*/
     {
         $html = $this->render();
 
         $tpl->setCurrentBlock("prop_generic");
         $tpl->setVariable("PROP_GENERIC", $html);
         $tpl->parseCurrentBlock();
-    }
-
-
-    /**
-     *
-     */
-    protected function processScreenshots()/*: void*/
-    {
-        $this->screenshots = [];
-
-        if (!self::dic()->upload()->hasBeenProcessed()) {
-            self::dic()->upload()->process();
-        }
-
-        if (self::dic()->upload()->hasUploads()) {
-            $uploads = self::dic()->http()->request()->getUploadedFiles()[$this->getPostVar()];
-
-            if (is_array($uploads)) {
-                $uploads = array_values(array_flip(array_map(function (UploadedFile $file) : string {
-                    return $file->getClientFilename();
-                }, $uploads)));
-
-                $this->screenshots = array_values(array_filter(self::dic()->upload()
-                    ->getResults(), function (UploadResult $file) use (&$uploads): bool {
-                    $ext = pathinfo($file->getName(), PATHINFO_EXTENSION);
-
-                    return ($file->getStatus()->getCode() === ProcessingStatus::OK && in_array($file->getPath(), $uploads)
-                        && in_array($ext, $this->allowed_formats));
-                }));
-            }
-        }
     }
 
 
@@ -198,19 +184,6 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
         }, $this->getAllowedFormats())));
 
         return self::output()->getHTML($screenshots_tpl);
-    }
-
-
-    /**
-     * @param string[] $allowed_formats
-     *
-     * @return self
-     */
-    public function setAllowedFormats(array $allowed_formats) : self
-    {
-        $this->allowed_formats = $allowed_formats;
-
-        return $this;
     }
 
 
@@ -270,5 +243,36 @@ class ScreenshotsInputGUI extends ilFormPropertyGUI implements Pluginable
         $this->plugin = $plugin;
 
         return $this;
+    }
+
+
+    /**
+     *
+     */
+    protected function processScreenshots()/*: void*/
+    {
+        $this->screenshots = [];
+
+        if (!self::dic()->upload()->hasBeenProcessed()) {
+            self::dic()->upload()->process();
+        }
+
+        if (self::dic()->upload()->hasUploads()) {
+            $uploads = self::dic()->http()->request()->getUploadedFiles()[$this->getPostVar()];
+
+            if (is_array($uploads)) {
+                $uploads = array_values(array_flip(array_map(function (UploadedFile $file) : string {
+                    return $file->getClientFilename();
+                }, $uploads)));
+
+                $this->screenshots = array_values(array_filter(self::dic()->upload()
+                    ->getResults(), function (UploadResult $file) use (&$uploads) : bool {
+                    $ext = pathinfo($file->getName(), PATHINFO_EXTENSION);
+
+                    return ($file->getStatus()->getCode() === ProcessingStatus::OK && in_array($file->getPath(), $uploads)
+                        && in_array($ext, $this->allowed_formats));
+                }));
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@
 namespace srag\DIC\OnlyOffice\Output;
 
 use ILIAS\UI\Component\Component;
-use ILIAS\UI\Implementation\Render\ilTemplateWrapper;
+use ILIAS\UI\Implementation\Render\Template;
 use ilTable2GUI;
 use ilTemplate;
 use JsonSerializable;
@@ -15,14 +15,11 @@ use stdClass;
  * Class Output
  *
  * @package srag\DIC\OnlyOffice\Output
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 final class Output implements OutputInterface
 {
 
     use DICTrait;
-
 
     /**
      * Output constructor
@@ -71,7 +68,7 @@ final class Output implements OutputInterface
 
                 // Template instance
                 case ($value instanceof ilTemplate):
-                case ($value instanceof ilTemplateWrapper):
+                case ($value instanceof Template):
                     $html = $value->get();
                     break;
 
@@ -99,7 +96,7 @@ final class Output implements OutputInterface
             exit;
         } else {
             if ($main_template) {
-                if (self::version()->is60()) {
+                if (self::version()->is6()) {
                     self::dic()->ui()->mainTemplate()->loadStandardTemplate();
                 } else {
                     self::dic()->ui()->mainTemplate()->getStandardTemplate();
@@ -108,10 +105,12 @@ final class Output implements OutputInterface
 
             self::dic()->ui()->mainTemplate()->setLocator();
 
-            self::dic()->ui()->mainTemplate()->setContent($html);
+            if (!empty($html)) {
+                self::dic()->ui()->mainTemplate()->setContent($html);
+            }
 
             if ($show) {
-                if (self::version()->is60()) {
+                if (self::version()->is6()) {
                     self::dic()->ui()->mainTemplate()->printToStdout();
                 } else {
                     self::dic()->ui()->mainTemplate()->show();

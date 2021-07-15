@@ -6,14 +6,18 @@
 	  flex-wrap: wrap;
 
 	  > .input_gui_input {
-		display: flex;
+		&:not([hidden]) {
+		  display: flex;
+		}
+
 		flex-basis: 0;
 		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
 		padding: 5px;
 
-		> label + * {
+		> label + *,
+		> label + select + .select2 {
 		  margin-top: auto;
 		}
 	  }

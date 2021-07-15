@@ -1,5 +1,199 @@
 # Changelog
 
+## [0.42.9]
+- Hide HiddenInputGUI in MultiLineNewInputGUI
+
+## [0.42.8]
+- Change utils url
+
+## [0.42.7]
+- Update urls
+
+## [0.42.6]
+- Ignore not supported languages
+
+## [0.42.5]
+- Ignore not supported languages
+
+## [0.42.4]
+- Update readme
+
+## [0.42.3]
+- Use `PluginVersionParameter`
+
+## [0.42.2]
+- Use `PluginVersionParameter`
+- Fix waiter decimals
+
+## [0.42.1]
+- Fix Waiter on ILIAS 6
+- Update project url
+
+## [0.42.0]
+- Add `Waiter.setBytes`
+- Add possibility to pass own tpl to `Waiter.init`
+
+## [0.41.4]
+- Add require compose in ctrl entry classes
+
+## [0.41.3]
+- Load `form` lang module
+
+## [0.41.2]
+- Fix composer 2
+- Move doc/DESCRIPTION.md to src/LONG_DESCRIPTION.md
+
+## [0.41.1]
+- Generate readme
+
+## [0.41.0]
+- Generate readme
+
+## [0.40.0]
+- Custom hooks for `CustomInputGUIsLoaderDetector::getRendererFor`
+
+## [0.39.3]
+- Fix not required `ilDateTimeInputGUI` in `InputGUIWrapperUIInputComponent`
+
+## [0.39.2]
+- Use `DataFactory` from dic
+
+## [0.39.1]
+- Make `cleanValues` static in `MultiSelectSearchNewInputGUI`
+
+## [0.39.0]
+- Support `MultiLineNewInputGUI` in `TableGUI`
+
+## [0.38.0]
+- `AjaxAutoCompleteCtrl` skip ids
+
+## [0.37.0]
+- Move `PieChart` and `LearningProgressPieUI` to seperate libraries
+
+## [0.36.4]
+- Fix
+
+## [0.36.3]
+- `AbstractFormBuilder`: Fix radios in section
+
+## [0.36.2]
+- Fix language select meta bar which current ctrl gui has namespaces (public page)
+
+## [0.36.1]
+- Fix disabled `ilCheckboxInputGUI` in `InputGUIWrapperUIInputComponent` on form error
+
+## [0.36.0]
+- Remove ProgressMeter (For ILIAS 5.3, use from Core for >= ILIAS 5.4)
+- Refactored to PHP 7.0
+
+## [0.35.1]
+- Fix
+
+## [0.35.0]
+- `CustomInputGUIsLoaderDetector`
+
+## [0.34.18]
+- Fix ILIAS 6
+
+## [0.34.17]
+- Fix ILIAS 6
+
+## [0.34.16]
+- Fix ILIAS 6
+
+## [0.34.15]
+- Fix ILIAS 6
+
+## [0.34.14]
+- Fix ILIAS 6
+
+## [0.34.13]
+- Fix ILIAS 6
+
+## [0.34.12]
+- Fix ILIAS 6
+
+## [0.34.11]
+- Fix ILIAS 6
+
+## [0.34.10]
+- Fix
+
+## [0.34.9]
+- Fix ILIAS 6
+
+## [0.34.8]
+- Fix ILIAS 6
+
+## [0.34.7]
+- Fix
+
+## [0.34.6]
+- Fix
+
+## [0.34.5]
+- Fix
+
+## [0.34.4]
+- Fix
+
+## [0.34.3]
+- Fix
+
+## [0.34.2]
+- Fix
+
+## [0.34.1]
+- Fix
+
+## [0.34.0]
+- `AbstractFormBuilder`
+- Deprecated `PropertyFormGUI`
+
+## [0.33.7]
+- Fix
+
+## [0.33.6]
+- Fix
+
+## [0.33.5]
+- Deprecated `TableGUI`
+
+## [0.33.4]
+- Fix `ilRepositorySelector2InputGUI`
+
+## [0.33.3]
+- `OrgUnitAjaxAutoCompleteCtrl`
+
+## [0.33.2]
+- Fix `MultiSelectSearchNewInputGUI` bottom in `MultiLineNewInputGUI`
+
+## [0.33.1]
+- Fix not merged `PieChart` in ILIAS 6
+
+## [0.33.0]
+- `AjaxCheckbox`
+
+## [0.32.5]
+- Fix
+
+## [0.32.4]
+- Fix
+
+## [0.32.3]
+- Fix
+
+## [0.32.2]
+- Fix
+
+## [0.32.1]
+- Fix
+
+## [0.32.0]
+- MultiSelectSearchNewInputGUI:
+    - New ajax auto complete concept (`AbstractAjaxAutoCompleteCtrl`)
+    - Show whole option text
+
 ## [0.31.8]
 - Fix
 

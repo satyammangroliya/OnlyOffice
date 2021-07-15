@@ -11,41 +11,24 @@ use ilTemplate;
 use ilToolbarItem;
 use srag\CustomInputGUIs\OnlyOffice\Template\Template;
 use srag\DIC\OnlyOffice\DICTrait;
+use srag\DIC\OnlyOffice\Plugin\PluginInterface;
+use srag\DIC\OnlyOffice\Version\PluginVersionParameter;
 use Throwable;
 
 /**
  * Class UIInputComponentWrapperInputGUI
  *
  * @package srag\CustomInputGUIs\OnlyOffice\UIInputComponentWrapperInputGUI
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTableFilterItem, ilToolbarItem
 {
 
     use DICTrait;
+
     /**
      * @var bool
      */
     protected static $init = false;
-
-
-    /**
-     *
-     */
-    public static function init()/*: void*/
-    {
-        if (self::$init === false) {
-            self::$init = true;
-
-            $dir = __DIR__;
-            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
-
-            self::dic()->ui()->mainTemplate()->addCss($dir . "/css/UIInputComponentWrapperInputGUI.css");
-        }
-    }
-
-
     /**
      * @var Input
      */
@@ -66,7 +49,28 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
 
         //parent::__construct($title, $post_var);
 
-        self::init();
+        self::init(); // TODO: Pass $plugin
+    }
+
+
+    /**
+     * @param PluginInterface|null $plugin
+     */
+    public static function init(/*?*/ PluginInterface $plugin = null)/*: void*/
+    {
+        if (self::$init === false) {
+            self::$init = true;
+
+            $version_parameter = PluginVersionParameter::getInstance();
+            if ($plugin !== null) {
+                $version_parameter = $version_parameter->withPlugin($plugin);
+            }
+
+            $dir = __DIR__;
+            $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
+
+            self::dic()->ui()->mainTemplate()->addCss($version_parameter->appendToUrl($dir . "/css/UIInputComponentWrapperInputGUI.css"));
+        }
     }
 
 
@@ -101,8 +105,8 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
      */
     public function getDisabled()/*:bool*/
     {
-        if (self::version()->is60()) {
-            return $this->input->getDisabled();
+        if (self::version()->is6()) {
+            return $this->input->isDisabled();
         } else {
             throw new ilFormException("disabled not exists in ILIAS 5.4 or below!");
         }
@@ -124,6 +128,15 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
     public function getInput() : Input
     {
         return $this->input;
+    }
+
+
+    /**
+     * @param Input $input
+     */
+    public function setInput(Input $input)/*: void*/
+    {
+        $this->input = $input;
     }
 
 
@@ -184,7 +197,7 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
     /**
      * @param ilTemplate $tpl
      */
-    public function insert(ilTemplate $tpl) /*: void*/
+    public function insert(ilTemplate $tpl)/*: void*/
     {
         $html = $this->render();
 
@@ -223,7 +236,7 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
      */
     public function setDisabled(/*bool*/ $disabled)/*: void*/
     {
-        if (self::version()->is60()) {
+        if (self::version()->is6()) {
             $this->input = $this->input->withDisabled($disabled);
         } else {
             throw new ilFormException("disabled not exists in ILIAS 5.4 or below!");
@@ -237,15 +250,6 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
     public function setInfo(/*string*/ $info)/*: void*/
     {
         $this->input = $this->input->withByline($info);
-    }
-
-
-    /**
-     * @param Input $input
-     */
-    public function setInput(Input $input)/*: void*/
-    {
-        $this->input = $input;
     }
 
 
@@ -281,7 +285,11 @@ class UIInputComponentWrapperInputGUI extends ilFormPropertyGUI implements ilTab
      */
     public function setValue($value)/*: void*/
     {
-        $this->input = $this->input->withValue($value);
+        try {
+            $this->input = $this->input->withValue($value);
+        } catch (Throwable $ex) {
+
+        }
     }
 
 

@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'srag\\RemovePluginDataConfirm\\OnlyOffice\\' => array($vendorDir . '/srag/removeplugindataconfirm/src'),
     'srag\\Plugins\\OnlyOffice\\' => array($baseDir . '/src'),
+    'srag\\LibraryLanguageInstaller\\OnlyOffice\\' => array($vendorDir . '/srag/librarylanguageinstaller/src'),
     'srag\\LibrariesNamespaceChanger\\' => array($vendorDir . '/srag/librariesnamespacechanger/src'),
     'srag\\DIC\\OnlyOffice\\' => array($vendorDir . '/srag/dic/src'),
     'srag\\CustomInputGUIs\\OnlyOffice\\' => array($vendorDir . '/srag/custominputguis/src'),
