@@ -13,4 +13,5 @@ return array(
     'srag\\DIC\\OnlyOffice\\' => array($vendorDir . '/srag/dic/src'),
     'srag\\CustomInputGUIs\\OnlyOffice\\' => array($vendorDir . '/srag/custominputguis/src'),
     'srag\\ActiveRecordConfig\\OnlyOffice\\' => array($vendorDir . '/srag/activerecordconfig/src'),
+    'V8JsStubs\\' => array($vendorDir . '/phpv8/v8js-stubs/src'),
 );

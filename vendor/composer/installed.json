@@ -1,6 +1,44 @@
 {
     "packages": [
         {
+            "name": "phpv8/v8js-stubs",
+            "version": "dev-dev-composer",
+            "version_normalized": "dev-dev-composer",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pfisteso/v8js-stubs.git",
+                "reference": "559f7f9a44271ec32f51c1bd51efa527748f172f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pfisteso/v8js-stubs/zipball/559f7f9a44271ec32f51c1bd51efa527748f172f",
+                "reference": "559f7f9a44271ec32f51c1bd51efa527748f172f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "time": "2021-07-15T14:19:38+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "V8JsStubs\\": "src/"
+                },
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "IDE stubs for V8Js PHP extension",
+            "support": {
+                "source": "https://github.com/pfisteso/v8js-stubs/tree/dev-composer"
+            },
+            "install-path": "../phpv8/v8js-stubs"
+        },
+        {
             "name": "srag/activerecordconfig",
             "version": "0.20.7",
             "version_normalized": "0.20.7.0",

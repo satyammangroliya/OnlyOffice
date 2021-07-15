@@ -17,6 +17,10 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
             'srag\\CustomInputGUIs\\OnlyOffice\\' => 32,
             'srag\\ActiveRecordConfig\\OnlyOffice\\' => 35,
         ),
+        'V' => 
+        array (
+            'V8JsStubs\\' => 10,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -48,10 +52,22 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
         array (
             0 => __DIR__ . '/..' . '/srag/activerecordconfig/src',
         ),
+        'V8JsStubs\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpv8/v8js-stubs/src',
+        ),
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'V8JsStubs\\V8Function' => __DIR__ . '/..' . '/phpv8/v8js-stubs/src/V8Function.php',
+        'V8JsStubs\\V8Generator' => __DIR__ . '/..' . '/phpv8/v8js-stubs/src/V8Generator.php',
+        'V8JsStubs\\V8Js' => __DIR__ . '/..' . '/phpv8/v8js-stubs/src/V8Js.php',
+        'V8JsStubs\\V8JsException' => __DIR__ . '/..' . '/phpv8/v8js-stubs/src/V8JsException.php',
+        'V8JsStubs\\V8JsMemoryLimitException' => __DIR__ . '/..' . '/phpv8/v8js-stubs/src/V8JsMemoryLimitException.php',
+        'V8JsStubs\\V8JsScriptException' => __DIR__ . '/..' . '/phpv8/v8js-stubs/src/V8JsScriptException.php',
+        'V8JsStubs\\V8JsTimeLimitException' => __DIR__ . '/..' . '/phpv8/v8js-stubs/src/V8JsTimeLimitException.php',
+        'V8JsStubs\\V8Object' => __DIR__ . '/..' . '/phpv8/v8js-stubs/src/V8Object.php',
         'ilObjOnlyOffice' => __DIR__ . '/../..' . '/classes/class.ilObjOnlyOffice.php',
         'ilObjOnlyOfficeAccess' => __DIR__ . '/../..' . '/classes/class.ilObjOnlyOfficeAccess.php',
         'ilObjOnlyOfficeGUI' => __DIR__ . '/../..' . '/classes/class.ilObjOnlyOfficeGUI.php',

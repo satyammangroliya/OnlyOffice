@@ -7,6 +7,14 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'V8JsStubs\\V8Function' => $vendorDir . '/phpv8/v8js-stubs/src/V8Function.php',
+    'V8JsStubs\\V8Generator' => $vendorDir . '/phpv8/v8js-stubs/src/V8Generator.php',
+    'V8JsStubs\\V8Js' => $vendorDir . '/phpv8/v8js-stubs/src/V8Js.php',
+    'V8JsStubs\\V8JsException' => $vendorDir . '/phpv8/v8js-stubs/src/V8JsException.php',
+    'V8JsStubs\\V8JsMemoryLimitException' => $vendorDir . '/phpv8/v8js-stubs/src/V8JsMemoryLimitException.php',
+    'V8JsStubs\\V8JsScriptException' => $vendorDir . '/phpv8/v8js-stubs/src/V8JsScriptException.php',
+    'V8JsStubs\\V8JsTimeLimitException' => $vendorDir . '/phpv8/v8js-stubs/src/V8JsTimeLimitException.php',
+    'V8JsStubs\\V8Object' => $vendorDir . '/phpv8/v8js-stubs/src/V8Object.php',
     'ilObjOnlyOffice' => $baseDir . '/classes/class.ilObjOnlyOffice.php',
     'ilObjOnlyOfficeAccess' => $baseDir . '/classes/class.ilObjOnlyOfficeAccess.php',
     'ilObjOnlyOfficeGUI' => $baseDir . '/classes/class.ilObjOnlyOfficeGUI.php',
