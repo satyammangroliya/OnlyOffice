@@ -1,17 +1,54 @@
-<div id="document_history">
-    <h1>This is Document History.</h1>
-
-    <!-- Load React -->
-    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-    <?php> {DATA_SRC} <?>
-
-    <!-- Load Component -->
-    <script>
-    </script>
-    <p>Got here.</p>
-
-
-
+<head>
+    <link rel="stylesheet" href="../css/styling.css">
+</head>
+<body onload="renderBody()">
+<div class="tbltitle">
+    <h3>{TBL_TITLE}</h3>
 </div>
+<div class="ilTableOuter table-responsive">
+    <table class="fullwidth_invisible">
+        <thead>
+        <!-- TODO: Set dynamically depending on language -->
+        <th class="tblheader">Version</th>
+        <th class="tblheader">Date</th>
+        <th class="tblheader">Editor</th>
+        <th class="tblheader">Size</th>
+        <th class="tblheader">Action</th>
+        </thead>
+        <tbody id="table_body">
+        </tbody>
+    </table>
+</div>
+</body>
+
+
+{TBL_DATA}
+<script type="text/javascript">
+  function renderBody() {
+    const table_data = '{TBL_DATA}';
+    const data = JSON.parse(table_data);
+    let table = "";
+    for (var i = 0; i < data.length; i++) {
+      var rowData = data[i];
+      if (i % 2 == 0)
+        table += "<tr class='tblrow1'>";
+      else
+        table += "<tr class='tblrow2'>";
+
+      table += "<td class='il_no_style'>" + rowData.fileVersion + "</td>";
+      table += "<td class='il_no_style'>" + rowData.createdAt + "</td>";
+      table += "<td class='il_no_style'>" + rowData.editorId + "</td>";
+      table += "<td class='il_no_style'></td>";
+      table += "<td class='il_no_style'><button>Download</button></td>";
+      table += "</tr>";
+    }
+    //table += "</tbody>";
+    document.getElementById("table_body").innerHTML = table;
+  }
+</script>
+
+
+
+
+
 

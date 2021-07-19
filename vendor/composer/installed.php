@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'd7f1f17e31ffc163b7024c1e1d9d53628e610230',
+        'reference' => '8d0b37e0657c572c96bde06b9a8fb8dbbd91e9be',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'd7f1f17e31ffc163b7024c1e1d9d53628e610230',
+            'reference' => '8d0b37e0657c572c96bde06b9a8fb8dbbd91e9be',
             'dev_requirement' => false,
         ),
         'phpv8/v8js-stubs' => array(
@@ -26,6 +26,15 @@
             'install_path' => __DIR__ . '/../phpv8/v8js-stubs',
             'aliases' => array(),
             'reference' => '559f7f9a44271ec32f51c1bd51efa527748f172f',
+            'dev_requirement' => false,
+        ),
+        'reactjs/react-php-v8js' => array(
+            'pretty_version' => 'v2.0.0',
+            'version' => '2.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../reactjs/react-php-v8js',
+            'aliases' => array(),
+            'reference' => '5691f726b6e2ba07ccc566b6eff876ec01f4ba51',
             'dev_requirement' => false,
         ),
         'srag/activerecordconfig' => array(

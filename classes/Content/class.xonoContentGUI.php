@@ -1,7 +1,5 @@
 <?php
 
-
-
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
 use srag\DIC\OnlyOffice\DIC\DICInterface;
 use srag\DIC\OnlyOffice\DICStatic;
@@ -107,19 +105,27 @@ class xonoContentGUI extends xonoAbstractGUI
     protected function showVersions()
     {
         $fileVersions = $this->storage_service->getAllVersions($this->file_id);
-        $fvArray = array();
-        foreach($fileVersions as $fv) {
-            $fva = array('version' => $fv->getVersion(), 'createdAt' => $fv->getCreatedAt()->__toString(), 'userId'=>$fv->getUserId());
-            array_push($fvArray, $fva);
+        $size = sizeof($fileVersions);
+        $fvJSON = '[';
+        $counter = 1;
+        foreach ($fileVersions as $fv) {
+            if ($counter != 1)
+                $fvJSON .= ', ';
+            $counter++;
+            $fvJSON .= '{';
+            $fvJSON .= '"fileVersion": '. $fv->getVersion(). ', "createdAt": "DATUM", "editorId": '. $fv->getUserId() . '}';
         }
+        $fvJSON .= ']';
 
         //$fileVersionsString = '';
-        $r = new FileVersionRenderer($this->dic, $this->file_id,  $fvArray);
+        //$r = new FileVersionRenderer($this->dic, $this->file_id,  $fvArray);
         //$content = $r->renderUglyTable();
-        $content = $r->renderReactTable();
-        //$tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
-        //$tpl->setVariable('DATA_SRC', $fileVersionsString);
-        //$content = $tpl->get();
+        //$content = $r->renderReactTable();
+        $tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
+        $tpl->setVariable('TBL_TITLE', "Document History");
+        $tpl->setVariable('TBL_DATA', $fvJSON);
+
+        $content = $tpl->get();
         $this->dic->ui()->mainTemplate()->setContent($content);
 
     }
@@ -176,11 +182,12 @@ class xonoContentGUI extends xonoAbstractGUI
         return DICStatic::dic();
     }
 
-    protected function buildJSONforFileVesion(FileVersion $fv) : string {
+    protected function buildJSONforFileVesion(FileVersion $fv) : string
+    {
         $json = '{
-        Version: ' . $fv->getVersion() .',
+        Version: ' . $fv->getVersion() . ',
         CreatedAt: ' . $fv->getCreatedAt() . ',
-        UserID: ' .$fv->getUserId() . ',
+        UserID: ' . $fv->getUserId() . ',
         URL: ' . $fv->getUrl() . '
         }';
         // 'UUID ' . $fv->getFileUuid() .'

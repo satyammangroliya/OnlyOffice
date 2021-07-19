@@ -60,6 +60,7 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'ReactJS' => __DIR__ . '/..' . '/reactjs/react-php-v8js/ReactJS.php',
         'V8JsStubs\\V8Function' => __DIR__ . '/..' . '/phpv8/v8js-stubs/src/V8Function.php',
         'V8JsStubs\\V8Generator' => __DIR__ . '/..' . '/phpv8/v8js-stubs/src/V8Generator.php',
         'V8JsStubs\\V8Js' => __DIR__ . '/..' . '/phpv8/v8js-stubs/src/V8Js.php',

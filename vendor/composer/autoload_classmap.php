@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'ReactJS' => $vendorDir . '/reactjs/react-php-v8js/ReactJS.php',
     'V8JsStubs\\V8Function' => $vendorDir . '/phpv8/v8js-stubs/src/V8Function.php',
     'V8JsStubs\\V8Generator' => $vendorDir . '/phpv8/v8js-stubs/src/V8Generator.php',
     'V8JsStubs\\V8Js' => $vendorDir . '/phpv8/v8js-stubs/src/V8Js.php',
