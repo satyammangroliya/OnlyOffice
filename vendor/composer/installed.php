@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '8d8e38ddfaa026ba7162695cac5036617e431ddb',
+        'reference' => '477c534fa6725851cc41d5ade184fea8798513ae',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '8d8e38ddfaa026ba7162695cac5036617e431ddb',
+            'reference' => '477c534fa6725851cc41d5ade184fea8798513ae',
             'dev_requirement' => false,
         ),
         'srag/activerecordconfig' => array(
