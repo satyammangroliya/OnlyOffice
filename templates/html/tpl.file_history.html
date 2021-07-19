@@ -21,8 +21,6 @@
 </div>
 </body>
 
-
-{TBL_DATA}
 <script type="text/javascript">
   function renderBody() {
     const table_data = '{TBL_DATA}';
@@ -30,7 +28,7 @@
     let table = "";
     for (var i = 0; i < data.length; i++) {
       var rowData = data[i];
-      if (i % 2 == 0)
+      if (i % 2 === 0)
         table += "<tr class='tblrow1'>";
       else
         table += "<tr class='tblrow2'>";
@@ -42,7 +40,6 @@
       table += "<td class='il_no_style'><button>Download</button></td>";
       table += "</tr>";
     }
-    //table += "</tbody>";
     document.getElementById("table_body").innerHTML = table;
   }
 </script>

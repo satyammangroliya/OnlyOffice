@@ -5,7 +5,6 @@ use srag\DIC\OnlyOffice\DIC\DICInterface;
 use srag\DIC\OnlyOffice\DICStatic;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
-use srag\Plugins\OnlyOffice\UI\FileVersionRenderer;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
 
 /**
@@ -105,7 +104,6 @@ class xonoContentGUI extends xonoAbstractGUI
     protected function showVersions()
     {
         $fileVersions = $this->storage_service->getAllVersions($this->file_id);
-        $size = sizeof($fileVersions);
         $fvJSON = '[';
         $counter = 1;
         foreach ($fileVersions as $fv) {
@@ -116,18 +114,12 @@ class xonoContentGUI extends xonoAbstractGUI
             $fvJSON .= '"fileVersion": '. $fv->getVersion(). ', "createdAt": "DATUM", "editorId": '. $fv->getUserId() . '}';
         }
         $fvJSON .= ']';
-
-        //$fileVersionsString = '';
-        //$r = new FileVersionRenderer($this->dic, $this->file_id,  $fvArray);
-        //$content = $r->renderUglyTable();
-        //$content = $r->renderReactTable();
         $tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
         $tpl->setVariable('TBL_TITLE', "Document History");
         $tpl->setVariable('TBL_DATA', $fvJSON);
 
         $content = $tpl->get();
         $this->dic->ui()->mainTemplate()->setContent($content);
-
     }
 
     /**

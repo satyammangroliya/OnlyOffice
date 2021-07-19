@@ -5,8 +5,8 @@ namespace srag\DIC\OnlyOffice;
 use ilLogLevel;
 use ilPlugin;
 use srag\DIC\OnlyOffice\DIC\DICInterface;
-use srag\DIC\OnlyOffice\DIC\Implementation\ILIAS54DIC;
 use srag\DIC\OnlyOffice\DIC\Implementation\ILIAS60DIC;
+use srag\DIC\OnlyOffice\DIC\Implementation\ILIAS70DIC;
 use srag\DIC\OnlyOffice\Exception\DICException;
 use srag\DIC\OnlyOffice\Output\Output;
 use srag\DIC\OnlyOffice\Output\OutputInterface;
@@ -52,37 +52,22 @@ final class DICStatic implements DICStaticInterface
 
     /**
      * @inheritDoc
-     *
-     * @deprecated
-     */
-    public static function clearCache()/*: void*/
-    {
-        self::$dic = null;
-        self::$output = null;
-        self::$plugins = [];
-        self::$version = null;
-    }
-
-
-    /**
-     * @inheritDoc
      */
     public static function dic() : DICInterface
     {
         if (self::$dic === null) {
             switch (true) {
-                case (self::version()->isLower(VersionInterface::ILIAS_VERSION_5_4)):
-                    throw new DICException("DIC not supports ILIAS " . self::version()->getILIASVersion() . " anymore!");
-                    break;
-
                 case (self::version()->isLower(VersionInterface::ILIAS_VERSION_6)):
+                    throw new DICException("DIC not supports ILIAS " . self::version()->getILIASVersion() . " anymore!");
+
+                case (self::version()->isLower(VersionInterface::ILIAS_VERSION_7)):
                     global $DIC;
-                    self::$dic = new ILIAS54DIC($DIC);
+                    self::$dic = new ILIAS60DIC($DIC);
                     break;
 
                 default:
                     global $DIC;
-                    self::$dic = new ILIAS60DIC($DIC);
+                    self::$dic = new ILIAS70DIC($DIC);
                     break;
             }
         }

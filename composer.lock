@@ -4,94 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be96fb353bc68c9155249d0428cbdee5",
+    "content-hash": "d95ffc2b178118a5fe9957d507d7d43f",
     "packages": [
         {
-            "name": "phpv8/v8js-stubs",
-            "version": "dev-dev-composer",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/pfisteso/v8js-stubs.git",
-                "reference": "559f7f9a44271ec32f51c1bd51efa527748f172f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/pfisteso/v8js-stubs/zipball/559f7f9a44271ec32f51c1bd51efa527748f172f",
-                "reference": "559f7f9a44271ec32f51c1bd51efa527748f172f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "V8JsStubs\\": "src/"
-                },
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "IDE stubs for V8Js PHP extension",
-            "support": {
-                "source": "https://github.com/pfisteso/v8js-stubs/tree/dev-composer"
-            },
-            "time": "2021-07-15T14:19:38+00:00"
-        },
-        {
-            "name": "reactjs/react-php-v8js",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactjs/react-php-v8js.git",
-                "reference": "5691f726b6e2ba07ccc566b6eff876ec01f4ba51"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactjs/react-php-v8js/zipball/5691f726b6e2ba07ccc566b6eff876ec01f4ba51",
-                "reference": "5691f726b6e2ba07ccc566b6eff876ec01f4ba51",
-                "shasum": ""
-            },
-            "require": {
-                "ext-v8js": ">=0.1.3"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "ReactJS.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "PHP library that renders React components on the server",
-            "support": {
-                "issues": "https://github.com/reactjs/react-php-v8js/issues",
-                "source": "https://github.com/reactjs/react-php-v8js/tree/master"
-            },
-            "abandoned": true,
-            "time": "2016-01-04T18:56:21+00:00"
-        },
-        {
             "name": "srag/activerecordconfig",
-            "version": "0.20.7",
+            "version": "0.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluxapps/ActiveRecordConfig.git",
-                "reference": "e05c313e7792d0ce125a0ef854c4c15b5ca9d95d"
+                "reference": "71e6dd2720b892744d71c1e7055a0ffbd2db94f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluxapps/ActiveRecordConfig/zipball/e05c313e7792d0ce125a0ef854c4c15b5ca9d95d",
-                "reference": "e05c313e7792d0ce125a0ef854c4c15b5ca9d95d",
+                "url": "https://api.github.com/repos/fluxapps/ActiveRecordConfig/zipball/71e6dd2720b892744d71c1e7055a0ffbd2db94f7",
+                "reference": "71e6dd2720b892744d71c1e7055a0ffbd2db94f7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0",
+                "php": ">=7.2",
                 "srag/custominputguis": ">=0.1.0",
                 "srag/dic": ">=0.1.0"
             },
@@ -101,8 +31,8 @@
             "type": "library",
             "extra": {
                 "ilias_plugin": {
-                    "ilias_min_version": "5.4.0",
-                    "ilias_max_version": "6.999"
+                    "ilias_min_version": "6.0",
+                    "ilias_max_version": "7.999"
                 },
                 "generate_plugin_readme_template": "ILIAS_LIBRARY",
                 "long_description_template": "src/LONG_DESCRIPTION.md"
@@ -132,26 +62,26 @@
                 "config"
             ],
             "support": {
-                "source": "https://github.com/fluxapps/ActiveRecordConfig/tree/v0.20.7"
+                "source": "https://github.com/fluxapps/ActiveRecordConfig/tree/v0.21.0"
             },
-            "time": "2021-06-28T07:02:32+00:00"
+            "time": "2021-07-19T09:11:11+00:00"
         },
         {
             "name": "srag/custominputguis",
-            "version": "0.42.9",
+            "version": "0.43.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluxapps/CustomInputGUIs.git",
-                "reference": "14967d168c8f62e20e6f0b46b03109063c912541"
+                "reference": "fe1000f75dce39b4423eb56a47a164ac899e29c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluxapps/CustomInputGUIs/zipball/14967d168c8f62e20e6f0b46b03109063c912541",
-                "reference": "14967d168c8f62e20e6f0b46b03109063c912541",
+                "url": "https://api.github.com/repos/fluxapps/CustomInputGUIs/zipball/fe1000f75dce39b4423eb56a47a164ac899e29c1",
+                "reference": "fe1000f75dce39b4423eb56a47a164ac899e29c1",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0",
+                "php": ">=7.2",
                 "srag/dic": ">=0.1.0"
             },
             "require-dev": {
@@ -160,8 +90,8 @@
             "type": "library",
             "extra": {
                 "ilias_plugin": {
-                    "ilias_min_version": "5.4.0",
-                    "ilias_max_version": "6.999"
+                    "ilias_min_version": "6.0",
+                    "ilias_max_version": "7.999"
                 },
                 "generate_plugin_readme_template": "ILIAS_LIBRARY",
                 "long_description_template": "src/LONG_DESCRIPTION.md"
@@ -199,26 +129,26 @@
                 "table"
             ],
             "support": {
-                "source": "https://github.com/fluxapps/CustomInputGUIs/tree/v0.42.9"
+                "source": "https://github.com/fluxapps/CustomInputGUIs/tree/v0.43.0"
             },
-            "time": "2021-06-28T12:12:20+00:00"
+            "time": "2021-07-19T09:11:06+00:00"
         },
         {
             "name": "srag/dic",
-            "version": "0.32.4",
+            "version": "0.33.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluxapps/DIC.git",
-                "reference": "92b966978ca7327502a65fc9ede718b2f3126bda"
+                "reference": "d4364ca2ae7445782ea2a45b80a87f285ac95984"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluxapps/DIC/zipball/92b966978ca7327502a65fc9ede718b2f3126bda",
-                "reference": "92b966978ca7327502a65fc9ede718b2f3126bda",
+                "url": "https://api.github.com/repos/fluxapps/DIC/zipball/d4364ca2ae7445782ea2a45b80a87f285ac95984",
+                "reference": "d4364ca2ae7445782ea2a45b80a87f285ac95984",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0"
+                "php": ">=7.2"
             },
             "require-dev": {
                 "srag/generateplugininfoshelper": ">=0.1.0"
@@ -226,8 +156,8 @@
             "type": "library",
             "extra": {
                 "ilias_plugin": {
-                    "ilias_min_version": "5.4.0",
-                    "ilias_max_version": "6.999"
+                    "ilias_min_version": "6.0",
+                    "ilias_max_version": "7.999"
                 },
                 "generate_plugin_readme_template": "ILIAS_LIBRARY",
                 "long_description_template": "src/LONG_DESCRIPTION.md"
@@ -258,26 +188,26 @@
                 "trait"
             ],
             "support": {
-                "source": "https://github.com/fluxapps/DIC/tree/v0.32.4"
+                "source": "https://github.com/fluxapps/DIC/tree/v0.33.0"
             },
-            "time": "2021-06-28T07:03:18+00:00"
+            "time": "2021-07-19T09:10:40+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
-            "version": "0.15.4",
+            "version": "0.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluxapps/LibrariesNamespaceChanger.git",
-                "reference": "41331e03a86ab4f4ae650df70ef2e4cbc5fc4cf9"
+                "reference": "d97481c40195feebd9c52cd17f3baa30309be5e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluxapps/LibrariesNamespaceChanger/zipball/41331e03a86ab4f4ae650df70ef2e4cbc5fc4cf9",
-                "reference": "41331e03a86ab4f4ae650df70ef2e4cbc5fc4cf9",
+                "url": "https://api.github.com/repos/fluxapps/LibrariesNamespaceChanger/zipball/d97481c40195feebd9c52cd17f3baa30309be5e7",
+                "reference": "d97481c40195feebd9c52cd17f3baa30309be5e7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0"
+                "php": ">=7.2"
             },
             "require-dev": {
                 "srag/generateplugininfoshelper": ">=0.1.0"
@@ -312,26 +242,26 @@
                 "namespace"
             ],
             "support": {
-                "source": "https://github.com/fluxapps/LibrariesNamespaceChanger/tree/v0.15.4"
+                "source": "https://github.com/fluxapps/LibrariesNamespaceChanger/tree/v0.16.0"
             },
-            "time": "2021-06-28T07:04:17+00:00"
+            "time": "2021-07-19T09:09:05+00:00"
         },
         {
             "name": "srag/librarylanguageinstaller",
-            "version": "1.1.6",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluxapps/LibraryLanguageInstaller.git",
-                "reference": "cfc71ba8cd77ab858d450b69acce37e667aaca5f"
+                "reference": "ac09865547dc419592696e19d7da147ef3459f30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluxapps/LibraryLanguageInstaller/zipball/cfc71ba8cd77ab858d450b69acce37e667aaca5f",
-                "reference": "cfc71ba8cd77ab858d450b69acce37e667aaca5f",
+                "url": "https://api.github.com/repos/fluxapps/LibraryLanguageInstaller/zipball/ac09865547dc419592696e19d7da147ef3459f30",
+                "reference": "ac09865547dc419592696e19d7da147ef3459f30",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0",
+                "php": ">=7.2",
                 "srag/dic": ">=0.1.0"
             },
             "require-dev": {
@@ -340,8 +270,8 @@
             "type": "library",
             "extra": {
                 "ilias_plugin": {
-                    "ilias_min_version": "5.4.0",
-                    "ilias_max_version": "6.999"
+                    "ilias_min_version": "6.0",
+                    "ilias_max_version": "7.999"
                 },
                 "generate_plugin_readme_template": "ILIAS_LIBRARY",
                 "long_description_template": "src/LONG_DESCRIPTION.md"
@@ -372,26 +302,26 @@
                 "library"
             ],
             "support": {
-                "source": "https://github.com/fluxapps/LibraryLanguageInstaller/tree/v1.1.6"
+                "source": "https://github.com/fluxapps/LibraryLanguageInstaller/tree/v1.2.0"
             },
-            "time": "2021-06-28T07:04:30+00:00"
+            "time": "2021-07-19T09:08:31+00:00"
         },
         {
             "name": "srag/removeplugindataconfirm",
-            "version": "0.7.8",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluxapps/RemovePluginDataConfirm.git",
-                "reference": "096515eba3ad0e3d339b72eca382c71ce743da3e"
+                "reference": "7f0d7df5b9672446532aa065ced9709d7218bf78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluxapps/RemovePluginDataConfirm/zipball/096515eba3ad0e3d339b72eca382c71ce743da3e",
-                "reference": "096515eba3ad0e3d339b72eca382c71ce743da3e",
+                "url": "https://api.github.com/repos/fluxapps/RemovePluginDataConfirm/zipball/7f0d7df5b9672446532aa065ced9709d7218bf78",
+                "reference": "7f0d7df5b9672446532aa065ced9709d7218bf78",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0",
+                "php": ">=7.2",
                 "srag/dic": ">=0.1.0",
                 "srag/librarylanguageinstaller": ">=0.1.0"
             },
@@ -401,8 +331,8 @@
             "type": "library",
             "extra": {
                 "ilias_plugin": {
-                    "ilias_min_version": "5.4.0",
-                    "ilias_max_version": "6.999"
+                    "ilias_min_version": "6.0",
+                    "ilias_max_version": "7.999"
                 },
                 "generate_plugin_readme_template": "ILIAS_LIBRARY",
                 "long_description_template": "src/LONG_DESCRIPTION.md"
@@ -437,17 +367,15 @@
                 "uninstall"
             ],
             "support": {
-                "source": "https://github.com/fluxapps/RemovePluginDataConfirm/tree/v0.7.8"
+                "source": "https://github.com/fluxapps/RemovePluginDataConfirm/tree/v0.8.0"
             },
-            "time": "2021-06-28T07:04:48+00:00"
+            "time": "2021-07-19T09:06:49+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "phpv8/v8js-stubs": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
