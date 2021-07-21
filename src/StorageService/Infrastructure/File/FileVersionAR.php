@@ -198,7 +198,7 @@ class FileVersionAR extends ActiveRecord
             case 'file_uuid':
                 return new UUID($field_value);
             case 'created_at':
-                return new ilDateTime($field_value, IL_CAL_FKT_DATE);
+                return new ilDateTime($field_value, IL_CAL_DATE);
             default:
                 return parent::wakeUp($field_name, $field_value);
         }

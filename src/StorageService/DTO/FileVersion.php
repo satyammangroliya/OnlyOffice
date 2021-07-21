@@ -10,7 +10,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
  * @package srag\Plugins\OnlyOffice\StorageService\DTO
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class FileVersion
+class FileVersion implements \JsonSerializable
 {
 
     const FIRST_VERSION = 1;
@@ -130,4 +130,16 @@ class FileVersion
     {
         $this->file_uuid = $uuid;
     }
+
+    public function jsonSerialize()
+    {
+        return [
+            'version' => $this->version,
+            'createdAt' => $this->created_at->get(2),
+            'userId' => $this->user_id,
+            'url' => $this->url,
+            'uuid' => $this->file_uuid->asString()
+        ];
+    }
+
 }

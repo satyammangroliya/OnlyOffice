@@ -104,19 +104,11 @@ class xonoContentGUI extends xonoAbstractGUI
     protected function showVersions()
     {
         $fileVersions = $this->storage_service->getAllVersions($this->file_id);
-        $fvJSON = '[';
-        $counter = 1;
-        foreach ($fileVersions as $fv) {
-            if ($counter != 1)
-                $fvJSON .= ', ';
-            $counter++;
-            $fvJSON .= '{';
-            $fvJSON .= '"fileVersion": '. $fv->getVersion(). ', "createdAt": "DATUM", "editorId": '. $fv->getUserId() . '}';
-        }
-        $fvJSON .= ']';
+        $json = json_encode($fileVersions);
+
         $tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
         $tpl->setVariable('TBL_TITLE', "Document History");
-        $tpl->setVariable('TBL_DATA', $fvJSON);
+        $tpl->setVariable('TBL_DATA', $json);
 
         $content = $tpl->get();
         $this->dic->ui()->mainTemplate()->setContent($content);
