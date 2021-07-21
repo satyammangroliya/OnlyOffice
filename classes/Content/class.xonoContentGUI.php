@@ -6,6 +6,7 @@ use srag\DIC\OnlyOffice\DICStatic;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
+use srag\Plugins\OnlyOffice\StorageService\DTO\File;
 
 /**
  * Class xonoContentGUI
@@ -18,27 +19,41 @@ class xonoContentGUI extends xonoAbstractGUI
     /**
      * @var ilOnlyOfficePlugin
      */
-    protected $plugin;
+    protected
+        $plugin;
     /**
      * @var StorageService
      */
-    protected $storage_service;
+    protected
+        $storage_service;
     /**
      * @var int
      */
-    protected $file_id;
+    protected
+        $file_id;
 
     const CMD_STANDARD = 'index';
     const CMD_SHOW_VERSIONS = 'showVersions';
+    const CMD_EDIT = 'edit';
 
-    public function __construct(\ILIAS\DI\Container $dic, ilOnlyOfficePlugin $plugin, int $object_id)
-    {
+    // ToDo: Set correct values
+    const BASE_URL = 'http://localhost:8080';
+    const CALLBACK_URL = 'http://localhost:8080/callback';
+    const ONLYOFFICE_URL = 'http://localhost:3000/';
+
+    public
+    function __construct(
+        \ILIAS\DI\Container $dic,
+        ilOnlyOfficePlugin $plugin,
+        int $object_id
+    ) {
         parent::__construct($dic, $plugin);
         $this->file_id = $object_id;
         $this->afterConstructor();
     }
 
-    protected function afterConstructor()/*: void*/
+    protected
+    function afterConstructor()/*: void*/
     {
 
         $this->storage_service = new StorageService(
@@ -48,7 +63,9 @@ class xonoContentGUI extends xonoAbstractGUI
         );
     }
 
-    public final function getType() : string
+    public
+
+    final function getType() : string
     {
         return ilOnlyOfficePlugin::PLUGIN_ID;
     }
@@ -67,40 +84,6 @@ class xonoContentGUI extends xonoAbstractGUI
         }
     }
 
-    /**
-     *
-     */
-    protected function index()
-    {
-        $tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
-        $tpl->setVariable('SCRIPT_SRC', 'http://localhost/web-apps/apps/api/documents/api.js');
-        //$config = new stdClass();
-        //$config->document =
-        $tpl_get = $tpl->get();
-        $this->dic->ui()->mainTemplate()->setContent($tpl_get);
-        $this->dic->ui()->mainTemplate()->printToStdOut();
-        '    config = {
-        "document": {
-            "fileType": "docx",
-            "key": "Khirz6zTPdfd7",
-            "title": "Example Document Title.docx",
-            "url": "https://example.com/url-to-example-document.docx"
-        },
-        "documentType": "text",
-        "editorConfig": {
-            "callbackUrl": "https://example.com/url-to-callback.ashx",
-             "user": {
-                "id": "F89d8069ba2b",
-                "name": "Kate Cage"
-            } 
-        },
-        ,
-    "editorConfig": {
-
-    }
-    };';
-    }
-
     protected function showVersions()
     {
         $fileVersions = $this->storage_service->getAllVersions($this->file_id);
@@ -114,46 +97,30 @@ class xonoContentGUI extends xonoAbstractGUI
         $this->dic->ui()->mainTemplate()->setContent($content);
     }
 
-    /**
-     * Build config.json to pass to the editor.
-     * TODO: Verify whether this works
-     * @return string
-     */
-    protected function configBuilder() : string
+    protected function edit()
     {
-        $file_version = $this->storage_service->getFileVersion($this->file_id);
-        $file = $this->storage_service->getFile($file_version->getFileUuid());
+        $file = $this->storage_service->getFile($this->file_id);
+        $file_version = $this->storage_service->getLatestVersions($file->getUuid());
+        $arrayWithoutToken = $this->buildJSONArray($file, $file_version);
+        $token = $this->jwtEncode($arrayWithoutToken);
+        $arrayWithToken = $this->buildJSONArray($file, $file_version, $token);
+        $configJson = json_encode($arrayWithToken);
 
-        // Define parameters for field "document"
-        $fileType = $file->getFileType();
-        $key = $file->getUuid();
-        $title = $file->getTitle();
-        $url = $file_version->getUrl();
+        $tpl = $this->plugin->getTemplate('html/tpl.editor.html');
+        $tpl->setVariable('SCRIPT_SRC', self::ONLYOFFICE_URL . '/web-apps/apps/api/documents/api.js');
+        $tpl->setVariable('CONFIG', $configJson);
+        $content = $tpl->get();
+        //$content = '<h1> Edit file number ' . $this->file_id . '</h1>';
+        $this->dic->ui()->mainTemplate()->setContent($content);
 
-        // Define parameters for field "editor"
-        //$callbackURL =
-        $mode = "edit";
-        if (!ilObjOnlyOfficeAccess::hasWriteAccess()) {
-            $mode = "view";
-        }
-        $user_id = $this->dic->user()->getId();
-        $name = $this->dic->user()->getFirstname() . $this->dic->user()->getLastname();
+    }
 
-        $config = '{
-            "document": {
-                "fileType": ' . $fileType . ',
-                "key": ' . $key . ',
-                "title": ' . $title . ',
-                "url": ' . $url . ',
-                }
-            "editorConfig: {
-                "mode": ' . $mode . ',
-                "user": {
-                    "id": ' . $user_id . ',
-                    "name": ' . $name . '}
-                }
-            }';
-        return $config;
+    protected function getWACUrl(string $url)
+    {
+        ilWACSignedPath::setTokenMaxLifetimeInSeconds(ilWACSignedPath::MAX_LIFETIME);
+        $file_path = ilWACSignedPath::signFile(ilUtil::getWebspaceDir() . $url);
+        $file_path .= '&' . ilWebAccessChecker::DISPOSITION . '=' . ilFileDelivery::DISP_ATTACHMENT;
+        return $file_path;
 
     }
 
@@ -166,16 +133,96 @@ class xonoContentGUI extends xonoAbstractGUI
         return DICStatic::dic();
     }
 
-    protected function buildJSONforFileVesion(FileVersion $fv) : string
+    protected function buildJSONArray(File $f, FileVersion $fv, string $token = '') : array
     {
-        $json = '{
-        Version: ' . $fv->getVersion() . ',
-        CreatedAt: ' . $fv->getCreatedAt() . ',
-        UserID: ' . $fv->getUserId() . ',
-        URL: ' . $fv->getUrl() . '
-        }';
-        // 'UUID ' . $fv->getFileUuid() .'
-        return $json;
+/*        if ($token == '') {
+            return array("documentType" => "word",
+                         "document" =>
+                             array("filetype" => $f->getFileType(),
+                                   "key" => $f->getUuid()->asString(),
+                                   "title" => $f->getTitle(),
+                                   "url" => self::BASE_URL . $this->getWACUrl($fv->getUrl())
+                             ),
+                         "editorConfig" => array("callbackUrl" => self::CALLBACK_URL . $fv->getUrl()),
+                         "user" => array(
+                             "id" => $this->dic->user()->getId(),
+                             "name" => $this->dic->user()->getPublicName()
+                         )
+            );
+        } else {*/
+            return array("documentType" => "word",
+                         "token" => $token,
+                         "document" =>
+                             array("filetype" => $f->getFileType(),
+                                   "key" => $f->getUuid()->asString(),
+                                   "title" => $f->getTitle(),
+                                   "url" => self::BASE_URL . $this->getWACUrl($fv->getUrl())
+                             ),
+                         "editorConfig" => array("callbackUrl" => self::CALLBACK_URL . $fv->getUrl(),
+                                                 "user" => array(
+                                                     "id" => $this->dic->user()->getId(),
+                                                     "name" => $this->dic->user()->getPublicName()
+                                                 )
+                         ),
+            );
 
+        //}
+
+    }
+
+    protected function jwtEncode($payload)
+    {
+        $header = [
+            "alg" => "HS256",
+            "typ" => "JWT"
+        ];
+        $encHeader = $this->base64UrlEncode(json_encode($header));
+        $encPayload = $this->base64UrlEncode(json_encode($payload));
+        $hash = $this->base64UrlEncode($this->calculateHash($encHeader, $encPayload));
+
+        return "$encHeader.$encPayload.$hash";
+    }
+
+    function jwtDecode($token)
+    {
+        if (!$this->isJwtEnabled()) {
+            return "";
+        }
+
+        $split = explode(".", $token);
+        if (count($split) != 3) {
+            return "";
+        }
+
+        $hash = $this->base64UrlEncode($this->calculateHash($split[0], $split[1]));
+
+        if (strcmp($hash, $split[2]) != 0) {
+            return "";
+        }
+        return $this->base64UrlDecode($split[1]);
+    }
+
+    protected function calculateHash($encHeader, $encPayload)
+    {
+        return hash_hmac("sha256", "$encHeader.$encPayload", "secret", true);
+    }
+
+    protected function base64UrlEncode($str)
+    {
+        return str_replace("/", "_", str_replace("+", "-", trim(base64_encode($str), "=")));
+    }
+
+    protected function base64UrlDecode($payload)
+    {
+        $b64 = str_replace("_", "/", str_replace("-", "+", $payload));
+        switch (strlen($b64) % 4) {
+            case 2:
+                $b64 = $b64 . "==";
+                break;
+            case 3:
+                $b64 = $b64 . "=";
+                break;
+        }
+        return base64_decode($b64);
     }
 }

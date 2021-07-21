@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.33.2]
+- Use renderAsync in async ilCtrl contexts
+
+## [0.33.1]
+- Not use GeneratePluginReadme
+
 ## [0.33.0]
 - ILIAS 7 support
   - imagePathResolver

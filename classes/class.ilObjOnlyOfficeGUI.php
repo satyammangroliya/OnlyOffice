@@ -100,12 +100,14 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                         }
 
                         self::dic()->ctrl()->redirectByClass(xonoContentGUI::class, "showVersions");
-                        // ToDo: getID gibt 304, müsste 1 sein
 
                         //$this->{$cmd}();
                         break;
 
                     case self::CMD_MANAGE_CONTENTS:
+                        self::dic()->ctrl()->redirectByClass(xonoContentGUI::class, "edit");
+
+
                     case self::CMD_SETTINGS:
                     case self::CMD_SETTINGS_STORE:
                         // Write commands
