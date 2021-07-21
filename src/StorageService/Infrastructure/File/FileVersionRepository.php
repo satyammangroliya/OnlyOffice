@@ -26,4 +26,6 @@ interface FileVersionRepository
     public function getByObjectID(int $object_id) : FileVersion;
 
     public function getAllVersions(UUID $file_uuid) : array;
+
+    public function getLatestVersion(UUID $file_uuid): FileVersion;
 }

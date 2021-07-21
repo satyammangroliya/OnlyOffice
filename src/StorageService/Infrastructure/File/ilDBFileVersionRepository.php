@@ -69,8 +69,9 @@ class ilDBFileVersionRepository implements FileVersionRepository
     public function getAllVersions(UUID $file_uuid) : array
     {
         /** @var array $all_file_version_ar */
-        $all_file_version_ar = FileVersionAR::where(['file_uuid' => $file_uuid->asString()])->orderBy('version',
-            'desc')->get();
+        $all_file_version_ar = FileVersionAR::where(['file_uuid' => $file_uuid->asString()])
+                                            ->orderBy('version', 'desc')
+                                            ->get();
         $length = count($all_file_version_ar);
         $result = array();
         foreach ($all_file_version_ar as $fileVersionAr) {
@@ -78,6 +79,15 @@ class ilDBFileVersionRepository implements FileVersionRepository
             array_push($result, $fileVersion);
         }
         return $result;
+    }
+
+    public function getLatestVersion(UUID $file_uuid) : FileVersion
+    {
+        /** @var FileVersionAR $latest_file_version_ar */
+        $latest_file_version_ar = FileVersionAR::where(['file_uuid' => $file_uuid->asString()])
+                                               ->orderBy('version', 'desc')
+                                               ->first();
+        return $this->buildFileVersionFromAR($latest_file_version_ar);
     }
 
     /**
@@ -93,4 +103,6 @@ class ilDBFileVersionRepository implements FileVersionRepository
         $file_uuid = $ar->getFileUuid();
         return new FileVersion($version, $created_at, $user_id, $url, $file_uuid);
     }
+
+
 }

@@ -88,9 +88,13 @@ class StorageService
         return $this->file_version_repository->getAllVersions($file->getFileUuid());
     }
 
-    public function getFileVersion(int $file_id) : FileVersion
+    public function getFile(int $file_id) : File
     {
-        $fileVersion = $this->file_version_repository->getByObjectID($file_id);
+        return $this->file_repository->getFile($file_id);
+    }
+
+    public function getLatestVersions(UUID $file_uuid): FileVersion {
+        return $this->file_version_repository->getLatestVersion($file_uuid);
     }
 
 
