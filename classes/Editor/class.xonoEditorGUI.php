@@ -34,7 +34,6 @@ class xonoEditorGUI extends xonoAbstractGUI
     protected $file_id;
 
     const CMD_EDIT = "edit";
-    const CMD_SAVE_CHANGES = "saveChanges";
     const CMD_STANDARD = "edit";
 
     // TODO: Set correct values
@@ -96,16 +95,11 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     }
 
-    protected function saveChanges() {
-        $file_id = $this->dic->ctrl()->getParameterArray($this)['file_id'];
-        $file_uuid = $this->dic->ctrl()->getParameterArray($this)['file_uuid'];
-
-    }
-
     protected function generateCallbackUrl(UUID $file_uuid, int $file_id) :string
     {
         $this->dic->ctrl()->setParameterByClass(ilObjOnlyOfficeGUI::class, "uuid", $file_uuid->asString());
-        $this->dic->ctrl()->setParameter($this, ilObjOnlyOfficeGUI::class, $file_id);
+        $this->dic->ctrl()->setParameterByClass(ilObjOnlyOfficeGUI::class, "file_id", $file_id);
+        $this->dic->ctrl()->setParameterByClass(ilObjOnlyOfficeGUI::class, "editor_id", $this->dic->user()->getId());
         $path = $this->dic->ctrl()->getLinkTargetByClass(ilObjOnlyOfficeGUI::class, ilObjOnlyOfficeGUI::CMD_SAVE_CHANGES);
         return $path;
     }

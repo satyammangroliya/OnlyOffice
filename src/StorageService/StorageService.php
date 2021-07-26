@@ -72,19 +72,20 @@ class StorageService
             $path);
 
         $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
-        $file = new File(
-            $new_file_id,
-            $obj_id,
-            $upload_result->getName(),
-            $upload_result->getMimeType(),
-            [$file_version]
-        );
+        //ToDo: getMimeType() does not deliver correct data type
+        $file = new File($new_file_id, $obj_id, $upload_result->getName(), $upload_result->getMimeType());
         return $file;
     }
 
-    public function saveNewFileVersion() : File {
-
+    public function updateFileFromUpload(UploadResult $uploadResult, int $file_id, string $uuid_string) : FileVersion {
+        $uuid = new UUID($uuid_string);
+        $path = $this->file_system_service->storeUpload($uploadResult, $file_id, $uuid_string);
+        $created_at = new ilDateTime(time(), IL_CAL_UNIX);
+        $version = $this->file_version_repository->create($uuid, $this->dic->user()->getId(), $created_at, $path);
+        $fileVersion = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $uuid);
+        return $fileVersion;
     }
+
 
     public function getAllVersions(int $object_id) : array
     {
