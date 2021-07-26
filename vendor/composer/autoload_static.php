@@ -132,6 +132,7 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
         'srag\\Plugins\\OnlyOffice\\Config\\ConfigFormGUI' => __DIR__ . '/../..' . '/src/Config/ConfigFormGUI.php',
         'srag\\Plugins\\OnlyOffice\\Config\\Factory' => __DIR__ . '/../..' . '/src/Config/Factory.php',
         'srag\\Plugins\\OnlyOffice\\Config\\Repository' => __DIR__ . '/../..' . '/src/Config/Repository.php',
+        'srag\\Plugins\\OnlyOffice\\CryptoService\\JwtService' => __DIR__ . '/../..' . '/src/CryptoService/JwtService.php',
         'srag\\Plugins\\OnlyOffice\\ObjectSettings\\Factory' => __DIR__ . '/../..' . '/src/ObjectSettings/Factory.php',
         'srag\\Plugins\\OnlyOffice\\ObjectSettings\\ObjectSettings' => __DIR__ . '/../..' . '/src/ObjectSettings/ObjectSettings.php',
         'srag\\Plugins\\OnlyOffice\\ObjectSettings\\ObjectSettingsFormGUI' => __DIR__ . '/../..' . '/src/ObjectSettings/ObjectSettingsFormGUI.php',
@@ -155,6 +156,7 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
         'srag\\RemovePluginDataConfirm\\OnlyOffice\\RepositoryObjectPluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/RepositoryObjectPluginUninstallTrait.php',
         'xonoAbstractGUI' => __DIR__ . '/../..' . '/classes/xonoAbstractGUI.php',
         'xonoContentGUI' => __DIR__ . '/../..' . '/classes/Content/class.xonoContentGUI.php',
+        'xonoEditorGUI' => __DIR__ . '/../..' . '/classes/Editor/class.xonoEditorGUI.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

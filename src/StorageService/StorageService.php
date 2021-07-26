@@ -82,6 +82,10 @@ class StorageService
         return $file;
     }
 
+    public function saveNewFileVersion() : File {
+
+    }
+
     public function getAllVersions(int $object_id) : array
     {
         $file = $this->file_repository->getFile($object_id);

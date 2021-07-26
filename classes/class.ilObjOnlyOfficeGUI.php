@@ -34,6 +34,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     const CMD_SETTINGS = "settings";
     const CMD_SETTINGS_STORE = "settingsStore";
     const CMD_SHOW_CONTENTS = "showContents";
+    const CMD_SAVE_CHANGES = "saveChanges";
     const CMD_SAVE = 'save';
     const CMD_CANCEL = 'cancel';
     const LANG_MODULE_OBJECT = "object";
@@ -91,6 +92,10 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                 $xonoContentGUI = new xonoContentGUI(self::dic()->dic(), $this->plugin, $this->object_id);
                 self::dic()->ctrl()->forwardCommand($xonoContentGUI);
                 break;
+            case strtolower(xonoEditorGUI::class):
+                $xonoEditorGUI = new xonoEditorGUI(self::dic()->dic(), $this->plugin, $this->obj_id);
+                self::dic()->ctrl()->forwardCommand($xonoEditorGUI);
+                break;
             default:
                 switch ($cmd) {
                     case self::CMD_SHOW_CONTENTS:
@@ -105,7 +110,11 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                         break;
 
                     case self::CMD_MANAGE_CONTENTS:
-                        self::dic()->ctrl()->redirectByClass(xonoContentGUI::class, "edit");
+                        self::dic()->ctrl()->redirectByClass(xonoEditorGUI::class, xonoEditorGUI::CMD_EDIT);
+                        break;
+                    case self::CMD_SAVE_CHANGES:
+                        self::dic()->ctrl()->redirectByClass(xonoEditorGUI::class, xonoEditorGUI::CMD_SAVE_CHANGES);
+
 
 
                     case self::CMD_SETTINGS:

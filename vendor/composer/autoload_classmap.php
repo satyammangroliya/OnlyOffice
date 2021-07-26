@@ -87,6 +87,7 @@ return array(
     'srag\\Plugins\\OnlyOffice\\Config\\ConfigFormGUI' => $baseDir . '/src/Config/ConfigFormGUI.php',
     'srag\\Plugins\\OnlyOffice\\Config\\Factory' => $baseDir . '/src/Config/Factory.php',
     'srag\\Plugins\\OnlyOffice\\Config\\Repository' => $baseDir . '/src/Config/Repository.php',
+    'srag\\Plugins\\OnlyOffice\\CryptoService\\JwtService' => $baseDir . '/src/CryptoService/JwtService.php',
     'srag\\Plugins\\OnlyOffice\\ObjectSettings\\Factory' => $baseDir . '/src/ObjectSettings/Factory.php',
     'srag\\Plugins\\OnlyOffice\\ObjectSettings\\ObjectSettings' => $baseDir . '/src/ObjectSettings/ObjectSettings.php',
     'srag\\Plugins\\OnlyOffice\\ObjectSettings\\ObjectSettingsFormGUI' => $baseDir . '/src/ObjectSettings/ObjectSettingsFormGUI.php',
@@ -110,4 +111,5 @@ return array(
     'srag\\RemovePluginDataConfirm\\OnlyOffice\\RepositoryObjectPluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/RepositoryObjectPluginUninstallTrait.php',
     'xonoAbstractGUI' => $baseDir . '/classes/xonoAbstractGUI.php',
     'xonoContentGUI' => $baseDir . '/classes/Content/class.xonoContentGUI.php',
+    'xonoEditorGUI' => $baseDir . '/classes/Editor/class.xonoEditorGUI.php',
 );
