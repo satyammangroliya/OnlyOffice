@@ -40,9 +40,9 @@ class StorageService
 
     /**
      * StorageService constructor.
-     * @param Container             $dic
+     * @param Container $dic
      * @param FileVersionRepository $file_version_repository
-     * @param FileRepository        $file_repository
+     * @param FileRepository $file_repository
      */
     public function __construct(
         Container $dic,
@@ -77,15 +77,20 @@ class StorageService
         return $file;
     }
 
-    public function updateFileFromUpload(UploadResult $uploadResult, int $file_id, string $uuid_string) : FileVersion {
+    public function updateFileFromUpload(
+        UploadResult $uploadResult,
+        int $file_id,
+        string $uuid_string,
+        int $editor_id
+    ) : FileVersion {
         $uuid = new UUID($uuid_string);
-        $path = $this->file_system_service->storeUpload($uploadResult, $file_id, $uuid_string);
+        $version = $this->file_version_repository->getLatestVersion($uuid)->getVersion() + 1;
+        $path = $this->file_system_service->storeUpload($uploadResult, $file_id, $uuid_string, $version);
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
-        $version = $this->file_version_repository->create($uuid, $this->dic->user()->getId(), $created_at, $path);
-        $fileVersion = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $uuid);
+        $version = $this->file_version_repository->create($uuid, $editor_id, $created_at, $path);
+        $fileVersion = new FileVersion($version, $created_at, $editor_id, $path, $uuid);
         return $fileVersion;
     }
-
 
     public function getAllVersions(int $object_id) : array
     {
@@ -98,9 +103,9 @@ class StorageService
         return $this->file_repository->getFile($file_id);
     }
 
-    public function getLatestVersions(UUID $file_uuid): FileVersion {
+    public function getLatestVersions(UUID $file_uuid) : FileVersion
+    {
         return $this->file_version_repository->getLatestVersion($file_uuid);
     }
-
 
 }

@@ -34,6 +34,7 @@ class xonoEditorGUI extends xonoAbstractGUI
     protected $file_id;
 
     const CMD_EDIT = "edit";
+    const CMD_SAVE = "save";
     const CMD_STANDARD = "edit";
 
     // TODO: Set correct values
@@ -82,10 +83,10 @@ class xonoEditorGUI extends xonoAbstractGUI
     {
         $file = $this->storage_service->getFile($this->file_id);
         $file_version = $this->storage_service->getLatestVersions($file->getUuid());
-        $arrayWithoutToken = $this->buildJSONArray($file, $file_version);
-        $token = JwtService::jwtEncode($arrayWithoutToken, 'secret'); // TODO Define key globally
-        $arrayWithToken = $this->buildJSONArray($file, $file_version, $token);
-        $configJson = json_encode($arrayWithToken);
+        $config = $this->buildJSONArray($file, $file_version);
+        $token = JwtService::jwtEncode($config, 'secret'); // TODO Define key globally
+        $config['token'] = $token;
+        $configJson = json_encode($config);
 
         $tpl = $this->plugin->getTemplate('html/tpl.editor.html');
         $tpl->setVariable('SCRIPT_SRC', self::ONLYOFFICE_URL . '/web-apps/apps/api/documents/api.js');
@@ -95,12 +96,25 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     }
 
+    protected function save() {
+        $params = $this->dic->ctrl()->getParameterArray($this);
+        $uuid = $params['uuid'];
+        $file_id = $params['file_id'];
+        $editor = $params['editor_id'];
+        $status = filter_input(INPUT_POST, "status");
+        if ($status == 2) {
+            $result = end($this->dic->upload()->getResults());
+            $this->storage_service->updateFileFromUpload($result, $file_id, $uuid, $editor);
+        }
+
+    }
+
     protected function generateCallbackUrl(UUID $file_uuid, int $file_id) :string
     {
-        $this->dic->ctrl()->setParameterByClass(ilObjOnlyOfficeGUI::class, "uuid", $file_uuid->asString());
-        $this->dic->ctrl()->setParameterByClass(ilObjOnlyOfficeGUI::class, "file_id", $file_id);
-        $this->dic->ctrl()->setParameterByClass(ilObjOnlyOfficeGUI::class, "editor_id", $this->dic->user()->getId());
-        $path = $this->dic->ctrl()->getLinkTargetByClass(ilObjOnlyOfficeGUI::class, ilObjOnlyOfficeGUI::CMD_SAVE_CHANGES);
+        $this->dic->ctrl()->setParameter($this, "uuid", $file_uuid->asString());
+        $this->dic->ctrl()->setParameter($this, "file_id", $file_id);
+        $this->dic->ctrl()->setParameter($this, "editor_id", $this->dic->user()->getId());
+        $path = $this->dic->ctrl()->getLinkTarget($this, self::CMD_SAVE);
         return $path;
     }
 
@@ -113,10 +127,9 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     }
 
-    protected function buildJSONArray(File $f, FileVersion $fv, string $token = '') : array
+    protected function buildJSONArray(File $f, FileVersion $fv) : array
     {
         return array("documentType" => "word",
-                     "token" => $token,
                      "document" =>
                          array("filetype" => $f->getFileType(),
                                "key" => $f->getUuid()->asString(),

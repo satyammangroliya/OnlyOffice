@@ -34,7 +34,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     const CMD_SETTINGS = "settings";
     const CMD_SETTINGS_STORE = "settingsStore";
     const CMD_SHOW_CONTENTS = "showContents";
-    const CMD_SAVE_CHANGES = "saveChanges";
     const CMD_SAVE = 'save';
     const CMD_CANCEL = 'cancel';
     const LANG_MODULE_OBJECT = "object";
@@ -113,8 +112,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                         self::dic()->ctrl()->redirectByClass(xonoEditorGUI::class, xonoEditorGUI::CMD_EDIT);
                         break;
 
-
-
                     case self::CMD_SETTINGS:
                     case self::CMD_SETTINGS_STORE:
                         // Write commands
@@ -187,16 +184,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $result = end(self::dic()->upload()->getResults());
         $this->storage_service->createNewFileFromUpload($result, $a_new_object->getId());
         parent::afterSave($a_new_object);
-    }
-
-    protected function saveChanges() {
-        $params = $this->dic()->ctrl()->getParameterArrayByClass(ilObjOnlyOfficeGUI::class);
-        $file_id = $params['file_id'];
-        $uuid = $params['uuid'];
-        $editor_id = $params['editor_id'];
-        // TODO: How can I get POST body?
-        // TODO: How can I download the new file from the indicated changesurl?
-
     }
 
     /**

@@ -37,14 +37,14 @@ class FileSystemService
      * @param string       $file_id
      * @throws IOException
      */
-    public function storeUpload(UploadResult $upload_result, int $obj_id, string $file_id) : string
+    public function storeUpload(UploadResult $upload_result, int $obj_id, string $file_id, string $file_name = FileVersion::FIRST_VERSION) : string
     {
         $path = $this->createAndGetPath($obj_id, $file_id);
         $this->dic->upload()->moveOneFileTo(
             $upload_result,
             $path,
             Location::WEB,
-            FileVersion::FIRST_VERSION
+            $file_name
         );
         return $path;
     }
