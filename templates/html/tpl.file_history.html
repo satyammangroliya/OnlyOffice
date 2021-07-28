@@ -37,11 +37,19 @@
       table += "<td class='il_no_style'>" + rowData.createdAt + "</td>";
       table += "<td class='il_no_style'>" + rowData.userId + "</td>";
       table += "<td class='il_no_style'></td>";
-      table += "<td class='il_no_style'><button>Download</button></td>";
+      table += "<td class='il_no_style'><button onclick='downloadFile({BASE_URL}" + rowData.url + "{TOKEN})'>Download</button></td>"; // TODO: Create working download-link!
       table += "</tr>";
     }
     document.getElementById("table_body").innerHTML = table;
   }
+</script>
+<script type="text/javascript">
+    function downloadFile(link) {
+      browser.downloads.download({url: link});
+    }
+
+
+    }
 </script>
 
 

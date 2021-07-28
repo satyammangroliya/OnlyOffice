@@ -34,12 +34,12 @@ class xonoEditorGUI extends xonoAbstractGUI
     protected $file_id;
 
     const CMD_EDIT = "edit";
-    const CMD_SAVE = "save";
+    const CMD_SAVE = "saveChanges";
     const CMD_STANDARD = "edit";
 
-    // TODO: Set correct values
-    const BASE_URL = 'http://localhost:8080';
-    const ONLYOFFICE_URL = 'http://localhost:3000/';
+    // TODO: Set correct values gloablly
+    const BASE_URL = 'http://192.168.99.72:8080/'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
+    const ONLYOFFICE_URL = 'http://192.168.99.72:3000/'; // Path to OnlyOffice Root directory: http://<OO domain>:<PortNr>
 
     public function __construct(
         \ILIAS\DI\Container $dic,
@@ -96,17 +96,33 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     }
 
-    protected function save() {
+    // TODO: Why does this not work?
+    protected function saveChanges() {
+
         $params = $this->dic->ctrl()->getParameterArray($this);
         $uuid = $params['uuid'];
         $file_id = $params['file_id'];
         $editor = $params['editor_id'];
-        $status = filter_input(INPUT_POST, "status");
-        if ($status == 2) {
-            $result = end($this->dic->upload()->getResults());
-            $this->storage_service->updateFileFromUpload($result, $file_id, $uuid, $editor);
+        $version = $this->storage_service->getLatestVersions($uuid)->getVersion() + 1;
+        $path_for_save = self::BASE_URL . '/data/default/only_office/'. $file_id . '/' . $uuid . '/' . $version .'.docx';
+
+        if (($body_stream = file_get_contents("php://input"))===FALSE){
+            echo "Bad Request";
         }
 
+        $data = json_decode($body_stream, TRUE);
+
+        if ($data["status"] == 2){
+            $downloadUri = $data["url"];
+
+            if (($new_data = file_get_contents($downloadUri))===FALSE){
+                echo "Bad Response";
+            } else {
+                file_put_contents($path_for_save, $new_data, LOCK_EX);
+            }
+        }
+        echo "{\"error\":0}";
+        exit;
     }
 
     protected function generateCallbackUrl(UUID $file_uuid, int $file_id) :string
@@ -136,7 +152,7 @@ class xonoEditorGUI extends xonoAbstractGUI
                                "title" => $f->getTitle(),
                                "url" => self::BASE_URL . ltrim($this->getWACUrl($fv->getUrl()), ".")
                          ),
-                     "editorConfig" => array("callbackUrl" => $this->generateCallbackUrl($f->getUuid(), $f->getObjId()),
+                     "editorConfig" => array("callbackUrl" => self::BASE_URL . $this->generateCallbackUrl($f->getUuid(), $f->getObjId()),
                                              "user" => array(
                                                  "id" => $this->dic->user()->getId(),
                                                  "name" => $this->dic->user()->getPublicName()

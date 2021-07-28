@@ -51,7 +51,6 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
     );
 
     public static $classMap = array (
-        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'ilObjOnlyOffice' => __DIR__ . '/../..' . '/classes/class.ilObjOnlyOffice.php',
         'ilObjOnlyOfficeAccess' => __DIR__ . '/../..' . '/classes/class.ilObjOnlyOfficeAccess.php',
         'ilObjOnlyOfficeGUI' => __DIR__ . '/../..' . '/classes/class.ilObjOnlyOfficeGUI.php',
@@ -133,6 +132,7 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
         'srag\\Plugins\\OnlyOffice\\Config\\Factory' => __DIR__ . '/../..' . '/src/Config/Factory.php',
         'srag\\Plugins\\OnlyOffice\\Config\\Repository' => __DIR__ . '/../..' . '/src/Config/Repository.php',
         'srag\\Plugins\\OnlyOffice\\CryptoService\\JwtService' => __DIR__ . '/../..' . '/src/CryptoService/JwtService.php',
+        'srag\\Plugins\\OnlyOffice\\CryptoService\\WebAccessService' => __DIR__ . '/../..' . '/src/CryptoService/WebAccessService.php',
         'srag\\Plugins\\OnlyOffice\\ObjectSettings\\Factory' => __DIR__ . '/../..' . '/src/ObjectSettings/Factory.php',
         'srag\\Plugins\\OnlyOffice\\ObjectSettings\\ObjectSettings' => __DIR__ . '/../..' . '/src/ObjectSettings/ObjectSettings.php',
         'srag\\Plugins\\OnlyOffice\\ObjectSettings\\ObjectSettingsFormGUI' => __DIR__ . '/../..' . '/src/ObjectSettings/ObjectSettingsFormGUI.php',

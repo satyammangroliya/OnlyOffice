@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'ilObjOnlyOffice' => $baseDir . '/classes/class.ilObjOnlyOffice.php',
     'ilObjOnlyOfficeAccess' => $baseDir . '/classes/class.ilObjOnlyOfficeAccess.php',
     'ilObjOnlyOfficeGUI' => $baseDir . '/classes/class.ilObjOnlyOfficeGUI.php',
@@ -88,6 +87,7 @@ return array(
     'srag\\Plugins\\OnlyOffice\\Config\\Factory' => $baseDir . '/src/Config/Factory.php',
     'srag\\Plugins\\OnlyOffice\\Config\\Repository' => $baseDir . '/src/Config/Repository.php',
     'srag\\Plugins\\OnlyOffice\\CryptoService\\JwtService' => $baseDir . '/src/CryptoService/JwtService.php',
+    'srag\\Plugins\\OnlyOffice\\CryptoService\\WebAccessService' => $baseDir . '/src/CryptoService/WebAccessService.php',
     'srag\\Plugins\\OnlyOffice\\ObjectSettings\\Factory' => $baseDir . '/src/ObjectSettings/Factory.php',
     'srag\\Plugins\\OnlyOffice\\ObjectSettings\\ObjectSettings' => $baseDir . '/src/ObjectSettings/ObjectSettings.php',
     'srag\\Plugins\\OnlyOffice\\ObjectSettings\\ObjectSettingsFormGUI' => $baseDir . '/src/ObjectSettings/ObjectSettingsFormGUI.php',
