@@ -99,7 +99,8 @@ class xonoEditorGUI extends xonoAbstractGUI
     // TODO: Why does this not work?
     protected function saveChanges() {
 
-        $params = $this->dic->ctrl()->getParameterArray($this);
+        $this->dic->logger()->root()->info("Entering saveChanges");
+        /*$params = $this->dic->ctrl()->getParameterArray($this);
         $uuid = $params['uuid'];
         $file_id = $params['file_id'];
         $editor = $params['editor_id'];
@@ -120,7 +121,7 @@ class xonoEditorGUI extends xonoAbstractGUI
             } else {
                 file_put_contents($path_for_save, $new_data, LOCK_EX);
             }
-        }
+        }*/
         echo "{\"error\":0}";
         exit;
     }
@@ -130,7 +131,7 @@ class xonoEditorGUI extends xonoAbstractGUI
         $this->dic->ctrl()->setParameter($this, "uuid", $file_uuid->asString());
         $this->dic->ctrl()->setParameter($this, "file_id", $file_id);
         $this->dic->ctrl()->setParameter($this, "editor_id", $this->dic->user()->getId());
-        $path = $this->dic->ctrl()->getLinkTarget($this, self::CMD_SAVE);
+        $path = $this->dic->ctrl()->getFormAction($this, self::CMD_SAVE);
         return $path;
     }
 
