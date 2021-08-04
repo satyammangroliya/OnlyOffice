@@ -113,5 +113,4 @@ return array(
     'xonoCallbackHandler' => $baseDir . '/classes/Editor/class.xonoCallbackHandler.php',
     'xonoContentGUI' => $baseDir . '/classes/Content/class.xonoContentGUI.php',
     'xonoEditorGUI' => $baseDir . '/classes/Editor/class.xonoEditorGUI.php',
-    'xonoInitialisation' => $baseDir . '/classes/Init/xonoInitialisation.php',
 );

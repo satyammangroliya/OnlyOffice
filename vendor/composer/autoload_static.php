@@ -158,7 +158,6 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
         'xonoCallbackHandler' => __DIR__ . '/../..' . '/classes/Editor/class.xonoCallbackHandler.php',
         'xonoContentGUI' => __DIR__ . '/../..' . '/classes/Content/class.xonoContentGUI.php',
         'xonoEditorGUI' => __DIR__ . '/../..' . '/classes/Editor/class.xonoEditorGUI.php',
-        'xonoInitialisation' => __DIR__ . '/../..' . '/classes/Init/xonoInitialisation.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

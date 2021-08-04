@@ -72,7 +72,6 @@ class StorageService
             $path);
 
         $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
-        //ToDo: getMimeType() does not deliver correct data type
         $file = new File($new_file_id, $obj_id, $upload_result->getName(), $upload_result->getMimeType());
         return $file;
     }
