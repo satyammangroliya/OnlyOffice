@@ -65,7 +65,7 @@ class StorageService
     public function createNewFileFromUpload(UploadResult $upload_result, int $obj_id) : File
     {
         $new_file_id = new UUID();
-        $path = $this->file_system_service->storeUpload($upload_result, $obj_id, $new_file_id->asString());
+        $path = $this->file_system_service->storeUploadResult($upload_result, $obj_id, $new_file_id->asString());
         $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $upload_result->getMimeType());
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
         $version = $this->file_version_repository->create($new_file_id, $this->dic->user()->getId(), $created_at,
@@ -81,13 +81,14 @@ class StorageService
         string $content,
         int $file_id,
         string $uuid_string,
-        int $editor_id
+        int $editor_id,
+        string $extension
     ) : FileVersion {
         $uuid = new UUID($uuid_string);
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
         $version = $this->getLatestVersions($uuid)->getVersion() + 1;
         $this->dic->logger()->root()->info("Version: " . $version);
-        $path = $this->file_system_service->storeNewVersion($content, $file_id, $uuid_string, $version);
+        $path = $this->file_system_service->storeNewVersionFromString($content, $file_id, $uuid_string, $version, $extension);
         $version = $this->file_version_repository->create($uuid, $editor_id, $created_at, $path);
         $fileVersion = new FileVersion($version, $created_at, $editor_id, $path, $uuid);
         return $fileVersion;

@@ -29,32 +29,20 @@ class xonoCallbackHandler
     protected $file_id;
     /** @var $editor_id int */
     protected $editor_id;
+    /** @var $extension string */
+    protected $extension;
 
-    public function __construct(Container $dic, string $data, string $uuid, int $file_id, int $editor_id)
+    public function __construct(Container $dic, string $data, string $uuid, int $file_id, int $editor_id, string $extension)
     {
         $this->dic = $dic;
         $this->data = $data;
         $this->uuid = $uuid;
         $this->file_id = $file_id;
         $this->editor_id = $editor_id;
+        $this->extension = $extension;
         $this->afterConstructor();
         $this->dic->logger()->root()->info("Callback Handler Constructed");
 
-    }
-
-    public function executeCommand()
-    {
-        $next_class = $this->dic->ctrl()->getNextClass($this);
-        $cmd = $this->dic->ctrl()->getCmd(self::CMD_HANDLE_CALLBACK);
-
-        switch ($next_class) {
-            default:
-                switch ($cmd) {
-                    default:
-                        $this->{$cmd}();
-                        break;
-                }
-        }
     }
 
     protected function afterConstructor()/*: void*/
@@ -69,7 +57,7 @@ class xonoCallbackHandler
     public function handleCallback() : bool
     {
         try {
-            $this->storage_service->updateFileFromUpload($this->data, $this->file_id, $this->uuid, $this->editor_id);
+            $this->storage_service->updateFileFromUpload($this->data, $this->file_id, $this->uuid, $this->editor_id, $this->extension);
             $this->dic->logger()->root()->info("File saved");
             return true;
         } catch (Exception $e) {

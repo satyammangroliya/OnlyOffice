@@ -2,6 +2,7 @@
 
 use ILIAS\Filesystem\Exception\IOException;
 use ILIAS\FileUpload\Exception\IllegalStateException;
+use ILIAS\FileUpload\Location;
 use srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettingsFormGUI;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
@@ -180,8 +181,10 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     {
         $form = $this->initCreateForm($a_new_object->getType());
         $form->checkInput();
+
         self::dic()->upload()->process();
-        $result = end(self::dic()->upload()->getResults());
+        $results = self::dic()->upload()->getResults();
+        $result = end($results);
         $this->storage_service->createNewFileFromUpload($result, $a_new_object->getId());
         parent::afterSave($a_new_object);
     }
@@ -311,4 +314,5 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     {
         return self::getStartCmd();
     }
+
 }

@@ -7,6 +7,7 @@ use ILIAS\Filesystem\Exception\IOException;
 use ILIAS\FileUpload\DTO\UploadResult;
 use ILIAS\FileUpload\Location;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
+use ILIAS\Filesystem\Stream\Streams;
 
 /**
  * Class FileSystemService
@@ -37,8 +38,11 @@ class FileSystemService
      * @param string       $file_id
      * @throws IOException
      */
-    public function storeUpload(UploadResult $upload_result, int $obj_id, string $file_id, string $file_name = FileVersion::FIRST_VERSION) : string
+    public function storeUploadResult(UploadResult $upload_result, int $obj_id, string $file_id, string $file_name = FileVersion::FIRST_VERSION) : string
     {
+        $ext = pathinfo($upload_result->getName(), PATHINFO_EXTENSION);
+        $file_name .= '.' . $ext;
+
         $path = $this->createAndGetPath($obj_id, $file_id);
         $this->dic->upload()->moveOneFileTo(
             $upload_result,
@@ -46,13 +50,16 @@ class FileSystemService
             Location::WEB,
             $file_name
         );
+        $path .= $file_name;
         return $path;
     }
 
-    public function storeNewVersion(string $content, int $obj_id, string $file_id, int $file_version): string {
-        $webDataRoot = $this->dic->filesystem()->web();
-        $path = $this->createAndGetPath($obj_id, $file_id);
-        $webDataRoot->write($path.'/'.$file_version, $content);
+    public function storeNewVersionFromString(string $content, int $obj_id, string $uuid, int $version, string $extension): string {
+        $path = $this->createAndGetPath($obj_id, $uuid) . $version . '.' . $extension;
+        $this->dic->logger()->root()->info('Storing as: ' . $path);
+        $stream = Streams::ofString($content);
+        $web = $this->dic->filesystem()->web();
+        $web->writeStream($path, $stream);
         return $path;
     }
 
@@ -65,8 +72,8 @@ class FileSystemService
     protected function createAndGetPath(int $obj_id, string $file_id) : string
     {
         $path = self::BASE_PATH . $obj_id . DIRECTORY_SEPARATOR . $file_id . DIRECTORY_SEPARATOR;
-        if (!$this->dic->filesystem()->storage()->hasDir($path)) {
-            $this->dic->filesystem()->storage()->createDir($path);
+        if (!$this->dic->filesystem()->web()->hasDir($path)) {
+            $this->dic->filesystem()->web()->createDir($path);
         }
 
         return $path;

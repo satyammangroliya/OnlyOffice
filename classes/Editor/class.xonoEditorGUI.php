@@ -99,7 +99,7 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     }
 
-    protected function generateCallbackUrl(UUID $file_uuid, int $file_id) : string
+    protected function generateCallbackUrl(UUID $file_uuid, int $file_id, string $extension) : string
     {
         $session = array("session_id" => $GLOBALS['DIC']['ilAuthSession']->getId(), "client_id" => CLIENT_ID);
         $session_jwt = JwtService::jwtEncode(json_encode($session), 'secret'); // TODO Define key globally
@@ -107,7 +107,8 @@ class xonoEditorGUI extends xonoAbstractGUI
             'token=' . $session_jwt .
             '&uuid=' . $file_uuid->asString() .
             '&file_id=' . $file_id .
-            '&client_id=' . CLIENT_ID;
+            '&client_id=' . CLIENT_ID .
+            '&ext=' . $extension;
         return $path;
     }
 
@@ -122,21 +123,53 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     protected function buildJSONArray(File $f, FileVersion $fv) : array
     {
-        return array("documentType" => "word",
+        $extension = pathinfo($fv->getUrl(), PATHINFO_EXTENSION);
+        return array("documentType" => $this->determineDocType($extension),
                      "document" =>
                          array("filetype" => $f->getFileType(),
                                "key" => $f->getUuid()->asString() .'-'. $fv->getVersion(),
                                "title" => $f->getTitle(),
-                               "url" => self::BASE_URL . ltrim($this->getWACUrl($fv->getUrl()), "./")
+                               "url" => self::BASE_URL . ltrim($this->getWACUrl($fv->getUrl()), "./") . '.' . $extension
                          ),
                      "editorConfig" => array("callbackUrl" => self::BASE_URL . $this->generateCallbackUrl($f->getUuid(),
-                             $f->getObjId()),
+                             $f->getObjId(), $extension),
                                              "user" => array(
                                                  "id" => $this->dic->user()->getId(),
                                                  "name" => $this->dic->user()->getFullname()
                                              )
                      ),
         );
+    }
+
+    protected function determineDocType(string $extension) : string {
+        switch ($extension) {
+            case "pptx":
+            case "fodp":
+            case "odp":
+            case "otp":
+            case "pot":
+            case "potm":
+            case "potx":
+            case "pps":
+            case "ppsm":
+            case "ppsx":
+            case "ppt":
+            case "pptm":
+                return "slide";
+            case "xlsx":
+            case "csv":
+            case "fods":
+            case "ods":
+            case "ots":
+            case "xls":
+            case "xlsm":
+            case "xlt":
+            case "xltm":
+            case "xltx":
+                return "cell";
+            default:
+                return "word";
+        }
     }
 
     /**
