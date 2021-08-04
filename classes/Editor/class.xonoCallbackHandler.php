@@ -10,10 +10,10 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepositor
 use Matrix\Exception;
 
 /**
- * Class callbackHandlerGUI
+ * Class xonoCallbackHandler
  * @author Sophie Pfister <sophie@fluxlabs.ch>
  */
-class xonoCallbackHandlerGUI
+class xonoCallbackHandler
 {
     const CMD_HANDLE_CALLBACK = "handleCallback";
 

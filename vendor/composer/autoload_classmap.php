@@ -110,7 +110,7 @@ return array(
     'srag\\RemovePluginDataConfirm\\OnlyOffice\\RemovePluginDataConfirmCtrl' => $vendorDir . '/srag/removeplugindataconfirm/src/class.RemovePluginDataConfirmCtrl.php',
     'srag\\RemovePluginDataConfirm\\OnlyOffice\\RepositoryObjectPluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/RepositoryObjectPluginUninstallTrait.php',
     'xonoAbstractGUI' => $baseDir . '/classes/xonoAbstractGUI.php',
-    'xonoCallbackHandlerGUI' => $baseDir . '/classes/Editor/class.xonoCallbackHandlerGUI.php',
+    'xonoCallbackHandler' => $baseDir . '/classes/Editor/class.xonoCallbackHandler.php',
     'xonoContentGUI' => $baseDir . '/classes/Content/class.xonoContentGUI.php',
     'xonoEditorGUI' => $baseDir . '/classes/Editor/class.xonoEditorGUI.php',
     'xonoInitialisation' => $baseDir . '/classes/Init/xonoInitialisation.php',

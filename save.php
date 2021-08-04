@@ -35,7 +35,7 @@ if ($data["status"] == 2){
         echo "Bad Response";
 
     } else {
-        $callback_handler = new xonoCallbackHandlerGUI($DIC, $new_data, $uuid, $file_id, $editor);
+        $callback_handler = new xonoCallbackHandler($DIC, $new_data, $uuid, $file_id, $editor);
         $callback_handler->handleCallback();
         //$DIC->ctrl()->redirect($callback_handler, xonoCallbackHandlerGUI::CMD_HANDLE_CALLBACK);
         //$DIC->ctrl()->forwardCommand($callback_handler);
