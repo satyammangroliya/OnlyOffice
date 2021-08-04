@@ -91,9 +91,13 @@ class xonoEditorGUI extends xonoAbstractGUI
         $config['token'] = $token;
         $configJson = json_encode($config);
 
+        $historyArray = $this->buildHistoryArray($this->file_id, $file_version->getFileUuid());
+
         $tpl = $this->plugin->getTemplate('html/tpl.editor.html');
         $tpl->setVariable('SCRIPT_SRC', self::ONLYOFFICE_URL . '/web-apps/apps/api/documents/api.js');
         $tpl->setVariable('CONFIG', $configJson);
+        $tpl->setVariable('LATEST', $file_version->getVersion());
+        $tpl->setVariable('HISTORY_DATA', json_encode($historyArray));
         $content = $tpl->get();
         $this->dic->ui()->mainTemplate()->setContent($content);
 
@@ -124,7 +128,8 @@ class xonoEditorGUI extends xonoAbstractGUI
     protected function buildJSONArray(File $f, FileVersion $fv) : array
     {
         $extension = pathinfo($fv->getUrl(), PATHINFO_EXTENSION);
-        return array("documentType" => $this->determineDocType($extension),
+        $docType = $this->determineDocType($extension);
+        return array("documentType" => $docType,
                      "height" => "500", //ToDo: Can this issue be fixed in a mor elegant way?
                      "document" =>
                          array("filetype" => $f->getFileType(),
@@ -139,7 +144,23 @@ class xonoEditorGUI extends xonoAbstractGUI
                                                  "name" => $this->dic->user()->getFullname()
                                              )
                      ),
+                     "events"=> array("onRequestHistoryData" => onRequestHistoryData) //ToDO: How can this be passed?
         );
+    }
+
+    protected function buildHistoryArray(int $file_id, UUID $uuid) : array {
+        $all_versions = $this->storage_service->getAllVersions($file_id);
+        $history_array = array();
+        foreach ($all_versions as $version) {
+            $info_array = array(
+                "created" => $version->getCreatedAt()->__toString(),
+                "key" => $uuid->asString() . '-' . $version->getVersion(),
+                "user" => array("id" => $version->getUserId()),
+                "version" => $version->getVersion()
+            );
+            array_push($history_array, $info_array);
+        }
+        return $history_array;
     }
 
     protected function determineDocType(string $extension) : string {
