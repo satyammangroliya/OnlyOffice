@@ -46,7 +46,7 @@ class ilDBFileVersionRepository implements FileVersionRepository
         /** @var FileVersionAR $latest_version */
         $latest_version = FileVersionAR::where(['file_uuid' => $file_uuid->asString()])->orderBy('version',
             'desc')->first();
-        return $latest_version ? $latest_version->getVersion() : FileVersion::FIRST_VERSION;
+        return $latest_version ? $latest_version->getVersion() + 1 : FileVersion::FIRST_VERSION;
     }
 
     /**

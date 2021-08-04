@@ -1,6 +1,7 @@
 <?php
 
 require_once 'libs/composer/vendor/autoload.php';
+require_once "include/inc.ilias_version.php";
 use ILIAS\DI\Container;
 /**
  * @author Theodor Truffer <tt@studer-raimann.ch>
@@ -15,5 +16,6 @@ class xonoInitialisation extends ilInitialisation
         self::determineClient();
         self::initClientIniFile();
         self::initDatabase();
+        self::initLog();
     }
 }

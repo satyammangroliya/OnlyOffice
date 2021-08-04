@@ -23,11 +23,13 @@
 
 <script type="text/javascript">
   function renderBody() {
-    const table_data = '{TBL_DATA}';
-    const data = JSON.parse(table_data);
+    const url_array = JSON.parse('{URL}');
+    const base_url = '{BASE_URL}';
+    const data = JSON.parse('{TBL_DATA}');
     let table = "";
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       var rowData = data[i];
+      var url = url_array[i];
       if (i % 2 === 0)
         table += "<tr class='tblrow1'>";
       else
@@ -37,19 +39,11 @@
       table += "<td class='il_no_style'>" + rowData.createdAt + "</td>";
       table += "<td class='il_no_style'>" + rowData.userId + "</td>";
       table += "<td class='il_no_style'></td>";
-      table += "<td class='il_no_style'><button onclick='downloadFile({BASE_URL}" + rowData.url + "{TOKEN})'>Download</button></td>"; // TODO: Create working download-link!
+      table += "<td class='il_no_style'> <a href='" + base_url + url + "' download='OnlyOffice_File'><button>Download</button></a>"
       table += "</tr>";
     }
     document.getElementById("table_body").innerHTML = table;
   }
-</script>
-<script type="text/javascript">
-    function downloadFile(link) {
-      browser.downloads.download({url: link});
-    }
-
-
-    }
 </script>
 
 

@@ -49,6 +49,13 @@ class FileSystemService
         return $path;
     }
 
+    public function storeNewVersion(string $content, int $obj_id, string $file_id, int $file_version): string {
+        $webDataRoot = $this->dic->filesystem()->web();
+        $path = $this->createAndGetPath($obj_id, $file_id);
+        $webDataRoot->write($path.'/'.$file_version, $content);
+        return $path;
+    }
+
     /**
      * @param int    $obj_id
      * @param string $file_id

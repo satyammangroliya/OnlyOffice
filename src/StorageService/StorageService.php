@@ -78,15 +78,16 @@ class StorageService
     }
 
     public function updateFileFromUpload(
-        UploadResult $uploadResult,
+        string $content,
         int $file_id,
         string $uuid_string,
         int $editor_id
     ) : FileVersion {
         $uuid = new UUID($uuid_string);
-        $version = $this->file_version_repository->getLatestVersion($uuid)->getVersion() + 1;
-        $path = $this->file_system_service->storeUpload($uploadResult, $file_id, $uuid_string, $version);
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
+        $version = $this->getLatestVersions($uuid)->getVersion() + 1;
+        $this->dic->logger()->root()->info("Version: " . $version);
+        $path = $this->file_system_service->storeNewVersion($content, $file_id, $uuid_string, $version);
         $version = $this->file_version_repository->create($uuid, $editor_id, $created_at, $path);
         $fileVersion = new FileVersion($version, $created_at, $editor_id, $path, $uuid);
         return $fileVersion;

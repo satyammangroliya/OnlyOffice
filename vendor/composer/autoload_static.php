@@ -155,8 +155,10 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
         'srag\\RemovePluginDataConfirm\\OnlyOffice\\RemovePluginDataConfirmCtrl' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/class.RemovePluginDataConfirmCtrl.php',
         'srag\\RemovePluginDataConfirm\\OnlyOffice\\RepositoryObjectPluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/RepositoryObjectPluginUninstallTrait.php',
         'xonoAbstractGUI' => __DIR__ . '/../..' . '/classes/xonoAbstractGUI.php',
+        'xonoCallbackHandlerGUI' => __DIR__ . '/../..' . '/classes/Editor/class.xonoCallbackHandlerGUI.php',
         'xonoContentGUI' => __DIR__ . '/../..' . '/classes/Content/class.xonoContentGUI.php',
         'xonoEditorGUI' => __DIR__ . '/../..' . '/classes/Editor/class.xonoEditorGUI.php',
+        'xonoInitialisation' => __DIR__ . '/../..' . '/classes/Init/xonoInitialisation.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

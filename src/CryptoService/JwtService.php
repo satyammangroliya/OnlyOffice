@@ -2,6 +2,8 @@
 
 namespace srag\Plugins\OnlyOffice\CryptoService;
 
+require_once 'libs/composer/vendor/autoload.php';
+
 class JwtService {
 
     public static function jwtEncode($payload, $key)
