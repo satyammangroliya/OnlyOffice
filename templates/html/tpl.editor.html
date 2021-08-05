@@ -4,7 +4,7 @@
     var docEditor = new DocsAPI.DocEditor("xono_editor", {CONFIG});
 
 
-    var onRequestHistory = function() {
+    var history = function() {
       docEditor.refreshHistory({
         "currentVersion": {LATEST},
         "history": {HISTORY_DATA}

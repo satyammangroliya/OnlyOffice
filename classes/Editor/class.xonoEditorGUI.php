@@ -98,7 +98,9 @@ class xonoEditorGUI extends xonoAbstractGUI
         $tpl->setVariable('CONFIG', $configJson);
         $tpl->setVariable('LATEST', $file_version->getVersion());
         $tpl->setVariable('HISTORY_DATA', json_encode($historyArray));
+        $tpl->setVariable('HISTORY', 'history');
         $content = $tpl->get();
+        $this->dic->ui()->renderer()->render($content);
         $this->dic->ui()->mainTemplate()->setContent($content);
 
     }
@@ -144,7 +146,7 @@ class xonoEditorGUI extends xonoAbstractGUI
                                                  "name" => $this->dic->user()->getFullname()
                                              )
                      ),
-                     "events"=> array("onRequestHistoryData" => onRequestHistoryData) //ToDO: How can this be passed?
+                     "events"=> array("onRequestHistoryData" => '{HISTORY}') //ToDo: How can this be passed?
         );
     }
 
