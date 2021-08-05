@@ -1,4 +1,13 @@
-<div id="xono_editor" class="container-fluid"></div>
+<head>
+    <title>ILIAS: {FILE_TITLE}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<header style="position: fixed; top: 0; left: 0; right: 0; height: auto">
+    <button type="button" onclick="window.location.href='{RETURN}'" class="btn btn-basic btn-lg btn-block">Back to ILIAS</button>
+</header>
+<div id="content" style="position: fixed; bottom: 0px; top: 46px; left: 0px; right: 0px">
+<div id="xono_editor"></div>
 <script type="text/javascript" src="{SCRIPT_SRC}"></script>
 <script type="text/javascript">
     var docEditor = new DocsAPI.DocEditor("xono_editor", {CONFIG});
@@ -11,3 +20,4 @@
       });
     };
 </script>
+</div>

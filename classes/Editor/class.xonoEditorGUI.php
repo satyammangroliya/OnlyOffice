@@ -96,12 +96,14 @@ class xonoEditorGUI extends xonoAbstractGUI
         $tpl = $this->plugin->getTemplate('html/tpl.editor.html');
         $tpl->setVariable('SCRIPT_SRC', self::ONLYOFFICE_URL . '/web-apps/apps/api/documents/api.js');
         $tpl->setVariable('CONFIG', $configJson);
+        $tpl->setVariable('FILE_TITLE', $file->getTitle());
+        $tpl->setVariable('RETURN', $this->generateReturnUrl());
         $tpl->setVariable('LATEST', $file_version->getVersion());
         $tpl->setVariable('HISTORY_DATA', json_encode($historyArray));
         $tpl->setVariable('HISTORY', 'history');
         $content = $tpl->get();
-        $this->dic->ui()->renderer()->render($content);
-        $this->dic->ui()->mainTemplate()->setContent($content);
+        echo $content;
+        exit;
 
     }
 
@@ -130,9 +132,8 @@ class xonoEditorGUI extends xonoAbstractGUI
     protected function buildJSONArray(File $f, FileVersion $fv) : array
     {
         $extension = pathinfo($fv->getUrl(), PATHINFO_EXTENSION);
-        $docType = $this->determineDocType($extension);
-        return array("documentType" => $docType,
-                     "height" => "500", //ToDo: Can this issue be fixed in a mor elegant way?
+        return array("documentType" => $this->determineDocType($extension),
+                     //"height" => "500", // ToDo: Find a more elegant way (open in new window or adaptive)
                      "document" =>
                          array("filetype" => $f->getFileType(),
                                "key" => $f->getUuid()->asString() .'-'. $fv->getVersion(),
@@ -163,6 +164,12 @@ class xonoEditorGUI extends xonoAbstractGUI
             array_push($history_array, $info_array);
         }
         return $history_array;
+    }
+
+    protected function generateReturnUrl(): string {
+        $content_gui = new xonoContentGUI($this->dic, $this->plugin, $this->file_id);
+        return $this->dic->ctrl()->getLinkTarget($content_gui, xonoContentGUI::CMD_SHOW_VERSIONS);
+
     }
 
     protected function determineDocType(string $extension) : string {
