@@ -90,7 +90,7 @@ class xonoContentGUI extends xonoAbstractGUI
             $old_url = $fv->getUrl();
             $wac_url = ltrim(WebAccessService::getWACUrl($old_url), "./");
             $version = $fv->getVersion();
-            array_push($url, $wac_url . '/' . $version);
+            array_push($url, $wac_url);
         }
 
         $tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
