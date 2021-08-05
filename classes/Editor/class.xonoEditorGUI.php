@@ -33,7 +33,6 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     const CMD_EDIT = "editFile";
     const CMD_SAVE = "saveChanges";
-    const CMD_POST = 'post';
     const CMD_STANDARD = "editFile";
 
     // TODO: Set correct values gloablly
