@@ -125,6 +125,7 @@ class xonoEditorGUI extends xonoAbstractGUI
     {
         $extension = pathinfo($fv->getUrl(), PATHINFO_EXTENSION);
         return array("documentType" => $this->determineDocType($extension),
+                     "height" => "500",
                      "document" =>
                          array("filetype" => $f->getFileType(),
                                "key" => $f->getUuid()->asString() .'-'. $fv->getVersion(),
