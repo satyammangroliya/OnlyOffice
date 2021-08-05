@@ -90,6 +90,8 @@ class xonoEditorGUI extends xonoAbstractGUI
         $token = JwtService::jwtEncode($config, 'secret'); // TODO Define key globally
         $config['token'] = $token;
         $configJson = json_encode($config);
+        $configJson = str_replace('"#!!', '', $configJson);
+        $configJson = str_replace('!!#"', '', $configJson);
 
         $historyArray = $this->buildHistoryArray($this->file_id, $file_version->getFileUuid());
 
@@ -100,7 +102,6 @@ class xonoEditorGUI extends xonoAbstractGUI
         $tpl->setVariable('RETURN', $this->generateReturnUrl());
         $tpl->setVariable('LATEST', $file_version->getVersion());
         $tpl->setVariable('HISTORY_DATA', json_encode($historyArray));
-        $tpl->setVariable('HISTORY', 'history');
         $content = $tpl->get();
         echo $content;
         exit;
@@ -147,7 +148,7 @@ class xonoEditorGUI extends xonoAbstractGUI
                                                  "name" => $this->dic->user()->getFullname()
                                              )
                      ),
-                     "events"=> array("onRequestHistoryData" => '{HISTORY}') //ToDo: How can this be passed?
+                     "events"=> array("onRequestHistoryData" => "#!!onRequestHistory!!#")
         );
     }
 
@@ -156,9 +157,10 @@ class xonoEditorGUI extends xonoAbstractGUI
         $history_array = array();
         foreach ($all_versions as $version) {
             $info_array = array(
-                "created" => $version->getCreatedAt()->__toString(),
+                "created" => rtrim($version->getCreatedAt()->__toString(), '<br>'),
                 "key" => $uuid->asString() . '-' . $version->getVersion(),
-                "user" => array("id" => $version->getUserId()),
+                "user" => array("id" => $version->getUserId(),
+                    "name" => "Sophie"),
                 "version" => $version->getVersion()
             );
             array_push($history_array, $info_array);

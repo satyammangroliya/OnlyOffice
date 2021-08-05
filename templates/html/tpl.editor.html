@@ -10,14 +10,16 @@
 <div id="xono_editor"></div>
 <script type="text/javascript" src="{SCRIPT_SRC}"></script>
 <script type="text/javascript">
-    var docEditor = new DocsAPI.DocEditor("xono_editor", {CONFIG});
+  var onRequestHistory = function(event) {
+    docEditor.refreshHistory({
+      "currentVersion": {LATEST},
+      "history": {HISTORY_DATA}
+    });
+  };
+
+  var docEditor = new DocsAPI.DocEditor("xono_editor", {CONFIG});
 
 
-    var history = function() {
-      docEditor.refreshHistory({
-        "currentVersion": {LATEST},
-        "history": {HISTORY_DATA}
-      });
-    };
+
 </script>
 </div>
