@@ -94,8 +94,11 @@ class xonoEditorGUI extends xonoAbstractGUI
         $tpl = $this->plugin->getTemplate('html/tpl.editor.html');
         $tpl->setVariable('SCRIPT_SRC', self::ONLYOFFICE_URL . '/web-apps/apps/api/documents/api.js');
         $tpl->setVariable('CONFIG', $configJson);
+        $tpl->setVariable('FILE_TITLE', $file->getTitle());
+        $tpl->setVariable('RETURN', $this->generateReturnUrl());
         $content = $tpl->get();
-        $this->dic->ui()->mainTemplate()->setContent($content);
+        echo $content;
+        exit;
 
     }
 
@@ -125,7 +128,7 @@ class xonoEditorGUI extends xonoAbstractGUI
     {
         $extension = pathinfo($fv->getUrl(), PATHINFO_EXTENSION);
         return array("documentType" => $this->determineDocType($extension),
-                     "height" => "500", // ToDo: Find a more elegant way (open in new window or adaptive)
+                     //"height" => "500", // ToDo: Find a more elegant way (open in new window or adaptive)
                      "document" =>
                          array("filetype" => $f->getFileType(),
                                "key" => $f->getUuid()->asString() .'-'. $fv->getVersion(),
@@ -140,6 +143,12 @@ class xonoEditorGUI extends xonoAbstractGUI
                                              )
                      ),
         );
+    }
+
+    protected function generateReturnUrl(): string {
+        $content_gui = new xonoContentGUI($this->dic, $this->plugin, $this->file_id);
+        return $this->dic->ctrl()->getLinkTarget($content_gui, xonoContentGUI::CMD_SHOW_VERSIONS);
+
     }
 
     protected function determineDocType(string $extension) : string {
