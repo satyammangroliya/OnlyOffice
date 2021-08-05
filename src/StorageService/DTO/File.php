@@ -30,10 +30,6 @@ class File
      * @var string
      */
     protected $file_type;
-    /**
-     * @var FileVersion[]
-     */
-    protected $file_versions;
 
 
     /**
