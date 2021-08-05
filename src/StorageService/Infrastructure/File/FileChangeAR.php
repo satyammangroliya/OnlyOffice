@@ -56,21 +56,21 @@ class FileChangeAR extends ActiveRecord
      * @con_fieldtype text
      * @con_length    1024
      */
-    protected $changesObjectString;
+    protected $changes_object_string;
     /**
      * @var string
      * @con_has_field true
      * @con_fieldtype text
      * @con_length    64
      */
-    protected $serverVersion;
+    protected $server_version;
     /**
      * @var string
      * @con_has_field true
      * @con_fieldtype text
      * @con_length    256
      */
-    protected $changesUrl;
+    protected $changes_url;
 
     public function setChangeId(int $change_id)
     {
@@ -104,32 +104,32 @@ class FileChangeAR extends ActiveRecord
 
     public function setChangesObjectString(string $changesObjectString)
     {
-        $this->changesObjectString = $changesObjectString;
+        $this->changes_object_string = $changesObjectString;
     }
 
     public function getChanges() : string
     {
-        return $this->changesObjectString;
+        return $this->changes_object_string;
     }
 
     public function setServerVersion(string $serverVersion)
     {
-        $this->serverVersion = $serverVersion;
+        $this->server_version = $serverVersion;
     }
 
     public function getServerVersion() : string
     {
-        return $this->serverVersion;
+        return $this->server_version;
     }
 
     public function setChangesUrl(string $changesUrl)
     {
-        $this->changesUrl = $changesUrl;
+        $this->changes_url = $changesUrl;
     }
 
     public function getChangesUrl() : string
     {
-        return $this->changesUrl;
+        return $this->changes_url;
     }
 
     /**
@@ -140,7 +140,7 @@ class FileChangeAR extends ActiveRecord
     {
         switch ($field_name) {
             case 'uuid':
-                return $this->uuid->asString();
+                return $this->file_uuid->asString();
             default:
                 return parent::sleep($field_name);
         }
