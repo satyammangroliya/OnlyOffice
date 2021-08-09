@@ -43,8 +43,6 @@ class StorageService
     /** @var FileChangeRepository */
     protected $file_change_repository;
 
-
-
     /**
      * StorageService constructor.
      * @param Container             $dic
@@ -63,7 +61,6 @@ class StorageService
         $this->file_change_repository = new ilDBFileChangeRepository();
     }
 
-
     /**
      * @param UploadResult $upload_result
      * @param int          $obj_id
@@ -76,7 +73,8 @@ class StorageService
         // Create DB Entries for File & FileVersion
         $new_file_id = new UUID();
         $path = $this->file_system_service->storeUploadResult($upload_result, $obj_id, $new_file_id->asString());
-        $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $upload_result->getMimeType());
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+        $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $extension);
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
         $version = $this->file_version_repository->create($new_file_id, $this->dic->user()->getId(), $created_at,
             $path);
@@ -90,8 +88,8 @@ class StorageService
                 "name" => $this->dic->user()->getFullname()
             ]
         ]);
-        $this->file_change_repository->create($changeId, $new_file_id, $version, $changes, '', $path);
-
+        $this->file_change_repository->create($changeId, $new_file_id, $version, $changes,
+            FileChangeRepository::DEFAULT_SERVER_VERSION, $path);
 
         // Create & Return FileVersion object
         $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
@@ -132,14 +130,14 @@ class StorageService
         return $fileVersion;
     }
 
-
     public function getAllVersions(int $object_id) : array
     {
         $file = $this->file_repository->getFile($object_id);
         return $this->file_version_repository->getAllVersions($file->getFileUuid());
     }
 
-    public function getAllChanges(string $uuid) {
+    public function getAllChanges(string $uuid)
+    {
         $file_change_repository = new ilDBFileChangeRepository();
         return $file_change_repository->getAllChanges($uuid);
     }
@@ -153,6 +151,5 @@ class StorageService
     {
         return $this->file_version_repository->getLatestVersion($file_uuid);
     }
-
 
 }

@@ -143,7 +143,7 @@ class xonoEditorGUI extends xonoAbstractGUI
         $extension = pathinfo($fv->getUrl(), PATHINFO_EXTENSION);
         return array("documentType" => $this->determineDocType($extension),
                      "document" =>
-                         array("filetype" => $extension, // ToDo: Store correct value in database
+                         array("filetype" => $f->getFileType(),
                                "key" => $f->getUuid()->asString() . '-' . $fv->getVersion(),
                                "title" => $f->getTitle(),
                                "url" => self::BASE_URL . ltrim($this->getWACUrl($fv->getUrl()), ".") . '.' . $extension
@@ -175,8 +175,8 @@ class xonoEditorGUI extends xonoAbstractGUI
                 "key" => $uuid->asString() . '-' . $version->getVersion(),
                 "serverVersion" => $all_changes[$v]->getServerVersion(),
                 "user" => array("id" => $version->getUserId(),
-                                "name" => "root user"
-                ), // ToDo: How to determine name?
+                                "name" => "root user" // ToDo: How to determine name?
+                ),
                 "version" => $version->getVersion()
             );
             array_push($history_array, $info_array);

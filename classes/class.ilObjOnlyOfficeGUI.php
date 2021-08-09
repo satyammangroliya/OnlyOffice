@@ -188,29 +188,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $this->storage_service->createNewFileFromUpload($result, $a_new_object->getId());
         parent::afterSave($a_new_object);
     }
-
-    /**
-     *
-     */
-    protected function manageContents()/*: void*/
-    {
-        self::dic()->tabs()->activateTab(self::TAB_CONTENTS);
-
-        // TODO: Implement manageContents
-        $this->show("");
-    }
-
-    /**
-     *
-     */
-    protected function showContents()/*: void*/
-    {
-        self::dic()->tabs()->activateTab(self::TAB_SHOW_CONTENTS);
-
-        // TODO: Implement showContents
-        $this->show("");
-    }
-
     /**
      * @return ObjectSettingsFormGUI
      */
