@@ -30,4 +30,13 @@ class ilDBFileChangeRepository implements FileChangeRepository
         $file_change_AR->setChangesUrl($changesUrl);
         $file_change_AR->create();
     }
+
+    // ToDo: Do this in a better way
+    public function getNextId() : int
+    {
+        if ($latest = FileChangeAR::where('TRUE')->orderBy('change_id', 'desc')->first())
+            return $latest->getChangeId() + 1;
+        else
+            return 1;
+    }
 }

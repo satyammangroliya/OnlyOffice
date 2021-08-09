@@ -13,33 +13,42 @@ initializeILIAS();
 global $DIC;
 $DIC->logger()->root()->info("Ilias initialized");
 
-
-if (($body_stream = file_get_contents("php://input"))===FALSE){
+if (($body_stream = file_get_contents("php://input")) === false) {
     echo "Bad Request";
 }
 
 $DIC->logger()->root()->info($body_stream);
-$data = json_decode($body_stream, TRUE);
+$data = json_decode($body_stream, true);
 
-if ($data["status"] == 2){
+if ($data["status"] == 2) {
     $uuid = $_GET['uuid'];
     $file_id = $_GET['file_id'];
-    $ext = $_GET['ext'];
-
-
-
+    $file_ext = $_GET['ext'];
 
     $downloadUri = $data["url"];
+    $changes_object = json_encode(json_encode($data["history"]["changes"]));
+    $DIC->logger()->root()->info("Changes: " . $changes_object);
     $editor = $data["users"][0];
+    $DIC->logger()->root()->info("Editor: " . $editor);
+    $serverVersion = $data["history"]["serverVersion"];
+    $DIC->logger()->root()->info("Server: " . $serverVersion);
+    $OO_changesurl = $data["changesurl"];
+    $DIC->logger()->root()->info("ChangesUrl: " . $OO_changesurl);
+    $change_ext = pathinfo($OO_changesurl, PATHINFO_EXTENSION);
+    $DIC->logger()->root()->info("Extension: " . $change_ext);
 
-    if (($new_data = file_get_contents($downloadUri))===FALSE){
+    if (($new_data = file_get_contents($downloadUri)) === false  ||
+        ($new_change = file_get_contents($OO_changesurl)) === false) {
         echo "Bad Response";
 
     } else {
-        $callback_handler = new xonoCallbackHandler($DIC, $new_data, $uuid, $file_id, $editor, $ext);
+        $callback_handler = new xonoCallbackHandler($DIC, $new_data, $uuid, $file_id, $editor, $file_ext, $changes_object, $serverVersion, $new_change, $change_ext);
         $callback_handler->handleCallback();
-        //$DIC->ctrl()->redirect($callback_handler, xonoCallbackHandlerGUI::CMD_HANDLE_CALLBACK);
-        //$DIC->ctrl()->forwardCommand($callback_handler);
+       /*
+        string $changes_object,
+        string $serverVersion,
+        string $change_content,
+        string $change_extension */
     }
 }
 echo "{\"error\":0}";
@@ -47,13 +56,13 @@ exit;
 
 //-------------------------------------------------------------------
 
-
-
-function initializeILIAS() {
+function initializeILIAS()
+{
     $session_jwt = $_GET['token'];
     require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/src/CryptoService/JwtService.php';
-    $session = \srag\Plugins\OnlyOffice\CryptoService\JwtService::jwtDecode($session_jwt, "secret"); // ToDo: Define Key globally
-    $session_array = json_decode(json_decode($session, TRUE), TRUE);
+    $session = \srag\Plugins\OnlyOffice\CryptoService\JwtService::jwtDecode($session_jwt,
+        "secret"); // ToDo: Define Key globally
+    $session_array = json_decode(json_decode($session, true), true);
     $session_id = $session_array['session_id'];
     //$client_id = $session_array['client_id'];
     $file_id = $_GET['file_id'];

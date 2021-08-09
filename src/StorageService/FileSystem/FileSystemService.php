@@ -38,8 +38,12 @@ class FileSystemService
      * @param string       $file_id
      * @throws IOException
      */
-    public function storeUploadResult(UploadResult $upload_result, int $obj_id, string $file_id, string $file_name = FileVersion::FIRST_VERSION) : string
-    {
+    public function storeUploadResult(
+        UploadResult $upload_result,
+        int $obj_id,
+        string $file_id,
+        string $file_name = FileVersion::FIRST_VERSION
+    ) : string {
         $ext = pathinfo($upload_result->getName(), PATHINFO_EXTENSION);
         $file_name .= '.' . $ext;
 
@@ -54,7 +58,13 @@ class FileSystemService
         return $path;
     }
 
-    public function storeNewVersionFromString(string $content, int $obj_id, string $uuid, int $version, string $extension): string {
+    public function storeNewVersionFromString(
+        string $content,
+        int $obj_id,
+        string $uuid,
+        int $version,
+        string $extension
+    ) : string {
         $path = $this->createAndGetPath($obj_id, $uuid) . $version . '.' . $extension;
         $this->dic->logger()->root()->info('Storing as: ' . $path);
         $stream = Streams::ofString($content);
@@ -63,15 +73,29 @@ class FileSystemService
         return $path;
     }
 
+    public function storeChanges(string $content, int $obj_id, string $uuid, int $version, string $extension) : string
+    {
+        $path = $this->createAndGetPath($obj_id, $uuid, true) . $version . '.' . $extension;
+        $stream = Streams::ofString($content);
+        $web = $this->dic->filesystem()->web();
+        $web->writeStream($path, $stream);
+        return $path;
+    }
+
     /**
-     * @param int    $obj_id
+     * @param int $obj_id
      * @param string $file_id
      * @return string
      * @throws IOException
      */
-    protected function createAndGetPath(int $obj_id, string $file_id) : string
+    protected function createAndGetPath(int $obj_id, string $file_id, bool $isVersion = false) : string
     {
-        $path = self::BASE_PATH . $obj_id . DIRECTORY_SEPARATOR . $file_id . DIRECTORY_SEPARATOR;
+        if (!$isVersion) {
+            $path = self::BASE_PATH . $obj_id . DIRECTORY_SEPARATOR . $file_id . DIRECTORY_SEPARATOR;
+        } else {
+            $path = self::BASE_PATH . $obj_id . DIRECTORY_SEPARATOR . $file_id . DIRECTORY_SEPARATOR . 'changes' . DIRECTORY_SEPARATOR;
+        }
+
         if (!$this->dic->filesystem()->web()->hasDir($path)) {
             $this->dic->filesystem()->web()->createDir($path);
         }

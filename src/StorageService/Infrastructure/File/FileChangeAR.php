@@ -139,7 +139,7 @@ class FileChangeAR extends ActiveRecord
     public function sleep($field_name)
     {
         switch ($field_name) {
-            case 'uuid':
+            case 'file_uuid':
                 return $this->file_uuid->asString();
             default:
                 return parent::sleep($field_name);
@@ -154,7 +154,7 @@ class FileChangeAR extends ActiveRecord
     public function wakeUp($field_name, $field_value)
     {
         switch ($field_name) {
-            case 'uuid':
+            case 'file_uuid':
                 return new UUID($field_value);
             default:
                 return parent::wakeUp($field_name, $field_value);

@@ -30,4 +30,6 @@ interface FileChangeRepository
         string $changesUrl
     );
 
+    public function getNextId(): int;
+
 }

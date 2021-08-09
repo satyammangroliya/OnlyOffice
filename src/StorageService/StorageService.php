@@ -13,6 +13,8 @@ use srag\Plugins\OnlyOffice\StorageService\FileSystem\FileSystemService;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeRepository;
 
 /**
  * Class StorageService
@@ -38,11 +40,13 @@ class StorageService
      */
     protected $file_repository;
 
+    protected static $changeId = 1;
+
     /**
      * StorageService constructor.
-     * @param Container $dic
+     * @param Container             $dic
      * @param FileVersionRepository $file_version_repository
-     * @param FileRepository $file_repository
+     * @param FileRepository        $file_repository
      */
     public function __construct(
         Container $dic,
@@ -54,6 +58,7 @@ class StorageService
         $this->file_repository = $file_repository;
         $this->file_system_service = new FileSystemService($dic);
     }
+
 
     /**
      * @param UploadResult $upload_result
@@ -81,17 +86,34 @@ class StorageService
         int $file_id,
         string $uuid_string,
         int $editor_id,
-        string $extension
+        string $file_extension,
+        string $changes_object,
+        string $serverVersion,
+        string $change_content,
+        string $change_extension
     ) : FileVersion {
+        // Store FileVersion and Create Database Entry
         $uuid = new UUID($uuid_string);
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
         $version = $this->getLatestVersions($uuid)->getVersion() + 1;
         $this->dic->logger()->root()->info("Version: " . $version);
-        $path = $this->file_system_service->storeNewVersionFromString($content, $file_id, $uuid_string, $version, $extension);
+        $path = $this->file_system_service->storeNewVersionFromString($content, $file_id, $uuid_string, $version,
+            $file_extension);
         $version = $this->file_version_repository->create($uuid, $editor_id, $created_at, $path);
+
+        //Store Changes and Create Database Entry
+        $file_change_repository = new ilDBFileChangeRepository();
+        $change_path = $this->file_system_service->storeChanges($change_content, $file_id, $uuid_string, $version,
+            $change_extension);
+        $id = $file_change_repository->getNextId(); // ToDo: Do this in a better way
+        $file_change_repository->create($id, $uuid, $version, $changes_object, $serverVersion,
+            $change_path);
+
+        // Return FileVersion object
         $fileVersion = new FileVersion($version, $created_at, $editor_id, $path, $uuid);
         return $fileVersion;
     }
+
 
     public function getAllVersions(int $object_id) : array
     {
@@ -108,5 +130,6 @@ class StorageService
     {
         return $this->file_version_repository->getLatestVersion($file_uuid);
     }
+
 
 }
