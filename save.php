@@ -26,7 +26,10 @@ if ($data["status"] == 2) {
     $file_ext = $_GET['ext'];
 
     $downloadUri = $data["url"];
-    $changes_object = json_encode(json_encode($data["history"]["changes"]));
+    $changes_object = (json_encode($data["history"]["changes"]));
+    $changes_object = str_replace('[{', '{', $changes_object);
+    $changes_object = str_replace('}]', '}', $changes_object);
+
     $DIC->logger()->root()->info("Changes: " . $changes_object);
     $editor = $data["users"][0];
     $DIC->logger()->root()->info("Editor: " . $editor);

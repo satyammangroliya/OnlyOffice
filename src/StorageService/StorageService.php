@@ -84,8 +84,11 @@ class StorageService
         // Create DB Entry for FileChange
         $changeId = $this->file_change_repository->getNextId();
         $changes = json_encode([
-            "type" => 0,
-            "userid" => $this->dic->user()->getId()
+            "created" => rtrim($created_at->__toString(), '<br>'),
+            "user" => [
+                "id" => $this->dic->user()->getId(),
+                "name" => $this->dic->user()->getFullname()
+            ]
         ]);
         $this->file_change_repository->create($changeId, $new_file_id, $version, $changes, '', $path);
 

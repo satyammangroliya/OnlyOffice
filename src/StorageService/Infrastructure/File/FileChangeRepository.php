@@ -12,6 +12,8 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 interface FileChangeRepository
 {
 
+    const DEFAULT_SERVER_VERSION = '6.3.1';
+
     /**
      * @param int    $change_id
      * @param UUID   $file_uuid

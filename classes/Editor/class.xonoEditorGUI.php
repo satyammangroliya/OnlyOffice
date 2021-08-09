@@ -93,6 +93,9 @@ class xonoEditorGUI extends xonoAbstractGUI
         $configJson = str_replace('!!#"', '', $configJson);
 
         $historyArray = json_encode($this->buildHistoryArray($this->file_id, $file_version->getFileUuid()));
+        $historyArray = str_replace('(\"{', '("{', $historyArray);
+        $historyArray = str_replace('}\")', '}")', $historyArray);
+
         $historyArray = str_replace('"#!!', '', $historyArray);
         $historyArray = str_replace('!!#"', '', $historyArray);
 
@@ -105,8 +108,8 @@ class xonoEditorGUI extends xonoAbstractGUI
         $tpl->setVariable('HISTORY_DATA', $historyArray);
         $tpl->setVariable('URL', json_encode($this->buildUrlArray()));
         $tpl->setVariable('BASE_URL', self::BASE_URL);
-        $tpl->setVariable('KEYS', json_encode($this->buildKeysArray())); //ToDo
-        $tpl->setVariable('CHANGE_URL' . json_encode($this->buildChangeUrlArray($file_version->getFileUuid())));
+        $tpl->setVariable('KEYS', json_encode($this->buildKeysArray()));
+        $tpl->setVariable('CHANGE_URL' , json_encode($this->buildChangeUrlArray($file_version->getFileUuid())));
         $content = $tpl->get();
         echo $content;
         exit;
@@ -167,12 +170,12 @@ class xonoEditorGUI extends xonoAbstractGUI
             $v = $version->getVersion();
 
             $info_array = array(
-                "changes" => '#!!JSON.parse(' . $all_changes[$v]->getChangesObjectString() . ')!!#',
+                "changes" => '#!!JSON.parse("' . $all_changes[$v]->getChangesObjectString() . '")!!#',
                 "created" => rtrim($version->getCreatedAt()->__toString(), '<br>'),
                 "key" => $uuid->asString() . '-' . $version->getVersion(),
                 "serverVersion" => $all_changes[$v]->getServerVersion(),
                 "user" => array("id" => $version->getUserId(),
-                                "name" => "Sophie"
+                                "name" => "root user"
                 ), // ToDo: How to determine name?
                 "version" => $version->getVersion()
             );
