@@ -29,17 +29,21 @@
     let table = "";
     for (let i = 0; i < data.length; i++) {
       var rowData = data[i];
-      var url = url_array[i];
+      var version = rowData.version;
+      var url = url_array[version];
       if (i % 2 === 0)
         table += "<tr class='tblrow1'>";
       else
         table += "<tr class='tblrow2'>";
 
-      table += "<td class='il_no_style'>" + rowData.version + "</td>";
+      table += "<td class='il_no_style'>" + version + "</td>";
       table += "<td class='il_no_style'>" + rowData.createdAt + "</td>";
-      table += "<td class='il_no_style'>" + rowData.userId + "</td>";
+      table += "<td class='il_no_style'>" + rowData.user + "</td>";
       table += "<td class='il_no_style'></td>";
-      table += "<td class='il_no_style'> <a href='" + base_url + url + "' download='OnlyOffice_File'><button>Download</button></a>"
+      table += "<td class='il_no_style'> " +
+        "<a href='" + base_url + url + "' download='{FILENAME}_V" + rowData.version + ".{EXTENSION}'>" +
+        "<button>Download</button" +
+        "></a>";
       table += "</tr>";
     }
     document.getElementById("table_body").innerHTML = table;

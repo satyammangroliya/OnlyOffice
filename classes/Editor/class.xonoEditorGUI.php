@@ -175,7 +175,7 @@ class xonoEditorGUI extends xonoAbstractGUI
                 "key" => $uuid->asString() . '-' . $version->getVersion(),
                 "serverVersion" => $all_changes[$v]->getServerVersion(),
                 "user" => array("id" => $version->getUserId(),
-                                "name" => "root user" // ToDo: How to determine name?
+                                "name" => $this->getUserName($version->getUserId()) // ToDo: How to determine name?
                 ),
                 "version" => $version->getVersion()
             );
@@ -261,6 +261,10 @@ class xonoEditorGUI extends xonoAbstractGUI
         }
     }
 
+    protected function getUserName(int $user_id) {
+        return $this->dic->user()->getLoginByUserId($user_id);
+
+    }
 
 
     /**

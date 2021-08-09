@@ -16,7 +16,7 @@ use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
 class xonoContentGUI extends xonoAbstractGUI
 {
     // TODO: Set correct values globally
-    const BASE_URL = 'http://192.168.99.72:8080/'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
+    const BASE_URL = 'http://192.168.99.72:8080'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
 
     /**
      * @var ilOnlyOfficePlugin
@@ -84,13 +84,16 @@ class xonoContentGUI extends xonoAbstractGUI
     protected function showVersions()
     {
         $fileVersions = $this->storage_service->getAllVersions($this->file_id);
+        $file = $this->storage_service->getFile($this->file_id);
+        $ext = pathinfo($file->getTitle(), PATHINFO_EXTENSION);
+        $fileName = rtrim($file->getTitle(), '.'.$ext);
         $json = json_encode($fileVersions);
         $url = array();
         foreach ($fileVersions as $fv) {
             $old_url = $fv->getUrl();
-            $wac_url = ltrim(WebAccessService::getWACUrl($old_url), "./");
+            $wac_url = ltrim(WebAccessService::getWACUrl($old_url), ".");
             $version = $fv->getVersion();
-            array_push($url, $wac_url);
+            $url[$version] = $wac_url;
         }
 
         $tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
@@ -98,6 +101,8 @@ class xonoContentGUI extends xonoAbstractGUI
         $tpl->setVariable('TBL_DATA', $json);
         $tpl->setVariable('BASE_URL', self::BASE_URL);
         $tpl->setVariable('URL', json_encode($url));
+        $tpl->setVariable('FILENAME', $fileName);
+        $tpl->setVariable('EXTENSION', $ext);
         $content = $tpl->get();
         $this->dic->ui()->mainTemplate()->setContent($content);
     }
