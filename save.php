@@ -27,8 +27,6 @@ if ($data["status"] == 2) {
 
     $downloadUri = $data["url"];
     $changes_object = (json_encode($data["history"]["changes"]));
-    $changes_object = str_replace('[{', '{', $changes_object);
-    $changes_object = str_replace('}]', '}', $changes_object);
 
     $DIC->logger()->root()->info("Changes: " . $changes_object);
     $editor = $data["users"][0];

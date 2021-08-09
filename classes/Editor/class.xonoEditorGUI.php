@@ -92,9 +92,10 @@ class xonoEditorGUI extends xonoAbstractGUI
         $configJson = str_replace('"#!!', '', $configJson);
         $configJson = str_replace('!!#"', '', $configJson);
 
+        // ToDo: Fix historyArray for multiUser! (JSON.parse should work)
         $historyArray = json_encode($this->buildHistoryArray($this->file_id, $file_version->getFileUuid()));
-        $historyArray = str_replace('([\"{', '(["{', $historyArray);
-        $historyArray = str_replace('}\"])', '}"])', $historyArray);
+        $historyArray = str_replace('(\"[{', '("[{', $historyArray);
+        $historyArray = str_replace('}]\")', '}]")', $historyArray);
 
         $historyArray = str_replace('"#!!', '', $historyArray);
         $historyArray = str_replace('!!#"', '', $historyArray);
@@ -170,7 +171,7 @@ class xonoEditorGUI extends xonoAbstractGUI
             $v = $version->getVersion();
 
             $info_array = array(
-                "changes" => '#!!JSON.parse(["' . $all_changes[$v]->getChangesObjectString() . '"])!!#',
+                "changes" => '#!!JSON.parse("' . $all_changes[$v]->getChangesObjectString() . '")!!#',
                 "created" => rtrim($version->getCreatedAt()->__toString(), '<br>'),
                 "key" => $uuid->asString() . '-' . $version->getVersion(),
                 "serverVersion" => $all_changes[$v]->getServerVersion(),
