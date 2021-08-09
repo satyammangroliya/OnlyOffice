@@ -27,6 +27,10 @@
     docEditor.setHistoryData({
       "changesUrl": "{BASE_URL}" + change_url_array[version],
       "key": keys_array[version],
+      "previous": {
+        "key": keys_array[version -1],
+        "url": "{BASE_URL}" + url_array[version-1]
+      },
       "url": "{BASE_URL}" + url_array[version],
       "version": version
     })
