@@ -13,6 +13,7 @@
 
   var url_array = JSON.parse('{URL}');
   var keys_array = JSON.parse('{KEYS}');
+  var change_url_array = JSON.parse('{CHANGE_URL}');
 
   var onRequestHistory = function(event) {
     docEditor.refreshHistory({
@@ -24,6 +25,7 @@
   var onRequestHistoryData = function(event) {
     var version = event.data;
     docEditor.setHistoryData({
+      "changesUrl": "{BASE_URL}" + change_url_array[version],
       "key": keys_array[version],
       "url": "{BASE_URL}" + url_array[version],
       "version": version

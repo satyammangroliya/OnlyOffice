@@ -32,4 +32,6 @@ interface FileChangeRepository
 
     public function getNextId(): int;
 
+    public function getAllChanges(string $uuid): array;
+
 }

@@ -38,7 +38,7 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     // TODO: Set correct values gloablly
     const BASE_URL = 'http://192.168.99.72:8080'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
-    const ONLYOFFICE_URL = 'http://192.168.99.72:3000/'; // Path to OnlyOffice Root directory: http://<OO_domain>:<PortNr>
+    const ONLYOFFICE_URL = 'http://192.168.99.72:3000'; // Path to OnlyOffice Root directory: http://<OO_domain>:<PortNr>
 
     public function __construct(
         Container $dic,
@@ -92,7 +92,9 @@ class xonoEditorGUI extends xonoAbstractGUI
         $configJson = str_replace('"#!!', '', $configJson);
         $configJson = str_replace('!!#"', '', $configJson);
 
-        $historyArray = $this->buildHistoryArray($this->file_id, $file_version->getFileUuid());
+        $historyArray = json_encode($this->buildHistoryArray($this->file_id, $file_version->getFileUuid()));
+        $historyArray = str_replace('"#!!', '', $historyArray);
+        $historyArray = str_replace('!!#"', '', $historyArray);
 
         $tpl = $this->plugin->getTemplate('html/tpl.editor.html');
         $tpl->setVariable('SCRIPT_SRC', self::ONLYOFFICE_URL . '/web-apps/apps/api/documents/api.js');
@@ -100,10 +102,11 @@ class xonoEditorGUI extends xonoAbstractGUI
         $tpl->setVariable('FILE_TITLE', $file->getTitle());
         $tpl->setVariable('RETURN', $this->generateReturnUrl());
         $tpl->setVariable('LATEST', $file_version->getVersion());
-        $tpl->setVariable('HISTORY_DATA', json_encode($historyArray));
+        $tpl->setVariable('HISTORY_DATA', $historyArray);
         $tpl->setVariable('URL', json_encode($this->buildUrlArray()));
         $tpl->setVariable('BASE_URL', self::BASE_URL);
         $tpl->setVariable('KEYS', json_encode($this->buildKeysArray())); //ToDo
+        $tpl->setVariable('CHANGE_URL' . json_encode($this->buildChangeUrlArray($file_version->getFileUuid())));
         $content = $tpl->get();
         echo $content;
         exit;
@@ -138,31 +141,39 @@ class xonoEditorGUI extends xonoAbstractGUI
         return array("documentType" => $this->determineDocType($extension),
                      "document" =>
                          array("filetype" => $f->getFileType(),
-                               "key" => $f->getUuid()->asString() .'-'. $fv->getVersion(),
+                               "key" => $f->getUuid()->asString() . '-' . $fv->getVersion(),
                                "title" => $f->getTitle(),
                                "url" => self::BASE_URL . ltrim($this->getWACUrl($fv->getUrl()), ".") . '.' . $extension
                          ),
-                     "editorConfig" => array("callbackUrl" => self::BASE_URL . '/'.$this->generateCallbackUrl($f->getUuid(),
+                     "editorConfig" => array("callbackUrl" => self::BASE_URL . '/' . $this->generateCallbackUrl($f->getUuid(),
                              $f->getObjId(), $extension),
                                              "user" => array(
                                                  "id" => $this->dic->user()->getId(),
                                                  "name" => $this->dic->user()->getFullname()
                                              )
                      ),
-                     "events"=> array("onRequestHistory" => "#!!onRequestHistory!!#",
-                         "onRequestHistoryData" => "#!!onRequestHistoryData!!#")
+                     "events" => array("onRequestHistory" => "#!!onRequestHistory!!#",
+                                       "onRequestHistoryData" => "#!!onRequestHistoryData!!#"
+                     )
         );
     }
 
-    protected function buildHistoryArray(int $file_id, UUID $uuid) : array {
+    protected function buildHistoryArray(int $file_id, UUID $uuid) : array
+    {
         $all_versions = $this->storage_service->getAllVersions($file_id);
+        $all_changes = $this->storage_service->getAllChanges($uuid->asString());
         $history_array = array();
         foreach ($all_versions as $version) {
+            $v = $version->getVersion();
+
             $info_array = array(
+                "changes" => '#!!JSON.parse(' . $all_changes[$v]->getChangesObjectString() . ')!!#',
                 "created" => rtrim($version->getCreatedAt()->__toString(), '<br>'),
                 "key" => $uuid->asString() . '-' . $version->getVersion(),
+                "serverVersion" => $all_changes[$v]->getServerVersion(),
                 "user" => array("id" => $version->getUserId(),
-                    "name" => "Sophie"),
+                                "name" => "Sophie"
+                ), // ToDo: How to determine name?
                 "version" => $version->getVersion()
             );
             array_push($history_array, $info_array);
@@ -170,7 +181,8 @@ class xonoEditorGUI extends xonoAbstractGUI
         return $history_array;
     }
 
-    protected function buildUrlArray(): array {
+    protected function buildUrlArray() : array
+    {
         $fileVersions = $this->storage_service->getAllVersions($this->file_id);
         $url = array();
         foreach ($fileVersions as $fv) {
@@ -182,7 +194,8 @@ class xonoEditorGUI extends xonoAbstractGUI
         return $url;
     }
 
-    protected function buildKeysArray() : array {
+    protected function buildKeysArray() : array
+    {
         $fileVersions = $this->storage_service->getAllVersions($this->file_id);
         $keys = array();
         foreach ($fileVersions as $fv) {
@@ -194,13 +207,27 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     }
 
-    protected function generateReturnUrl(): string {
+    protected function buildChangeUrlArray(UUID $uuid) : array
+    {
+        $result = array();
+        $all_changes = $this->storage_service->getAllChanges($uuid->asString());
+        foreach ($all_changes as $change) {
+            $version = $change->getVersion();
+            $url = ltrim(WebAccessService::getWACUrl($change->getChangesUrl()), '.');
+            $result[$version] = $url;
+        }
+        return $result;
+    }
+
+    protected function generateReturnUrl() : string
+    {
         $content_gui = new xonoContentGUI($this->dic, $this->plugin, $this->file_id);
         return $this->dic->ctrl()->getLinkTarget($content_gui, xonoContentGUI::CMD_SHOW_VERSIONS);
 
     }
 
-    protected function determineDocType(string $extension) : string {
+    protected function determineDocType(string $extension) : string
+    {
         switch ($extension) {
             case "pptx":
             case "fodp":

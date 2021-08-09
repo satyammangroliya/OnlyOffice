@@ -40,7 +40,10 @@ class StorageService
      */
     protected $file_repository;
 
-    protected static $changeId = 1;
+    /** @var FileChangeRepository */
+    protected $file_change_repository;
+
+
 
     /**
      * StorageService constructor.
@@ -57,6 +60,7 @@ class StorageService
         $this->file_version_repository = $file_version_repository;
         $this->file_repository = $file_repository;
         $this->file_system_service = new FileSystemService($dic);
+        $this->file_change_repository = new ilDBFileChangeRepository();
     }
 
 
@@ -69,6 +73,7 @@ class StorageService
      */
     public function createNewFileFromUpload(UploadResult $upload_result, int $obj_id) : File
     {
+        // Create DB Entries for File & FileVersion
         $new_file_id = new UUID();
         $path = $this->file_system_service->storeUploadResult($upload_result, $obj_id, $new_file_id->asString());
         $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $upload_result->getMimeType());
@@ -76,6 +81,16 @@ class StorageService
         $version = $this->file_version_repository->create($new_file_id, $this->dic->user()->getId(), $created_at,
             $path);
 
+        // Create DB Entry for FileChange
+        $changeId = $this->file_change_repository->getNextId();
+        $changes = json_encode([
+            "type" => 0,
+            "userid" => $this->dic->user()->getId()
+        ]);
+        $this->file_change_repository->create($changeId, $new_file_id, $version, $changes, '', $path);
+
+
+        // Create & Return FileVersion object
         $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
         $file = new File($new_file_id, $obj_id, $upload_result->getName(), $upload_result->getMimeType());
         return $file;
@@ -119,6 +134,11 @@ class StorageService
     {
         $file = $this->file_repository->getFile($object_id);
         return $this->file_version_repository->getAllVersions($file->getFileUuid());
+    }
+
+    public function getAllChanges(string $uuid) {
+        $file_change_repository = new ilDBFileChangeRepository();
+        return $file_change_repository->getAllChanges($uuid);
     }
 
     public function getFile(int $file_id) : File

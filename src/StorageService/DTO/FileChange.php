@@ -85,14 +85,14 @@ class FileChange
         return $this->version;
     }
 
-    public function setChanges(string $changes)
+    public function setChangesObjectString(string $changes)
     {
-        $this->changes = $changes;
+        $this->changesObjectString = $changes;
     }
 
-    public function getChanges() : string
+    public function getChangesObjectString() : string
     {
-        return $this->changes;
+        return $this->changesObjectString;
     }
 
     public function setServerVersion(string $serverVersion)

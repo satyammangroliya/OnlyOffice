@@ -107,7 +107,7 @@ class FileChangeAR extends ActiveRecord
         $this->changes_object_string = $changesObjectString;
     }
 
-    public function getChanges() : string
+    public function getChangesObjectString() : string
     {
         return $this->changes_object_string;
     }
