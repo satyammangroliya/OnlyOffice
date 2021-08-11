@@ -55,7 +55,7 @@ class ilObjOnlyOfficeListGUI extends ilObjectPluginListGUI
         $this->comments_settings_enabled = false;
         $this->expand_enabled = false;
         $this->info_screen_enabled = false;
-        $this->link_enabled = false;
+        $this->link_enabled = true;
         $this->notes_enabled = false;
         $this->payment_enabled = false;
         $this->preconditions_enabled = false;

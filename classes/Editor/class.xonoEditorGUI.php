@@ -92,7 +92,6 @@ class xonoEditorGUI extends xonoAbstractGUI
         $configJson = str_replace('"#!!', '', $configJson);
         $configJson = str_replace('!!#"', '', $configJson);
 
-        // ToDo: Fix historyArray for multiUser! (JSON.parse should work)
         $historyArray = json_encode($this->buildHistoryArray($this->file_id, $file_version->getFileUuid()));
         $historyArray = str_replace('(\"[{', '("[{', $historyArray);
         $historyArray = str_replace('}]\")', '}]")', $historyArray);
@@ -104,6 +103,7 @@ class xonoEditorGUI extends xonoAbstractGUI
         $historyArray = str_replace('!!#"', '', $historyArray);
 
         $tpl = $this->plugin->getTemplate('html/tpl.editor.html');
+        $tpl->setVariable('BUTTON', $this->plugin->txt('xono_back_button'));
         $tpl->setVariable('SCRIPT_SRC', self::ONLYOFFICE_URL . '/web-apps/apps/api/documents/api.js');
         $tpl->setVariable('CONFIG', $configJson);
         $tpl->setVariable('FILE_TITLE', $file->getTitle());

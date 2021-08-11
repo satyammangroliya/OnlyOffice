@@ -81,4 +81,10 @@ class ilOnlyOfficePlugin extends ilRepositoryObjectPlugin
         // TODO: Implement shouldUseOneUpdateStepOnly() method.
         return false;
     }
+
+    public function allowCopy()
+    {
+        return true;
+    }
+
 }

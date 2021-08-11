@@ -10,6 +10,13 @@ xono_new#:#OnlyOffice anlegen
 xono_read#:#Lesen
 xono_visible#:#Sichtbar
 xono_write#:#Bearbeiten
+xono_edit_button#:#Bearbeiten
+xono_view_button#:#Anzeigen
+xono_back_button#:#Zurück zu ILIAS
+xono_version#:#Version
+xono_date#:#Erstellt am
+xono_editor#:#Erstellt von
+xono_download#:#Herunterladen
 config_configuration#:#Konfiguration
 config_configuration_saved#:#Konfiguration gespeichert
 config_save#:#Speichern

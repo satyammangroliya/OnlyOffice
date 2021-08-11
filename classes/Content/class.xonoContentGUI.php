@@ -103,6 +103,10 @@ class xonoContentGUI extends xonoAbstractGUI
         $tpl->setVariable('URL', json_encode($url));
         $tpl->setVariable('FILENAME', $fileName);
         $tpl->setVariable('EXTENSION', $ext);
+        $tpl->setVariable('VERSION', $this->plugin->txt('xono_version'));
+        $tpl->setVariable('CREATED', $this->plugin->txt('xono_date'));
+        $tpl->setVariable('EDITOR', $this->plugin->txt('xono_editor'));
+        $tpl->setVariable('DOWNLOAD', $this->plugin->txt('xono_download'));
         $content = $tpl->get();
         $this->dic->ui()->mainTemplate()->setContent($content);
     }

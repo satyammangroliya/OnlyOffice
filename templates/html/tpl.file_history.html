@@ -1,6 +1,8 @@
 <head>
-    <link rel="stylesheet" href="../css/styling.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
+
 <body onload="renderBody()">
 <div class="tbltitle">
     <h3>{TBL_TITLE}</h3>
@@ -9,11 +11,10 @@
     <table class="fullwidth_invisible">
         <thead>
         <!-- TODO: Set dynamically depending on language -->
-        <th class="tblheader">Version</th>
-        <th class="tblheader">Date</th>
-        <th class="tblheader">Editor</th>
-        <th class="tblheader">Size</th>
-        <th class="tblheader">Action</th>
+        <th class="tblheader">{VERSION}</th>
+        <th class="tblheader">{CREATED}</th>
+        <th class="tblheader">{EDITOR}</th>
+        <th class="tblheader">{DOWNLOAD}</th>
         </thead>
         <tbody id="table_body">
         </tbody>
@@ -36,13 +37,12 @@
       else
         table += "<tr class='tblrow2'>";
 
-      table += "<td class='il_no_style'>" + version + "</td>";
-      table += "<td class='il_no_style'>" + rowData.createdAt + "</td>";
-      table += "<td class='il_no_style'>" + rowData.user + "</td>";
-      table += "<td class='il_no_style'></td>";
-      table += "<td class='il_no_style'> " +
+      table += "<td>" + version + "</td>";
+      table += "<td>" + rowData.createdAt + "</td>";
+      table += "<td>" + rowData.user + "</td>";
+      table += "<td> " +
         "<a href='" + base_url + url + "' download='{FILENAME}_V" + rowData.version + ".{EXTENSION}'>" + //ToDo: Does not work
-        "<button>Download</button" +
+        "<button><i class=\"fa fa-download\"></i></button" +
         "></a>";
       table += "</tr>";
     }
