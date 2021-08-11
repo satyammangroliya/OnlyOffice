@@ -96,6 +96,9 @@ class xonoEditorGUI extends xonoAbstractGUI
         $historyArray = json_encode($this->buildHistoryArray($this->file_id, $file_version->getFileUuid()));
         $historyArray = str_replace('(\"[{', '("[{', $historyArray);
         $historyArray = str_replace('}]\")', '}]")', $historyArray);
+        $historyArray = str_replace('(\"{', '("{', $historyArray);
+        $historyArray = str_replace('}\")', '}")', $historyArray);
+
 
         $historyArray = str_replace('"#!!', '', $historyArray);
         $historyArray = str_replace('!!#"', '', $historyArray);
@@ -191,7 +194,7 @@ class xonoEditorGUI extends xonoAbstractGUI
         $url = array();
         foreach ($fileVersions as $fv) {
             $old_url = $fv->getUrl();
-            $wac_url = ltrim(WebAccessService::getWACUrl($old_url), "./");
+            $wac_url = ltrim(WebAccessService::getWACUrl($old_url), ".");
             $version = $fv->getVersion();
             $url[$version] = $wac_url;
         }
