@@ -34,9 +34,9 @@ class xonoContentGUI extends xonoAbstractGUI
     protected
         $file_id;
 
-    const CMD_STANDARD = 'index';
+    const CMD_STANDARD = 'showVersions';
     const CMD_SHOW_VERSIONS = 'showVersions';
-
+    const CMD_DOWNLOAD = 'downloadFileVersion';
 
 
     public function __construct(
@@ -58,6 +58,8 @@ class xonoContentGUI extends xonoAbstractGUI
             new ilDBFileRepository()
         );
     }
+
+
 
     public final function getType() : string
     {
@@ -88,13 +90,7 @@ class xonoContentGUI extends xonoAbstractGUI
         $ext = pathinfo($file->getTitle(), PATHINFO_EXTENSION);
         $fileName = rtrim($file->getTitle(), '.'.$ext);
         $json = json_encode($fileVersions);
-        $url = array();
-        foreach ($fileVersions as $fv) {
-            $old_url = $fv->getUrl();
-            $wac_url = ltrim(WebAccessService::getWACUrl($old_url), ".");
-            $version = $fv->getVersion();
-            $url[$version] = $wac_url;
-        }
+        $url = $this->getDownloadUrlArray($fileVersions, $fileName, $ext);
 
         $tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
         $tpl->setVariable('TBL_TITLE', "Document History");
@@ -111,6 +107,13 @@ class xonoContentGUI extends xonoAbstractGUI
         $this->dic->ui()->mainTemplate()->setContent($content);
     }
 
+    // ToDo: Does not work yet!
+    protected function downloadFileVersion() {
+        $path = $_GET['path'];
+        $name = $_GET['name'];
+        ilFileDelivery::deliverFileAttached($path, $name);
+        exit;
+    }
 
     /**
      * Get DIC interface
@@ -119,6 +122,20 @@ class xonoContentGUI extends xonoAbstractGUI
     protected static final function dic() : DICInterface
     {
         return DICStatic::dic();
+    }
+
+    protected function getDownloadUrlArray(array $fileVersions, string $filename, string $extension) : array
+    {
+        $result = array();
+        foreach ($fileVersions as $fv) {
+            $version = $fv->getVersion();
+            $name = $filename . '_V' . $version . '.' . $extension;
+            $this->dic->ctrl()->setParameterByClass(xonoContentGUI::class, 'path', $fv->getUrl());
+            $this->dic->ctrl()->setParameterByClass(xonoContentGUI::class, 'name', $name);
+            $path = $this->dic->ctrl()->getLinkTargetByClass(xonoContentGUI::class, self::CMD_DOWNLOAD);
+            $result[$version] = '/' . $path;
+        }
+        return $result;
     }
 
 }

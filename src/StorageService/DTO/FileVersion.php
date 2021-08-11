@@ -134,11 +134,12 @@ class FileVersion implements \JsonSerializable
     public function jsonSerialize()
     {
         global $DIC;
+        $user = new \ilObjUser($this->user_id);
         return [
             'version' => $this->version,
             'createdAt' => $this->created_at->get(2),
             'userId' => $this->user_id,
-            'user' => $DIC->user()->getLoginByUserId($this->user_id),
+            'user' => $user->getPublicName(),
             'url' => $this->url,
             'uuid' => $this->file_uuid->asString()
         ];
