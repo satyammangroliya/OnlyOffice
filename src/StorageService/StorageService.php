@@ -53,13 +53,14 @@ class StorageService
     public function __construct(
         Container $dic,
         FileVersionRepository $file_version_repository,
-        FileRepository $file_repository
+        FileRepository $file_repository,
+        FileChangeRepository $file_change_repository
     ) {
         $this->dic = $dic;
         $this->file_version_repository = $file_version_repository;
         $this->file_repository = $file_repository;
         $this->file_system_service = new FileSystemService($dic);
-        $this->file_change_repository = new ilDBFileChangeRepository(); // ToDo: Abstrahation
+        $this->file_change_repository = $file_change_repository;
     }
 
     /**

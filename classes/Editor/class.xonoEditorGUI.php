@@ -8,6 +8,7 @@ use srag\DIC\OnlyOffice\DIC\DICInterface;
 use srag\DIC\OnlyOffice\DICStatic;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\CryptoService\JwtService;
 use \ILIAS\DI\Container;
 use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
@@ -39,6 +40,7 @@ class xonoEditorGUI extends xonoAbstractGUI
     // TODO: Set correct values gloablly
     const BASE_URL = 'http://192.168.3.103:8080'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
     const ONLYOFFICE_URL = 'http://192.168.3.103:3000'; // Path to OnlyOffice Root directory: http://<OO_domain>:<PortNr>
+    const ONLYOFFICE_KEY = 'secret';
 
     public function __construct(
         Container $dic,
@@ -55,7 +57,8 @@ class xonoEditorGUI extends xonoAbstractGUI
         $this->storage_service = new StorageService(
             self::dic()->dic(),
             new ilDBFileVersionRepository(),
-            new ilDBFileRepository()
+            new ilDBFileRepository(),
+            new ilDBFileChangeRepository()
         );
     }
 
@@ -84,159 +87,126 @@ class xonoEditorGUI extends xonoAbstractGUI
     protected function editFile()
     {
         $file = $this->storage_service->getFile($this->file_id);
-        $file_version = $this->storage_service->getLatestVersions($file->getUuid());
         $all_versions = $this->storage_service->getAllVersions($this->file_id);
-
-
-        $config = $this->buildJSONArray($file, $file_version);
-        $token = JwtService::jwtEncode($config, 'secret'); // TODO Define key globally
-        $config['token'] = $token;
-        $configJson = json_encode($config);
-        $configJson = str_replace('"#!!', '', $configJson);
-        $configJson = str_replace('!!#"', '', $configJson);
-
-        $historyArray = json_encode($this->buildHistoryArray($this->file_id, $file_version->getFileUuid()));
-        $historyArray = str_replace('(\"[{', '("[{', $historyArray);
-        $historyArray = str_replace('}]\")', '}]")', $historyArray);
-        $historyArray = str_replace('(\"{', '("{', $historyArray);
-        $historyArray = str_replace('}\")', '}")', $historyArray);
-        $historyArray = str_replace('"#!!', '', $historyArray);
-        $historyArray = str_replace('!!#"', '', $historyArray);
+        $latest_version = $this->storage_service->getLatestVersions($file->getUuid());
 
         $tpl = $this->plugin->getTemplate('html/tpl.editor.html');
+        $tpl->setVariable('FILE_TITLE', $file->getTitle());
         $tpl->setVariable('BUTTON', $this->plugin->txt('xono_back_button'));
         $tpl->setVariable('SCRIPT_SRC', self::ONLYOFFICE_URL . '/web-apps/apps/api/documents/api.js');
-        $tpl->setVariable('CONFIG', $configJson);
-        $tpl->setVariable('FILE_TITLE', $file->getTitle());
+        $tpl->setVariable('CONFIG', $this->config($file, $latest_version));
         $tpl->setVariable('RETURN', $this->generateReturnUrl());
-        $tpl->setVariable('LATEST', $file_version->getVersion());
-        $tpl->setVariable('HISTORY', $historyArray);
-        $tpl->setVariable('HISTORY_DATA', json_encode($this->buildHistoryDataArray($all_versions)));
+        $tpl->setVariable('LATEST', $latest_version->getVersion());
+        $tpl->setVariable('HISTORY', $this->history($latest_version, $all_versions));
+        $tpl->setVariable('HISTORY_DATA', $this->historyData($all_versions));
         $content = $tpl->get();
         echo $content;
         exit;
 
     }
 
-    protected function generateCallbackUrl(UUID $file_uuid, int $file_id, string $extension) : string
+    protected function config(File $file, FileVersion $fileVersion) : string
     {
-        $session = array("session_id" => $GLOBALS['DIC']['ilAuthSession']->getId(), "client_id" => CLIENT_ID);
-        $session_jwt = JwtService::jwtEncode(json_encode($session), 'secret'); // TODO Define key globally
-        $path = 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/save.php?' .
-            'token=' . $session_jwt .
-            '&uuid=' . $file_uuid->asString() .
-            '&file_id=' . $file_id .
-            '&client_id=' . CLIENT_ID .
-            '&ext=' . $extension;
-        return $path;
-    }
+        $as_array = array(); // Config Array
+        $extension = pathinfo($fileVersion->getUrl(), PATHINFO_EXTENSION);
 
-    protected function getWACUrl(string $url) : string
-    {
-        ilWACSignedPath::setTokenMaxLifetimeInSeconds(ilWACSignedPath::MAX_LIFETIME);
-        $file_path = ilWACSignedPath::signFile(ilUtil::getWebspaceDir() . $url);
-        $file_path .= '&' . ilWebAccessChecker::DISPOSITION . '=' . ilFileDelivery::DISP_ATTACHMENT;
-        return $file_path;
+        // general config
+        $as_array['documentType'] = $this->determineDocType($extension);
 
-    }
+        // document config
+        $document = array(); // SubArray "document"
+        $document['fileType'] = $file->getFileType();
+        $document['key'] = $this->generateDocumentKey($fileVersion);
+        $document['title'] = $file->getTitle();
+        $document['url'] = self::BASE_URL . ltrim(WebAccessService::getWACUrl($fileVersion->getUrl()), ".");
+        $as_array['document'] = $document;
 
-    protected function buildJSONArray(File $f, FileVersion $fv) : array
-    {
-        $extension = pathinfo($fv->getUrl(), PATHINFO_EXTENSION);
-        return array("documentType" => $this->determineDocType($extension),
-                     "document" =>
-                         array("filetype" => $f->getFileType(),
-                               "key" => $f->getUuid()->asString() . '-' . $fv->getVersion(),
-                               "title" => $f->getTitle(),
-                               "url" => self::BASE_URL . ltrim($this->getWACUrl($fv->getUrl()), ".") . '.' . $extension
-                         ),
-                     "editorConfig" => array("callbackUrl" => self::BASE_URL . '/' . $this->generateCallbackUrl($f->getUuid(),
-                             $f->getObjId(), $extension),
-                                             "user" => array(
-                                                 "id" => $this->dic->user()->getId(),
-                                                 "name" => $this->dic->user()->getFullname()
-                                             )
-                     ),
-                     "events" => array("onRequestHistory" => "#!!onRequestHistory!!#",
-                                       "onRequestHistoryData" => "#!!onRequestHistoryData!!#"
-                     )
+        // editor config
+        $editor = array();
+        $editor['callbackUrl'] = $this->generateCallbackUrl($file->getUuid(),
+            $file->getObjId(), $extension);
+        $editor['user'] = $this->buildUserArray($this->dic->user()->getId());
+        $as_array['editorConfig'] = $editor;
+
+        // events config
+        $as_array['events'] = array("onRequestHistory" => "#!!onRequestHistory!!#",
+                                    "onRequestHistoryData" => "#!!onRequestHistoryData!!#"
         );
+
+        // add token
+        $token = JwtService::jwtEncode($as_array, self::ONLYOFFICE_KEY);
+        $as_array['token'] = $token;
+
+        // convert to valid string
+        $result = json_encode($as_array);
+        $result = str_replace('"#!!', '', $result);
+        $result = str_replace('!!#"', '', $result);
+        return $result;
+
     }
 
-    protected function buildHistoryArray(int $file_id, UUID $uuid) : array
+    protected function history(FileVersion $latestVersion, array $all_versions) : string
     {
-        $all_versions = $this->storage_service->getAllVersions($file_id);
-        $all_changes = $this->storage_service->getAllChanges($uuid->asString());
+        $all_changes = $this->storage_service->getAllChanges($latestVersion->getFileUuid()->asString());
         $history_array = array();
+
+        // add all versions to history
         foreach ($all_versions as $version) {
             $v = $version->getVersion();
-
             $info_array = array(
                 "changes" => '#!!JSON.parse("' . $all_changes[$v]->getChangesObjectString() . '")!!#',
                 "created" => rtrim($version->getCreatedAt()->__toString(), '<br>'),
-                "key" => $uuid->asString() . '-' . $version->getVersion(),
+                "key" => $this->generateDocumentKey($version),
                 "serverVersion" => $all_changes[$v]->getServerVersion(),
-                "user" => array("id" => $version->getUserId(),
-                                "name" => $this->getUserName($version->getUserId()) // ToDo: How to determine name?
-                ),
+                "user" => $this->buildUserArray($version->getUserId()),
                 "version" => $version->getVersion()
             );
             array_push($history_array, $info_array);
         }
-        return $history_array;
-    }
 
-    protected function buildUrlArray() : array
-    {
-        $fileVersions = $this->storage_service->getAllVersions($this->file_id);
-        $url = array();
-        foreach ($fileVersions as $fv) {
-            $old_url = $fv->getUrl();
-            $wac_url = ltrim(WebAccessService::getWACUrl($old_url), ".");
-            $version = $fv->getVersion();
-            $url[$version] = $wac_url;
-        }
-        return $url;
-    }
+        // convert to valid string
+        $result = json_encode($history_array);
+        $result = str_replace('(\"[{', '("[{', $result);
+        $result = str_replace('}]\")', '}]")', $result);
+        $result = str_replace('(\"{', '("{', $result);
+        $result = str_replace('}\")', '}")', $result);
+        $result = str_replace('"#!!', '', $result);
+        $result = str_replace('!!#"', '', $result);
 
-    protected function buildChangeUrlArray(UUID $uuid) : array
-    {
-        $result = array();
-        $all_changes = $this->storage_service->getAllChanges($uuid->asString());
-        foreach ($all_changes as $change) {
-            $version = $change->getVersion();
-            $url = ltrim(WebAccessService::getWACUrl($change->getChangesUrl()), '.');
-            $result[$version] = $url;
-        }
         return $result;
     }
 
-    protected function buildHistoryDataArray(array $allVersions) : array
+    protected function historyData(array $allVersions) : string
     {
         $result = array();
         foreach ($allVersions as $version) {
             $data_array = array();
             $v = $version->getVersion();
             $uuid = $version->getFileUuid()->asString();
-            $change_url = $this->storage_service->getChangeUrl($uuid, $v);
 
+            $change_url = $this->storage_service->getChangeUrl($uuid, $v);
             $data_array['changesUrl'] = self::BASE_URL . ltrim(WebAccessService::getWACUrl($change_url), '.');
+
             $data_array['key'] = $uuid . '-' . $v;
+
             if ($v > 1) {
                 $data_array['previous'] = $this->buildPreviousArray($version);
             }
+
             $data_array['url'] = self::BASE_URL . ltrim(WebAccessService::getWACUrl($version->getUrl()), '.');
+
             $data_array['version'] = $v;
 
-            //Compute JWT
+            //token
             $token = JwtService::jwtEncode($data_array, "secret"); // ToDo: Set Key globally
             $data_array['token'] = $token;
             $result[$v] = $data_array;
 
         }
-        return $result;
+        return json_encode($result);
     }
 
+    /* --- Helper Methods --- */
     protected function generateReturnUrl() : string
     {
         $content_gui = new xonoContentGUI($this->dic, $this->plugin, $this->file_id);
@@ -276,10 +246,22 @@ class xonoEditorGUI extends xonoAbstractGUI
         }
     }
 
-    protected function getUserName(int $user_id)
+    protected function generateCallbackUrl(UUID $file_uuid, int $file_id, string $extension) : string
     {
-        return $this->dic->user()->getLoginByUserId($user_id);
+        $session = array("session_id" => $GLOBALS['DIC']['ilAuthSession']->getId(), "client_id" => CLIENT_ID);
+        $session_jwt = JwtService::jwtEncode(json_encode($session), 'secret'); // TODO Define key globally
+        $path = 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/save.php?' .
+            'token=' . $session_jwt .
+            '&uuid=' . $file_uuid->asString() .
+            '&file_id=' . $file_id .
+            '&client_id=' . CLIENT_ID .
+            '&ext=' . $extension;
+        return self::BASE_URL . '/' . $path;
+    }
 
+    protected function generateDocumentKey(FileVersion $fv) : string
+    {
+        return $fv->getFileUuid()->asString() . '-' . $fv->getVersion();
     }
 
     protected function buildPreviousArray(FileVersion $version) : array
@@ -292,6 +274,12 @@ class xonoEditorGUI extends xonoAbstractGUI
         $url = self::BASE_URL . ltrim(WebAccessService::getWACUrl($previous->getUrl()), '.');
         $result['url'] = $url;
         return $result;
+    }
+
+    protected function buildUserArray(int $user_id) : array
+    {
+        $user = new ilObjUser($user_id);
+        return array("id" => $user_id, "name" => $user->getPublicName());
     }
 
     /**

@@ -6,6 +6,7 @@ use ILIAS\FileUpload\Location;
 use srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettingsFormGUI;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
@@ -66,7 +67,8 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $this->storage_service = new StorageService(
             self::dic()->dic(),
             new ilDBFileVersionRepository(),
-            new ilDBFileRepository()
+            new ilDBFileRepository(),
+            new ilDBFileChangeRepository()
         );
     }
 

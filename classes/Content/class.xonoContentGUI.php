@@ -5,6 +5,7 @@ use srag\DIC\OnlyOffice\DIC\DICInterface;
 use srag\DIC\OnlyOffice\DICStatic;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
 
 
@@ -55,7 +56,8 @@ class xonoContentGUI extends xonoAbstractGUI
         $this->storage_service = new StorageService(
             self::dic()->dic(),
             new ilDBFileVersionRepository(),
-            new ilDBFileRepository()
+            new ilDBFileRepository(),
+            new ilDBFileChangeRepository()
         );
     }
 
