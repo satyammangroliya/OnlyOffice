@@ -14,6 +14,13 @@ Note that the free community edition does not provide all features and only allo
 We recommend using docker-compose for installation as specifications can easily be set within the .yml file.  
 Installation Guides can be found at https://helpcenter.onlyoffice.com/installation/docs-index.aspx
 
+#### Security Configuration in OnlyOffice
+(Note that this can only be done if you installed OnlyOffice docs using docker compose!)  
+Open your OnlyOffice's docker-compose.yml file. 
+In onlyoffice-documentserver.environment section, uncomment all variables starting with "JWT".
+Set a safer password in JWT_SECRET variable.
+
+
 
 ### Install OnlyOffice-Plugin
 Start at your ILIAS root directory
@@ -23,13 +30,13 @@ cd Customizing/global/plugins/Services/Repository/RepositoryObject
 git clone https://github.com/studer-raimann/OnlyOffice.git OnlyOffice
 ```
 
-#### Adapt ILIAS 
+#### Configure ILIAS 
 Start at your ILIAS root directory.
 Open .htaccess file. Add the following line:
 ``` code
-Header set Access-Control-Allow-Origin "http://example.com"
+Header set Access-Control-Allow-Origin "http://onlyoffic_docs.example"
 ```
-Where "example.com" is the name of the server where OnlyOffice Docs is installed.
+Where "onlyoffice_docs.example" is the name of the server where OnlyOffice Docs is installed.
 
 Setze globale Variablen!
 
