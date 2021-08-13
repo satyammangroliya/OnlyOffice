@@ -15,4 +15,8 @@
 \srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeAR::updateDB();
 ?>
 
+<#4>
+<?php
+\srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileAR::updateDB();
+?>
 

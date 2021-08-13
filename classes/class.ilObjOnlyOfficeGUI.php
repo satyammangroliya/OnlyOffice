@@ -46,6 +46,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
 
     const TAB_SHOW_CONTENTS = "show_contents";
     const POST_VAR_FILE = 'upload_files';
+    const POST_VAR_OPEN_SETTING = 'opening_settings';
     /**
      * @var ilObjOnlyOffice
      */
@@ -164,10 +165,15 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     public function initCreateForm(/*string*/ $a_new_type) : ilPropertyFormGUI
     {
         $form = parent::initCreateForm($a_new_type);
-
         $file_input = new ilFileInputGUI($this->txt('form_input_file'), self::POST_VAR_FILE);
         $file_input->setRequired(true);
         $form->addItem($file_input);
+        $opening_setting = new ilRadioGroupInputGUI($this->plugin->txt("form_open_setting"), self::POST_VAR_OPEN_SETTING);
+        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_editor"), "editor" ));
+        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_download"), "download"));
+        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_ilias"), "ilias"));
+        $opening_setting->setRequired(true);
+        $form->addItem($opening_setting);
 
         return $form;
     }
@@ -205,6 +211,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
      */
     protected function settings()/*: void*/
     {
+        self::dic()->logger()->root()->info("Settings Post");
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
         $form = $this->getSettingsForm();

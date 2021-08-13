@@ -61,6 +61,14 @@ class FileAR extends ActiveRecord
     protected $file_type;
 
     /**
+     * @var string
+     * @db_has_field true
+     * @db_fieldtype text
+     * @db_length 10
+     */
+    protected $open_setting;
+
+    /**
      * @return UUID
      */
     public function getUUID() : UUID
@@ -138,6 +146,15 @@ class FileAR extends ActiveRecord
     public function setFileType(string $file_type)
     {
         $this->file_type = $file_type;
+    }
+
+    public function getOpenSetting() : string {
+        return $this->open_setting;
+    }
+
+    public function setOpenSetting(string $open_setting)  {
+        if ($open_setting == "editor" || $open_setting == "browser" || $open_setting == "ilias")
+            $this->open_setting = $open_setting;
     }
 
     /**

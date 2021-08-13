@@ -20,7 +20,7 @@ interface FileRepository
      * @param string $file_type
      * @return mixed
      */
-    public function create(UUID $file_uuid, int $obj_id, string $getName, string $file_type);
+    public function create(UUID $file_uuid, int $obj_id, string $getName, string $file_type, string $open_setting);
 
     public function getFile(int $obj_id) : File;
 

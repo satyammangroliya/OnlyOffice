@@ -63,7 +63,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initCommands()/*: void*/
+    protected function initCommands(): void
     {
         $this->addCommandButton(ilObjOnlyOfficeGUI::CMD_SETTINGS_STORE, self::plugin()->translate("save", self::LANG_MODULE));
 
@@ -74,7 +74,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initFields()/*: void*/
+    protected function initFields(): void
     {
         $this->fields = [
             "title"       => [
@@ -95,7 +95,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initId()/*: void*/
+    protected function initId(): void
     {
 
     }
@@ -104,7 +104,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function initTitle()/*: void*/
+    protected function initTitle(): void
     {
         $this->setTitle(self::plugin()->translate("settings", self::LANG_MODULE));
     }
@@ -113,7 +113,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     /**
      * @inheritDoc
      */
-    protected function storeValue(/*string*/ $key, $value)/*: void*/
+    protected function storeValue(/*string*/ $key, $value): void
     {
         switch ($key) {
             default:

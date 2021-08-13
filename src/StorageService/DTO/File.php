@@ -31,6 +31,9 @@ class File
      */
     protected $file_type;
 
+    /** @var string  */
+    protected $open_setting;
+
 
     /**
      * File constructor.
@@ -40,12 +43,13 @@ class File
      * @param string        $title
      * @param string        $file_type
      */
-    public function __construct(UUID $uuid, int $obj_id, string $title, string $file_type)
+    public function __construct(UUID $uuid, int $obj_id, string $title, string $file_type, string $open_setting)
     {
         $this->uuid = $uuid;
         $this->title = $title;
         $this->file_type = $file_type;
         $this->obj_id = $obj_id;
+        $this->open_setting = $open_setting;
     }
 
 
@@ -86,6 +90,15 @@ class File
     public function getFileUuid(): UUID
     {
         return $this->uuid;
+    }
+
+    public function getOpenSetting() : string
+    {
+        return $this->open_setting;
+    }
+    public function setOpenSetting(string $open_setting) {
+        if ($open_setting == "editor" || $open_setting == "browser" || $open_setting == "ilias")
+            $this->open_setting = $open_setting;
     }
 
 }
