@@ -149,7 +149,6 @@ class FileAR extends ActiveRecord
     }
 
     public function getOpenSetting() : string {
-        return "ilias"; // ToDo: Remove default value
         return $this->open_setting;
     }
 

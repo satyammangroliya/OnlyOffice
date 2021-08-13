@@ -95,7 +95,6 @@ class File
 
     public function getOpenSetting() : string
     {
-        return "ilias"; // ToDo: Remove default value
         return $this->open_setting;
     }
     public function setOpenSetting(string $open_setting) {
