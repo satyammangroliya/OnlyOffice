@@ -7,6 +7,7 @@ use ILIAS\DI\Container;
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use Matrix\Exception;
 
 /**
@@ -72,7 +73,8 @@ class xonoCallbackHandler
         $this->storage_service = new StorageService(
             $this->dic,
             new ilDBFileVersionRepository(),
-            new ilDBFileRepository()
+            new ilDBFileRepository(),
+            new ilDBFileChangeRepository()
         );
     }
 
