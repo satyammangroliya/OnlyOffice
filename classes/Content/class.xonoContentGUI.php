@@ -17,7 +17,7 @@ use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
 class xonoContentGUI extends xonoAbstractGUI
 {
     // TODO: Set correct values globally
-    const BASE_URL = 'http://192.168.3.103:8080'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
+    const BASE_URL = 'http://192.168.3.103:8080';
 
     /**
      * @var ilOnlyOfficePlugin
@@ -96,6 +96,8 @@ class xonoContentGUI extends xonoAbstractGUI
 
         $tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
         $tpl->setVariable('TBL_TITLE', "Document History");
+        $tpl->setVariable('FORWARD', $this->buttonTarget());
+        $tpl->setVariable('BUTTON', $this->buttonName());
         $tpl->setVariable('TBL_DATA', $json);
         $tpl->setVariable('BASE_URL', self::BASE_URL);
         $tpl->setVariable('URL', json_encode($url));
@@ -124,6 +126,15 @@ class xonoContentGUI extends xonoAbstractGUI
     protected static final function dic() : DICInterface
     {
         return DICStatic::dic();
+    }
+
+    protected function buttonName() {
+        // ToDo: Determine ButtonName based on access rights
+        return "Edit File";
+    }
+
+    protected function buttonTarget() {
+        return $this->dic->ctrl()->getLinkTargetByClass(xonoEditorGUI::class, xonoEditorGUI::CMD_EDIT);
     }
 
     protected function getDownloadUrlArray(array $fileVersions, string $filename, string $extension) : array

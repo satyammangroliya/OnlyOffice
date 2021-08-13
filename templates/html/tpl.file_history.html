@@ -1,16 +1,16 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
 </head>
-
 <body onload="renderBody()">
 <div class="tbltitle">
     <h3>{TBL_TITLE}</h3>
+
 </div>
 <div class="ilTableOuter table-responsive">
     <table class="fullwidth_invisible">
         <thead>
-        <!-- TODO: Set dynamically depending on language -->
         <th class="tblheader">{VERSION}</th>
         <th class="tblheader">{CREATED}</th>
         <th class="tblheader">{EDITOR}</th>
@@ -19,6 +19,12 @@
         <tbody id="table_body">
         </tbody>
     </table>
+</div>
+<br/>
+<div style="text-align: right">
+    <button type="button" onclick="window.location.href='{FORWARD}'" class="btn btn-primary btn-lg">
+        {BUTTON}
+    </button>
 </div>
 </body>
 
