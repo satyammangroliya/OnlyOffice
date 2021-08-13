@@ -76,7 +76,9 @@ final class Repository extends AbstractRepository
     protected function getFields() : array
     {
         return [
-            ConfigFormGUI::KEY_SOME => Config::TYPE_STRING
+            ConfigFormGUI::KEY_BASEURL => Config::TYPE_STRING,
+            ConfigFormGUI::KEY_ONLYOFFICE_URL => Config::TYPE_STRING,
+            ConfigFormGUI::KEY_ONLYOFFICE_SECRET => Config::TYPE_STRING
         ];
     }
 }
