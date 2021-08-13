@@ -3,6 +3,7 @@
 namespace srag\Plugins\OnlyOffice\StorageService\Infrastructure\File;
 
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
+use srag\Plugins\OnlyOffice\StorageService\DTO\FileChange;
 
 /**
  * interface FileChangeRepository
@@ -35,5 +36,7 @@ interface FileChangeRepository
     public function getNextId(): int;
 
     public function getAllChanges(string $uuid): array;
+
+    public function getChange(string $uuid, int $version) : FileChange;
 
 }

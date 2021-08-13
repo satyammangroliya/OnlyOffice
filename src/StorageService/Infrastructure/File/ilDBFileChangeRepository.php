@@ -66,4 +66,11 @@ class ilDBFileChangeRepository implements FileChangeRepository
         $changesUrl = $fc_ar->getChangesUrl();
         return new FileChange($change_id, $file_uuid, $version, $changesObjectString, $serverVersion, $changesUrl);
     }
+
+    public function getChange(string $uuid, int $version) : FileChange
+    {
+        /** @var FileChangeAR $file_change_ar */
+        $file_change_ar = FileChangeAR::where(['file_uuid' => $uuid, 'version' => $version])->first();
+        return $this->buildFileChangeFromAR($file_change_ar);
+    }
 }

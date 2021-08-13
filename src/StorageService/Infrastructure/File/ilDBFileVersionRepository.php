@@ -104,5 +104,10 @@ class ilDBFileVersionRepository implements FileVersionRepository
         return new FileVersion($version, $created_at, $user_id, $url, $file_uuid);
     }
 
-
+    public function getPreviousVersion(string $uuid, int $version) : FileVersion
+    {
+        /** @var FileVersionAR $previous_ar */
+        $previous_ar = FileVersionAR::where(['file_uuid' => $uuid, 'version' => ($version-1)])->first();
+        return $this->buildFileVersionFromAR($previous_ar);
+    }
 }

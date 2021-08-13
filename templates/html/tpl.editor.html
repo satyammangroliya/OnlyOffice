@@ -11,37 +11,19 @@
 <script type="text/javascript" src="{SCRIPT_SRC}"></script>
 <script type="text/javascript">
 
-  var url_array = JSON.parse('{URL}');
-  var keys_array = JSON.parse('{KEYS}');
-  var change_url_array = JSON.parse('{CHANGE_URL}');
+  var history_data_array = JSON.parse('{HISTORY_DATA}');
 
   var onRequestHistory = function(event) {
     docEditor.refreshHistory({
       "currentVersion": {LATEST},
-      "history": {HISTORY_DATA}
+      "history": {HISTORY}
     });
   };
 
   var onRequestHistoryData = function(event) {
     var version = event.data;
     if (version > 1) {
-    docEditor.setHistoryData({
-      "changesUrl": "{BASE_URL}" + change_url_array[version],
-      "key": keys_array[version],
-      "previous": {
-        "key": keys_array[version -1],
-        "url": "{BASE_URL}" + url_array[version-1]
-      },
-      "url": "{BASE_URL}" + url_array[version],
-      "version": version
-    }); }
-    else {
-      docEditor.setHistoryData({
-        "changesUrl": "{BASE_URL}" + change_url_array[version],
-        "key": keys_array[version],
-        "url": "{BASE_URL}" + url_array[version],
-        "version": version
-      });
+    docEditor.setHistoryData(history_data_array[version]);
     }
   };
 

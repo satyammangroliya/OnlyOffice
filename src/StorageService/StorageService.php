@@ -15,6 +15,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeRepository;
+use srag\Plugins\OnlyOffice\StorageService\DTO\FileChange;
 
 /**
  * Class StorageService
@@ -58,7 +59,7 @@ class StorageService
         $this->file_version_repository = $file_version_repository;
         $this->file_repository = $file_repository;
         $this->file_system_service = new FileSystemService($dic);
-        $this->file_change_repository = new ilDBFileChangeRepository();
+        $this->file_change_repository = new ilDBFileChangeRepository(); // ToDo: Abstrahation
     }
 
     /**
@@ -118,11 +119,10 @@ class StorageService
         $version = $this->file_version_repository->create($uuid, $editor_id, $created_at, $path);
 
         //Store Changes and Create Database Entry
-        $file_change_repository = new ilDBFileChangeRepository();
         $change_path = $this->file_system_service->storeChanges($change_content, $file_id, $uuid_string, $version,
             $change_extension);
-        $id = $file_change_repository->getNextId(); // ToDo: Do this in a better way
-        $file_change_repository->create($id, $uuid, $version, $changes_object, $serverVersion,
+        $id = $this->file_change_repository->getNextId(); // ToDo: Do this in a better way
+        $this->file_change_repository->create($id, $uuid, $version, $changes_object, $serverVersion,
             $change_path);
 
         // Return FileVersion object
@@ -138,8 +138,17 @@ class StorageService
 
     public function getAllChanges(string $uuid)
     {
-        $file_change_repository = new ilDBFileChangeRepository();
-        return $file_change_repository->getAllChanges($uuid);
+        return $this->file_change_repository->getAllChanges($uuid);
+    }
+
+    public function getChangeUrl(string $uuid, int $version) : string {
+        $file_change = $this->file_change_repository->getChange($uuid, $version);
+        return $file_change->getChangesUrl();
+
+    }
+
+    public function getPreviousVersion (string $uuid, int $version) {
+        return $this->file_version_repository->getPreviousVersion($uuid, $version);
     }
 
     public function getFile(int $file_id) : File
