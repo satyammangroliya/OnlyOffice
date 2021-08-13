@@ -37,8 +37,8 @@ class xonoEditorGUI extends xonoAbstractGUI
     const CMD_STANDARD = "editFile";
 
     // TODO: Set correct values gloablly
-    const BASE_URL = 'http://192.168.99.72:8080'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
-    const ONLYOFFICE_URL = 'http://192.168.99.72:3000'; // Path to OnlyOffice Root directory: http://<OO_domain>:<PortNr>
+    const BASE_URL = 'http://192.168.3.103:8080'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
+    const ONLYOFFICE_URL = 'http://192.168.3.103:3000'; // Path to OnlyOffice Root directory: http://<OO_domain>:<PortNr>
 
     public function __construct(
         Container $dic,
@@ -85,6 +85,9 @@ class xonoEditorGUI extends xonoAbstractGUI
     {
         $file = $this->storage_service->getFile($this->file_id);
         $file_version = $this->storage_service->getLatestVersions($file->getUuid());
+        $all_versions = $this->storage_service->getAllVersions($this->file_id);
+
+
         $config = $this->buildJSONArray($file, $file_version);
         $token = JwtService::jwtEncode($config, 'secret'); // TODO Define key globally
         $config['token'] = $token;
@@ -97,8 +100,6 @@ class xonoEditorGUI extends xonoAbstractGUI
         $historyArray = str_replace('}]\")', '}]")', $historyArray);
         $historyArray = str_replace('(\"{', '("{', $historyArray);
         $historyArray = str_replace('}\")', '}")', $historyArray);
-
-
         $historyArray = str_replace('"#!!', '', $historyArray);
         $historyArray = str_replace('!!#"', '', $historyArray);
 
@@ -109,11 +110,8 @@ class xonoEditorGUI extends xonoAbstractGUI
         $tpl->setVariable('FILE_TITLE', $file->getTitle());
         $tpl->setVariable('RETURN', $this->generateReturnUrl());
         $tpl->setVariable('LATEST', $file_version->getVersion());
-        $tpl->setVariable('HISTORY_DATA', $historyArray);
-        $tpl->setVariable('URL', json_encode($this->buildUrlArray()));
-        $tpl->setVariable('BASE_URL', self::BASE_URL);
-        $tpl->setVariable('KEYS', json_encode($this->buildKeysArray()));
-        $tpl->setVariable('CHANGE_URL' , json_encode($this->buildChangeUrlArray($file_version->getFileUuid())));
+        $tpl->setVariable('HISTORY', $historyArray);
+        $tpl->setVariable('HISTORY_DATA', json_encode($this->buildHistoryDataArray($all_versions)));
         $content = $tpl->get();
         echo $content;
         exit;
@@ -201,19 +199,6 @@ class xonoEditorGUI extends xonoAbstractGUI
         return $url;
     }
 
-    protected function buildKeysArray() : array
-    {
-        $fileVersions = $this->storage_service->getAllVersions($this->file_id);
-        $keys = array();
-        foreach ($fileVersions as $fv) {
-            $key = $fv->getFileUuid()->asString() . '-' . $fv->getVersion();
-            $version = $fv->getVersion();
-            $keys[$version] = $key;
-        }
-        return $keys;
-
-    }
-
     protected function buildChangeUrlArray(UUID $uuid) : array
     {
         $result = array();
@@ -222,6 +207,32 @@ class xonoEditorGUI extends xonoAbstractGUI
             $version = $change->getVersion();
             $url = ltrim(WebAccessService::getWACUrl($change->getChangesUrl()), '.');
             $result[$version] = $url;
+        }
+        return $result;
+    }
+
+    protected function buildHistoryDataArray(array $allVersions) : array
+    {
+        $result = array();
+        foreach ($allVersions as $version) {
+            $data_array = array();
+            $v = $version->getVersion();
+            $uuid = $version->getFileUuid()->asString();
+            $change_url = $this->storage_service->getChangeUrl($uuid, $v);
+
+            $data_array['changesUrl'] = self::BASE_URL . ltrim(WebAccessService::getWACUrl($change_url), '.');
+            $data_array['key'] = $uuid . '-' . $v;
+            if ($v > 1) {
+                $data_array['previous'] = $this->buildPreviousArray($version);
+            }
+            $data_array['url'] = self::BASE_URL . ltrim(WebAccessService::getWACUrl($version->getUrl()), '.');
+            $data_array['version'] = $v;
+
+            //Compute JWT
+            $token = JwtService::jwtEncode($data_array, "secret"); // ToDo: Set Key globally
+            $data_array['token'] = $token;
+            $result[$v] = $data_array;
+
         }
         return $result;
     }
@@ -265,11 +276,23 @@ class xonoEditorGUI extends xonoAbstractGUI
         }
     }
 
-    protected function getUserName(int $user_id) {
+    protected function getUserName(int $user_id)
+    {
         return $this->dic->user()->getLoginByUserId($user_id);
 
     }
 
+    protected function buildPreviousArray(FileVersion $version) : array
+    {
+        $result = array();
+        $previous = $this->storage_service->getPreviousVersion($version->getFileUuid()->asString(),
+            $version->getVersion());
+        $key = $previous->getFileUuid()->asString() . '-' . $previous->getVersion();
+        $result['key'] = $key;
+        $url = self::BASE_URL . ltrim(WebAccessService::getWACUrl($previous->getUrl()), '.');
+        $result['url'] = $url;
+        return $result;
+    }
 
     /**
      * Get DIC interface

@@ -16,7 +16,7 @@ use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
 class xonoContentGUI extends xonoAbstractGUI
 {
     // TODO: Set correct values globally
-    const BASE_URL = 'http://192.168.99.72:8080'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
+    const BASE_URL = 'http://192.168.3.103:8080'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
 
     /**
      * @var ilOnlyOfficePlugin

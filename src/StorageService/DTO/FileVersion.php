@@ -112,7 +112,7 @@ class FileVersion implements \JsonSerializable
      */
     public function setUrl(string $url)
     {
-        $this->url = url;
+        $this->url = $url;
     }
 
     /**
