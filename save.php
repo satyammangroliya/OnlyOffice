@@ -18,7 +18,11 @@ if (($body_stream = file_get_contents("php://input")) === false) {
 }
 
 $DIC->logger()->root()->info($body_stream);
-$data = json_decode($body_stream, true);
+$encrypted = json_decode($body_stream, true);
+require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/src/CryptoService/JwtService.php';
+$decrypted = \srag\Plugins\OnlyOffice\CryptoService\JwtService::jwtDecode($encrypted['token'], "secret"); //ToDo: Set password globally
+$DIC->logger()->root()->info($decrypted);
+$data = json_decode($decrypted, true);
 
 if ($data["status"] == 2) {
     $uuid = $_GET['uuid'];
