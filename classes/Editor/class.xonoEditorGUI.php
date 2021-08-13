@@ -198,7 +198,7 @@ class xonoEditorGUI extends xonoAbstractGUI
             $data_array['version'] = $v;
 
             //token
-            $token = JwtService::jwtEncode($data_array, "secret"); // ToDo: Set Key globally
+            $token = JwtService::jwtEncode($data_array, self::ONLYOFFICE_KEY);
             $data_array['token'] = $token;
             $result[$v] = $data_array;
 
@@ -249,7 +249,7 @@ class xonoEditorGUI extends xonoAbstractGUI
     protected function generateCallbackUrl(UUID $file_uuid, int $file_id, string $extension) : string
     {
         $session = array("session_id" => $GLOBALS['DIC']['ilAuthSession']->getId(), "client_id" => CLIENT_ID);
-        $session_jwt = JwtService::jwtEncode(json_encode($session), 'secret'); // TODO Define key globally
+        $session_jwt = JwtService::jwtEncode(json_encode($session), self::ONLYOFFICE_KEY);
         $path = 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/save.php?' .
             'token=' . $session_jwt .
             '&uuid=' . $file_uuid->asString() .
