@@ -190,6 +190,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $form = $this->initCreateForm($a_new_object->getType());
         $form->checkInput();
 
+        //ToDo: How to store the open settings?
         self::dic()->upload()->process();
         $results = self::dic()->upload()->getResults();
         $result = end($results);
@@ -202,6 +203,12 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     protected function getSettingsForm() : ObjectSettingsFormGUI
     {
         $form = new ObjectSettingsFormGUI($this, $this->object);
+        $opening_setting = new ilRadioGroupInputGUI($this->plugin->txt("form_open_setting"), self::POST_VAR_OPEN_SETTING);
+        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_editor"), "editor" ));
+        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_download"), "download"));
+        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_ilias"), "ilias"));
+        $opening_setting->setRequired(true);
+        $form->addItem($opening_setting);
 
         return $form;
     }

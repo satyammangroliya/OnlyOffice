@@ -43,7 +43,8 @@ class File
      * @param string        $title
      * @param string        $file_type
      */
-    public function __construct(UUID $uuid, int $obj_id, string $title, string $file_type, string $open_setting)
+    // ToDo: Remove default value
+    public function __construct(UUID $uuid, int $obj_id, string $title, string $file_type, string $open_setting="ilias")
     {
         $this->uuid = $uuid;
         $this->title = $title;
@@ -94,6 +95,7 @@ class File
 
     public function getOpenSetting() : string
     {
+        return "ilias"; // ToDo: Remove default value
         return $this->open_setting;
     }
     public function setOpenSetting(string $open_setting) {

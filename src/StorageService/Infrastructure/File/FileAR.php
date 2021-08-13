@@ -149,10 +149,12 @@ class FileAR extends ActiveRecord
     }
 
     public function getOpenSetting() : string {
+        return "ilias"; // ToDo: Remove default value
         return $this->open_setting;
     }
 
-    public function setOpenSetting(string $open_setting)  {
+    // ToDo: Remove default value
+    public function setOpenSetting(string $open_setting = "ilias")  {
         if ($open_setting == "editor" || $open_setting == "browser" || $open_setting == "ilias")
             $this->open_setting = $open_setting;
     }

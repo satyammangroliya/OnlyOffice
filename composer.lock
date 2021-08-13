@@ -37,7 +37,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "srag\\ActiveRecordConfig\\": "src/"
+                    "srag\\ActiveRecordConfig\\OnlyOffice\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -94,7 +94,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "srag\\CustomInputGUIs\\": "src/"
+                    "srag\\CustomInputGUIs\\OnlyOffice\\": "src/"
                 },
                 "classmap": [
                     "src/MultiSelectSearchNewInputGUI/class.ObjectChildrenAjaxAutoCompleteCtrl.php",
@@ -158,7 +158,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "srag\\DIC\\": "src/"
+                    "srag\\DIC\\OnlyOffice\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -266,7 +266,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "srag\\LibraryLanguageInstaller\\": "src/"
+                    "srag\\LibraryLanguageInstaller\\OnlyOffice\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -325,7 +325,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\OnlyOffice\\": "src/"
                 },
                 "classmap": [
                     "src/class.RemovePluginDataConfirmCtrl.php"
@@ -368,5 +368,5 @@
         "php": ">=7.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "1.1.0"
 }
