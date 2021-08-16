@@ -181,8 +181,9 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $file_input = new ilFileInputGUI($this->txt('form_input_file'), self::POST_VAR_FILE);
         $file_input->setRequired(true);
         $form->addItem($file_input);
-        $opening_setting = new ilRadioGroupInputGUI($this->plugin->txt("form_open_setting"), self::POST_VAR_OPEN_SETTING);
-        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_editor"), "editor" ));
+        $opening_setting = new ilRadioGroupInputGUI($this->plugin->txt("form_open_setting"),
+            self::POST_VAR_OPEN_SETTING);
+        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_editor"), "editor"));
         $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_download"), "download"));
         $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_ilias"), "ilias"));
         $opening_setting->setRequired(true);
@@ -210,18 +211,20 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $this->storage_service->createNewFileFromUpload($result, $a_new_object->getId());
         parent::afterSave($a_new_object);
     }
+
     /**
      * @return ObjectSettingsFormGUI
      */
     protected function getSettingsForm() : ObjectSettingsFormGUI
     {
         $form = new ObjectSettingsFormGUI($this, $this->object);
-        $opening_setting = new ilRadioGroupInputGUI($this->plugin->txt("form_open_setting"), self::POST_VAR_OPEN_SETTING);
-        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_editor"), "editor" ));
-        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_download"), "download"));
-        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_ilias"), "ilias"));
-        $opening_setting->setRequired(true);
-        $form->addItem($opening_setting);
+        $open_setting = new ilRadioGroupInputGUI($this->plugin->txt("form_open_setting"),
+            self::POST_VAR_OPEN_SETTING);
+        $open_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_editor"), "editor"));
+        $open_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_download"), "download"));
+        $open_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_ilias"), "ilias"));
+        $open_setting->setRequired(true);
+        $form->addItem($open_setting);
 
         return $form;
     }
@@ -255,7 +258,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         }
         $new_open_setting = $_POST[self::POST_VAR_OPEN_SETTING];
         $this->storage_service->updateOpenSetting($this->obj_id, $new_open_setting);
-
 
         ilUtil::sendSuccess(self::plugin()->translate("saved", self::LANG_MODULE_SETTINGS), true);
 
