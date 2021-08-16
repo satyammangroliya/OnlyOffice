@@ -24,4 +24,6 @@ interface FileRepository
 
     public function getFile(int $obj_id) : File;
 
+    public function getAR(int $file_id): \ActiveRecord;
+
 }

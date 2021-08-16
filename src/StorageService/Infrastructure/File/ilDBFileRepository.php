@@ -43,4 +43,9 @@ class ilDBFileRepository implements FileRepository
         return new File($uuid, $obj_id, $title, $file_type, $open_setting);
 
     }
+
+    public function getAR(int $file_id) : \ActiveRecord
+    {
+        return FileAR::where(['obj_id' => $file_id])->first();
+    }
 }

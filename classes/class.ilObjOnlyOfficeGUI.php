@@ -253,6 +253,9 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
 
             return;
         }
+        $new_open_setting = $_POST[self::POST_VAR_OPEN_SETTING];
+        $this->storage_service->updateOpenSetting($this->obj_id, $new_open_setting);
+
 
         ilUtil::sendSuccess(self::plugin()->translate("saved", self::LANG_MODULE_SETTINGS), true);
 

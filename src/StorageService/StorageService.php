@@ -143,13 +143,15 @@ class StorageService
         return $this->file_change_repository->getAllChanges($uuid);
     }
 
-    public function getChangeUrl(string $uuid, int $version) : string {
+    public function getChangeUrl(string $uuid, int $version) : string
+    {
         $file_change = $this->file_change_repository->getChange($uuid, $version);
         return $file_change->getChangesUrl();
 
     }
 
-    public function getPreviousVersion (string $uuid, int $version) {
+    public function getPreviousVersion(string $uuid, int $version) : FileVersion
+    {
         return $this->file_version_repository->getPreviousVersion($uuid, $version);
     }
 
@@ -161,6 +163,15 @@ class StorageService
     public function getLatestVersions(UUID $file_uuid) : FileVersion
     {
         return $this->file_version_repository->getLatestVersion($file_uuid);
+    }
+
+    public function updateOpenSetting(int $file_id, string $open_setting)
+    {
+        $file_ar = $this->file_repository->getAR($file_id);
+        $query = 'UPDATE ' . $file_ar->getConnectorContainerName() .
+            ' SET open_setting="' . $open_setting . '"' .
+            ' WHERE obj_id=' . $file_id . ';';
+        $this->dic->database()->query($query);
     }
 
 }
