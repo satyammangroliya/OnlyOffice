@@ -183,6 +183,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $form->addItem($file_input);
         $opening_setting = new ilRadioGroupInputGUI($this->plugin->txt("form_open_setting"),
             self::POST_VAR_OPEN_SETTING);
+        // ToDo: Can I set a default value?
         $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_editor"), "editor"));
         $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_download"), "download"));
         $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_ilias"), "ilias"));
@@ -220,6 +221,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $form = new ObjectSettingsFormGUI($this, $this->object);
         $open_setting = new ilRadioGroupInputGUI($this->plugin->txt("form_open_setting"),
             self::POST_VAR_OPEN_SETTING);
+        // ToDo: Can I set a default value?
         $open_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_editor"), "editor"));
         $open_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_download"), "download"));
         $open_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_ilias"), "ilias"));
