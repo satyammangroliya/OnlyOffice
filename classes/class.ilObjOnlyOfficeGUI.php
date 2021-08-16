@@ -37,6 +37,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     const CMD_SETTINGS = "settings";
     const CMD_SETTINGS_STORE = "settingsStore";
     const CMD_SHOW_CONTENTS = "showContents";
+    const CMD_SHOW_VERSIONS = "showVersions";
     const CMD_SAVE = 'save';
     const CMD_CANCEL = 'cancel';
     const LANG_MODULE_OBJECT = "object";
@@ -121,8 +122,10 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                         }
 
                         self::dic()->ctrl()->redirectByClass(xonoContentGUI::class, $next_cmd);
+                        break;
 
-                        //$this->{$cmd}();
+                    case self::CMD_SHOW_VERSIONS:
+                        self::dic()->ctrl()->redirectByClass(xonoContentGUI::class, xonoContentGUI::CMD_SHOW_VERSIONS);
                         break;
 
                     case self::CMD_MANAGE_CONTENTS:
@@ -266,6 +269,10 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         self::dic()->ctrl()->redirect($this, self::CMD_SETTINGS);
     }
 
+    protected function showVersions() {
+        // DoNothing
+    }
+
     /**
      *
      */
@@ -274,14 +281,9 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         self::dic()->tabs()->addTab(self::TAB_SHOW_CONTENTS,
             self::plugin()->translate("show_contents", self::LANG_MODULE_OBJECT), self::dic()->ctrl()
                                                                                       ->getLinkTarget($this,
-                                                                                          self::CMD_SHOW_CONTENTS));
+                                                                                          self::CMD_SHOW_VERSIONS));
 
         if (ilObjOnlyOfficeAccess::hasWriteAccess()) {
-            self::dic()->tabs()->addTab(self::TAB_CONTENTS,
-                self::plugin()->translate("manage_contents", self::LANG_MODULE_OBJECT), self::dic()
-                                                                                            ->ctrl()->getLinkTarget($this,
-                        self::CMD_MANAGE_CONTENTS));
-
             self::dic()->tabs()->addTab(self::TAB_SETTINGS,
                 self::plugin()->translate("settings", self::LANG_MODULE_SETTINGS), self::dic()->ctrl()
                                                                                        ->getLinkTarget($this,

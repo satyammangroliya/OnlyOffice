@@ -17,9 +17,9 @@ xono_version#:#Version
 xono_date#:#Created At
 xono_editor#:#Created By
 xono_download#:#Download
-form_open_editor#:#Use ONLYOFFICE online editor
-form_open_download#:#Download the file
-form_open_ilias#:#Show all versions on ILIAS
+form_open_editor#:#Show in ONLYOFFICE Online Editor
+form_open_download#:#Download the File
+form_open_ilias#:#Show Version History on ILIAS
 form_open_setting#:#How should the file be opened?
 config_baseurl#:#ILIAS root URL
 config_onlyoffice_url#:#ONLYOFFICE root URL
@@ -30,7 +30,7 @@ config_save#:#Save
 object_manage_contents#:#Edit
 object_offline#:#Offline
 object_permission_denied#:#Permission denied
-object_show_contents#:#Contents
+object_show_contents#:#Version History
 object_status#:#Status
 settings_cancel#:#Cancel
 settings_description#:#Description

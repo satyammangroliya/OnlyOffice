@@ -18,8 +18,8 @@ xono_date#:#Erstellt am
 xono_editor#:#Erstellt von
 xono_download#:#Herunterladen
 form_open_editor#:#Im ONLYOFFICE online Editor öffnen
-form_open_download#:Datei downloaden
-form_open_ilias#:#Alle Versionen auf ILIAS anzeigen
+form_open_download#:Datei herunterladen
+form_open_ilias#:#Alle Versionsverlauf auf ILIAS anzeigen
 form_open_setting#:Wie soll die Datei geöffnet werden?
 config_baseurl#:#ILIAS root URL
 config_onlyoffice_url#:#ONLYOFFICE root URL
@@ -30,7 +30,7 @@ config_save#:#Speichern
 object_manage_contents#:#Bearbeiten
 object_offline#:#Offline
 object_permission_denied#:#Zugriff verweigert
-object_show_contents#:#Inhalte
+object_show_contents#:#Versionsverlauf
 object_status#:#Status
 settings_cancel#:#Abbrechen
 settings_description#:#Beschreibung

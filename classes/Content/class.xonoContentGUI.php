@@ -102,7 +102,7 @@ class xonoContentGUI extends xonoAbstractGUI
         $url = $this->getDownloadUrlArray($fileVersions, $fileName, $ext);
 
         $tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
-        $tpl->setVariable('TBL_TITLE', "Document History");
+        $tpl->setVariable('TBL_TITLE', $this->plugin->txt('object_show_contents'));
         $tpl->setVariable('FORWARD', $this->buttonTarget());
         $tpl->setVariable('BUTTON', $this->buttonName());
         $tpl->setVariable('TBL_DATA', $json);
