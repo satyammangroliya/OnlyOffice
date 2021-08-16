@@ -10,8 +10,8 @@ xono_new#:#Create OnlyOffice
 xono_read#:#Read
 xono_visible#:#visible
 xono_write#:#Edit
-xono_edit_button#:#Edit
-xono_view_button#:#View
+xono_edit_button#:#Edit File
+xono_view_button#:#View File
 xono_back_button#:#Back to ILIAS
 xono_version#:#Version
 xono_date#:#Created At

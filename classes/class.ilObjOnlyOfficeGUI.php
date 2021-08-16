@@ -269,10 +269,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         self::dic()->ctrl()->redirect($this, self::CMD_SETTINGS);
     }
 
-    protected function showVersions() {
-        // DoNothing
-    }
-
     /**
      *
      */

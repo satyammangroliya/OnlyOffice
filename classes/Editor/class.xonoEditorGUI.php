@@ -126,6 +126,7 @@ class xonoEditorGUI extends xonoAbstractGUI
         $editor['callbackUrl'] = $this->generateCallbackUrl($file->getUuid(),
             $file->getObjId(), $extension);
         $editor['user'] = $this->buildUserArray($this->dic->user()->getId());
+        $editor['mode'] = $this->determineAccessRights();
         $as_array['editorConfig'] = $editor;
 
         // events config
@@ -280,6 +281,13 @@ class xonoEditorGUI extends xonoAbstractGUI
     {
         $user = new ilObjUser($user_id);
         return array("id" => $user_id, "name" => $user->getPublicName());
+    }
+
+    protected function determineAccessRights(): string {
+        if (ilObjOnlyOfficeAccess::hasWriteAccess())
+            return "edit";
+        else
+            return "view";
     }
 
     /**
