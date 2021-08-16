@@ -74,9 +74,10 @@ class StorageService
     {
         // Create DB Entries for File & FileVersion
         $new_file_id = new UUID();
+        $open_setting = $_POST['open_setting'];
         $path = $this->file_system_service->storeUploadResult($upload_result, $obj_id, $new_file_id->asString());
         $extension = pathinfo($path, PATHINFO_EXTENSION);
-        $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $extension);
+        $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $extension, $open_setting);
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
         $version = $this->file_version_repository->create($new_file_id, $this->dic->user()->getId(), $created_at,
             $path);

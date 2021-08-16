@@ -16,15 +16,14 @@ class ilDBFileRepository implements FileRepository
     /**
      * @inheritDoc
      */
-    // ToDo: remove default value
-    public function create(UUID $file_uuid, int $obj_id, string $title, string $file_type, string $open_setting = "ilias")
+    public function create(UUID $file_uuid, int $obj_id, string $title, string $file_type, string $open_setting)
     {
         $file_AR = new FileAR();
         $file_AR->setUUID($file_uuid);
         $file_AR->setObjId($obj_id);
         $file_AR->setTitle($title);
         $file_AR->setFileType($file_type);
-        $open_setting == "download" || $open_setting == "editor" ? $file_AR->setOpenSetting($open_setting) : $file_AR->setOpenSetting("ilias");
+        $file_AR->setOpenSetting($open_setting);
         $file_AR->create();
     }
 

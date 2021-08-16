@@ -46,7 +46,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
 
     const TAB_SHOW_CONTENTS = "show_contents";
     const POST_VAR_FILE = 'upload_files';
-    const POST_VAR_OPEN_SETTING = 'opening_settings';
+    const POST_VAR_OPEN_SETTING = 'open_setting';
     /**
      * @var ilObjOnlyOffice
      */
