@@ -10,6 +10,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRep
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
+use srag\Plugins\OnlyOffice\StorageService\FileInfoService;
 
 /**
  * Class ilObjOnlyOfficeGUI
@@ -106,8 +107,20 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                         if (!ilObjOnlyOfficeAccess::hasReadAccess()) {
                             ilObjOnlyOfficeAccess::redirectNonAccess(ilRepositoryGUI::class);
                         }
+                        $file_info = new FileInfoService(self::dic()->dic());
+                        $open_setting = $file_info->getOpenSetting($this->obj_id);
+                        switch ($open_setting) {
+                            case "download":
+                                $next_cmd = xonoContentGUI::CMD_DOWNLOAD;
+                                break;
+                            case "editor":
+                                $next_cmd = xonoContentGUI::CMD_EDIT;
+                                break;
+                            default:
+                                $next_cmd = xonoContentGUI::CMD_SHOW_VERSIONS;
+                        }
 
-                        self::dic()->ctrl()->redirectByClass(xonoContentGUI::class, "showVersions");
+                        self::dic()->ctrl()->redirectByClass(xonoContentGUI::class, $next_cmd);
 
                         //$this->{$cmd}();
                         break;

@@ -37,6 +37,7 @@ class xonoContentGUI extends xonoAbstractGUI
     const CMD_STANDARD = 'showVersions';
     const CMD_SHOW_VERSIONS = 'showVersions';
     const CMD_DOWNLOAD = 'downloadFileVersion';
+    const CMD_EDIT = xonoEditorGUI::CMD_EDIT;
 
     public function __construct(
         \ILIAS\DI\Container $dic,
@@ -70,10 +71,20 @@ class xonoContentGUI extends xonoAbstractGUI
         $next_class = $this->dic->ctrl()->getNextClass($this);
         $cmd = $this->dic->ctrl()->getCmd(self::CMD_STANDARD);
 
-        switch ($next_class) {
-            default:
-                $this->{$cmd}();
+        switch (strtolower($next_class)) {
+            case strtolower(xonoEditorGUI::class):
+                $xono_editor = new xonoEditorGUI($this->dic, $this->plugin, $this->file_id);
+                $this->dic->ctrl()->forwardCommand($xono_editor);
                 break;
+            default:
+                switch ($cmd) {
+                    case self::CMD_EDIT:
+                        $this->dic->ctrl()->redirectByClass(xonoEditorGUI::class, xonoEditorGUI::CMD_EDIT);
+                        break;
+                    default:
+                        $this->{$cmd}();
+                        break;
+                }
         }
     }
 
@@ -143,7 +154,7 @@ class xonoContentGUI extends xonoAbstractGUI
             $url = ltrim(WebAccessService::getWACUrl($fv->getUrl()), ".");
             $version = $fv->getVersion();
             $name = $filename . '_V' . $version . '.' . $extension;
-            $this->dic->ctrl()->setParameter($this, 'path',self::BASE_URL. $url);
+            $this->dic->ctrl()->setParameter($this, 'path', self::BASE_URL . $url);
             $this->dic->ctrl()->setParameter($this, 'name', $name);
             $path = $this->dic->ctrl()->getLinkTarget($this, self::CMD_DOWNLOAD);
             $result[$version] = '/' . $path;
