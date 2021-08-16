@@ -8,7 +8,6 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepositor
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
 
-
 /**
  * Class xonoContentGUI
  * @author            Theodor Truffer <tt@studer-raimann.ch>
@@ -17,7 +16,7 @@ use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
 class xonoContentGUI extends xonoAbstractGUI
 {
     // TODO: Set correct values globally
-    const BASE_URL = 'http://192.168.3.103:8080';
+    const BASE_URL = 'http://192.168.43.14:8080';
 
     /**
      * @var ilOnlyOfficePlugin
@@ -39,7 +38,6 @@ class xonoContentGUI extends xonoAbstractGUI
     const CMD_SHOW_VERSIONS = 'showVersions';
     const CMD_DOWNLOAD = 'downloadFileVersion';
 
-
     public function __construct(
         \ILIAS\DI\Container $dic,
         ilOnlyOfficePlugin $plugin,
@@ -60,8 +58,6 @@ class xonoContentGUI extends xonoAbstractGUI
             new ilDBFileChangeRepository()
         );
     }
-
-
 
     public final function getType() : string
     {
@@ -90,7 +86,7 @@ class xonoContentGUI extends xonoAbstractGUI
         $fileVersions = $this->storage_service->getAllVersions($this->file_id);
         $file = $this->storage_service->getFile($this->file_id);
         $ext = pathinfo($file->getTitle(), PATHINFO_EXTENSION);
-        $fileName = rtrim($file->getTitle(), '.'.$ext);
+        $fileName = rtrim($file->getTitle(), '.' . $ext);
         $json = json_encode($fileVersions);
         $url = $this->getDownloadUrlArray($fileVersions, $fileName, $ext);
 
@@ -112,7 +108,8 @@ class xonoContentGUI extends xonoAbstractGUI
     }
 
     // ToDo: Does not work yet!
-    protected function downloadFileVersion() {
+    protected function downloadFileVersion()
+    {
         $path = $_GET['path'];
         $name = $_GET['name'];
         ilFileDelivery::deliverFileAttached($path, $name);
@@ -128,12 +125,14 @@ class xonoContentGUI extends xonoAbstractGUI
         return DICStatic::dic();
     }
 
-    protected function buttonName() {
+    protected function buttonName()
+    {
         // ToDo: Determine ButtonName based on access rights
         return "Edit File";
     }
 
-    protected function buttonTarget() {
+    protected function buttonTarget()
+    {
         return $this->dic->ctrl()->getLinkTargetByClass(xonoEditorGUI::class, xonoEditorGUI::CMD_EDIT);
     }
 
@@ -141,11 +140,12 @@ class xonoContentGUI extends xonoAbstractGUI
     {
         $result = array();
         foreach ($fileVersions as $fv) {
+            $url = ltrim(WebAccessService::getWACUrl($fv->getUrl()), ".");
             $version = $fv->getVersion();
             $name = $filename . '_V' . $version . '.' . $extension;
-            $this->dic->ctrl()->setParameterByClass(xonoContentGUI::class, 'path', $fv->getUrl());
-            $this->dic->ctrl()->setParameterByClass(xonoContentGUI::class, 'name', $name);
-            $path = $this->dic->ctrl()->getLinkTargetByClass(xonoContentGUI::class, self::CMD_DOWNLOAD);
+            $this->dic->ctrl()->setParameter($this, 'path',self::BASE_URL. $url);
+            $this->dic->ctrl()->setParameter($this, 'name', $name);
+            $path = $this->dic->ctrl()->getLinkTarget($this, self::CMD_DOWNLOAD);
             $result[$version] = '/' . $path;
         }
         return $result;

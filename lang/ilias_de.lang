@@ -17,10 +17,13 @@ xono_version#:#Version
 xono_date#:#Erstellt am
 xono_editor#:#Erstellt von
 xono_download#:#Herunterladen
-form_open_editor#:#Im ONLYOFFICE online Editor öffnen ToDo does not work!
+form_open_editor#:#Im ONLYOFFICE online Editor öffnen
 form_open_download#:Datei downloaden
 form_open_ilias#:#Alle Versionen auf ILIAS anzeigen
-rep_robj_xono_form_open_setting#:Wie soll die Datei geöffnet werden?
+form_open_setting#:Wie soll die Datei geöffnet werden?
+config_baseurl#:#ILIAS root URL
+config_onlyoffice_url#:#ONLYOFFICE root URL
+config_onlyoffice_secret#:#ONLYOFFICE secret für die Token-Validierung
 config_configuration#:#Konfiguration
 config_configuration_saved#:#Konfiguration gespeichert
 config_save#:#Speichern

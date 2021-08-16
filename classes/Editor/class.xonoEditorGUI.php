@@ -38,8 +38,8 @@ class xonoEditorGUI extends xonoAbstractGUI
     const CMD_STANDARD = "editFile";
 
     // TODO: Set correct values gloablly
-    const BASE_URL = 'http://192.168.3.103:8080'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
-    const ONLYOFFICE_URL = 'http://192.168.3.103:3000'; // Path to OnlyOffice Root directory: http://<OO_domain>:<PortNr>
+    const BASE_URL = 'http://192.168.43.14:8080'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
+    const ONLYOFFICE_URL = 'http://192.168.43.14:3000'; // Path to OnlyOffice Root directory: http://<OO_domain>:<PortNr>
     const ONLYOFFICE_KEY = 'secret';
 
     public function __construct(
