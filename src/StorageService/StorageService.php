@@ -158,6 +158,24 @@ class StorageService
 
     }
 
+    public function deleteFile(int $file_id) {
+        $this->file_system_service->deletePath($file_id);
+        $uuid = $this->file_repository->getFile($file_id)->getUuid();
+
+        // delete File entry
+        $query = 'DELETE FROM xono_file WHERE obj_id='.$file_id.';';
+        $this->dic->database()->query($query);
+
+        // delete FileVersion entries
+        $query = 'DELETE FROM xono_file_version WHERE file_uuid="'.$uuid->asString() .'";';
+        $this->dic->database()->query($query);
+
+        // delete FileChange entries
+        $query = 'DELETE FROM xono_file_change WHERE file_uuid="'.$uuid->asString() .'";';
+        $this->dic->database()->query($query);
+
+    }
+
     public function getAllVersions(int $object_id) : array
     {
         $file = $this->file_repository->getFile($object_id);

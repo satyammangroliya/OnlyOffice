@@ -101,18 +101,25 @@ class FileSystemService
         return $child_path;
     }
 
+    public function deletePath(int $file_id) {
+        $path = self::BASE_PATH.$file_id;
+        $web = $this->dic->filesystem()->web();
+        $web->deleteDir($path);
+
+    }
+
     /**
      * @param int $obj_id
      * @param string $file_id
      * @return string
      * @throws IOException
      */
-    protected function createAndGetPath(int $obj_id, string $file_id, bool $isChange = false) : string
+    protected function createAndGetPath(int $file_id, string $uuid, bool $isChange = false) : string
     {
         if (!$isChange) {
-            $path = self::BASE_PATH . $obj_id . DIRECTORY_SEPARATOR . $file_id . DIRECTORY_SEPARATOR;
+            $path = self::BASE_PATH . $file_id . DIRECTORY_SEPARATOR . $uuid . DIRECTORY_SEPARATOR;
         } else {
-            $path = self::BASE_PATH . $obj_id . DIRECTORY_SEPARATOR . $file_id . DIRECTORY_SEPARATOR . 'changes' . DIRECTORY_SEPARATOR;
+            $path = self::BASE_PATH . $file_id . DIRECTORY_SEPARATOR . $uuid . DIRECTORY_SEPARATOR . 'changes' . DIRECTORY_SEPARATOR;
         }
 
         if (!$this->dic->filesystem()->web()->hasDir($path)) {

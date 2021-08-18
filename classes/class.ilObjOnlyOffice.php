@@ -77,6 +77,12 @@ class ilObjOnlyOffice extends ilObjectPlugin
         if ($this->object_settings !== null) {
             self::onlyOffice()->objectSettings()->deleteObjectSettings($this->object_settings);
         }
+        $storage = new srag\Plugins\OnlyOffice\StorageService\StorageService(self::dic()->dic(),
+            new ilDBFileVersionRepository(),
+            new ilDBFileRepository(),
+            new ilDBFileChangeRepository());
+        $storage->deleteFile($this->getId());
+
     }
 
     /**
