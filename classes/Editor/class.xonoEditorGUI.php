@@ -9,9 +9,16 @@ use srag\DIC\OnlyOffice\DICStatic;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
+use srag\Plugins\OnlyOffice\StorageService\InfoService;
 use srag\Plugins\OnlyOffice\CryptoService\JwtService;
 use \ILIAS\DI\Container;
 use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
+
+
+define('baseurl', InfoService::getBaseUrl());
+define('oo_url', InfoService::getOnlyOfficeUrl());
+define('secret', InfoService::getSecret());
+
 
 /**
  * Class xonoEditorGUI
@@ -37,10 +44,9 @@ class xonoEditorGUI extends xonoAbstractGUI
     const CMD_SAVE = "saveChanges";
     const CMD_STANDARD = "editFile";
 
-    // TODO: Set correct values gloablly
-    const BASE_URL = 'http://192.168.43.14:8080'; // Path to ilias root directory: http://<ILIAS domain>:<PortNr>
-    const ONLYOFFICE_URL = 'http://192.168.43.14:3000'; // Path to OnlyOffice Root directory: http://<OO_domain>:<PortNr>
-    const ONLYOFFICE_KEY = 'secret';
+    const BASE_URL = baseurl;
+    const ONLYOFFICE_URL = oo_url;
+    const ONLYOFFICE_KEY = secret;
 
     public function __construct(
         Container $dic,

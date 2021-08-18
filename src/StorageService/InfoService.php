@@ -6,9 +6,11 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepositor
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
+use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 
-class FileInfoService
+class InfoService
 {
+    use OnlyOfficeTrait;
 
     /**
      * @var Container
@@ -39,6 +41,18 @@ class FileInfoService
 
     public function getOpenSetting(int $file_id): string {
         return $this->file_repository->getFile($file_id)->getOpenSetting();
+    }
+
+    public static final function getBaseUrl(): string{
+        return self::onlyOffice()->config()->getValue("baseurl");
+    }
+
+    public static final function getOnlyOfficeUrl(): string {
+        return self::onlyOffice()->config()->getValue("onlyoffice_url");
+    }
+
+    public static final function getSecret(): string {
+        return self::onlyOffice()->config()->getValue("onlyoffice_secret");
     }
 
 }

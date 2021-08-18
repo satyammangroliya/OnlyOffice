@@ -8,6 +8,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepositor
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
 
+define('baseurl', \srag\Plugins\OnlyOffice\StorageService\InfoService::getBaseUrl());
 /**
  * Class xonoContentGUI
  * @author            Theodor Truffer <tt@studer-raimann.ch>
@@ -15,8 +16,7 @@ use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
  */
 class xonoContentGUI extends xonoAbstractGUI
 {
-    // TODO: Set correct values globally
-    const BASE_URL = 'http://192.168.43.14:8080';
+    const BASE_URL = baseurl;
 
     /**
      * @var ilOnlyOfficePlugin
@@ -31,8 +31,7 @@ class xonoContentGUI extends xonoAbstractGUI
     /**
      * @var int
      */
-    protected
-        $file_id;
+    protected $file_id;
 
     const CMD_STANDARD = 'showVersions';
     const CMD_SHOW_VERSIONS = 'showVersions';

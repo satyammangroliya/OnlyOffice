@@ -10,7 +10,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRep
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
-use srag\Plugins\OnlyOffice\StorageService\FileInfoService;
+use srag\Plugins\OnlyOffice\StorageService\InfoService;
 
 /**
  * Class ilObjOnlyOfficeGUI
@@ -108,7 +108,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                         if (!ilObjOnlyOfficeAccess::hasReadAccess()) {
                             ilObjOnlyOfficeAccess::redirectNonAccess(ilRepositoryGUI::class);
                         }
-                        $file_info = new FileInfoService(self::dic()->dic());
+                        $file_info = new InfoService(self::dic()->dic());
                         $open_setting = $file_info->getOpenSetting($this->obj_id);
                         switch ($open_setting) {
                             case "download":
