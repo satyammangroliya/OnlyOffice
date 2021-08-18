@@ -9,28 +9,22 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRep
 use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
 
 define('baseurl', \srag\Plugins\OnlyOffice\StorageService\InfoService::getBaseUrl());
+
 /**
  * Class xonoContentGUI
  * @author            Theodor Truffer <tt@studer-raimann.ch>
+ * @author            Sophie Pfister <sophie@fluxlabs.ch>
  * @ilCtrl_isCalledBy xonoContentGUI: ilObjOnlyOfficeGUI
  */
 class xonoContentGUI extends xonoAbstractGUI
 {
     const BASE_URL = baseurl;
 
-    /**
-     * @var ilOnlyOfficePlugin
-     */
-    protected
-        $plugin;
-    /**
-     * @var StorageService
-     */
-    protected
-        $storage_service;
-    /**
-     * @var int
-     */
+    /** @var ilOnlyOfficePlugin */
+    protected $plugin;
+    /** @var StorageService */
+    protected $storage_service;
+    /** @var int */
     protected $file_id;
 
     const CMD_STANDARD = 'showVersions';
@@ -150,6 +144,7 @@ class xonoContentGUI extends xonoAbstractGUI
         return $this->dic->ctrl()->getLinkTargetByClass(xonoEditorGUI::class, xonoEditorGUI::CMD_EDIT);
     }
 
+    // ToDo
     protected function getDownloadUrlArray(array $fileVersions, string $filename, string $extension) : array
     {
         $result = array();

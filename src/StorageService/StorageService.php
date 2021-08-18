@@ -103,7 +103,7 @@ class StorageService
     public function updateFileFromUpload(
         string $content,
         int $file_id,
-        string $uuid_string,
+        UUID $uuid,
         int $editor_id,
         string $file_extension,
         string $changes_object,
@@ -111,17 +111,15 @@ class StorageService
         string $change_content,
         string $change_extension
     ) : FileVersion {
+
         // Store FileVersion and Create Database Entry
-        $uuid = new UUID($uuid_string);
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
         $version = $this->getLatestVersions($uuid)->getVersion() + 1;
-        $this->dic->logger()->root()->info("Version: " . $version);
-        $path = $this->file_system_service->storeNewVersionFromString($content, $file_id, $uuid_string, $version,
-            $file_extension);
-        $version = $this->file_version_repository->create($uuid, $editor_id, $created_at, $path);
+        $path = $this->file_system_service->storeNewVersionFromString($content, $file_id, $uuid->asString(), $version, $file_extension);
+        $this->file_version_repository->create($uuid, $editor_id, $created_at, $path);
 
         //Store Changes and Create Database Entry
-        $change_path = $this->file_system_service->storeChanges($change_content, $file_id, $uuid_string, $version,
+        $change_path = $this->file_system_service->storeChanges($change_content, $file_id, $uuid->asString(), $version,
             $change_extension);
         $id = $this->file_change_repository->getNextId(); // ToDo: Do this in a better way
         $this->file_change_repository->create($id, $uuid, $version, $changes_object, $serverVersion,
@@ -134,6 +132,7 @@ class StorageService
 
     public function createClone(int $child_id, int $parent_id)
     {
+        // create new file
         $uuid = new UUID();
         $parent_file = $this->file_repository->getFile($parent_id);
         $this->file_repository->create($uuid, $child_id, $parent_file->getTitle(), $parent_file->getFileType(),
@@ -159,6 +158,7 @@ class StorageService
     }
 
     public function deleteFile(int $file_id) {
+        // remove physical structure
         $this->file_system_service->deletePath($file_id);
         $uuid = $this->file_repository->getFile($file_id)->getUuid();
 
