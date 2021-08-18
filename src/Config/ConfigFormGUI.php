@@ -74,7 +74,6 @@ class ConfigFormGUI extends PropertyFormGUI
             ]
 
         ];
-        // TODO: Implement ConfigFormGUI
     }
 
     /**

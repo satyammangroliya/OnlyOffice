@@ -208,7 +208,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $form = $this->initCreateForm($a_new_object->getType());
         $form->checkInput();
 
-        //ToDo: How to store the open settings?
+        //ToDo: OpenSetting as ObjectSetting?
         self::dic()->upload()->process();
         $results = self::dic()->upload()->getResults();
         $result = end($results);

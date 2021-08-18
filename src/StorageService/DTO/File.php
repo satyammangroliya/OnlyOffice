@@ -43,8 +43,7 @@ class File
      * @param string        $title
      * @param string        $file_type
      */
-    // ToDo: Remove default value
-    public function __construct(UUID $uuid, int $obj_id, string $title, string $file_type, string $open_setting="ilias")
+    public function __construct(UUID $uuid, int $obj_id, string $title, string $file_type, string $open_setting)
     {
         $this->uuid = $uuid;
         $this->title = $title;
