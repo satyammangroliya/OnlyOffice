@@ -17,11 +17,11 @@ if (($body_stream = file_get_contents("php://input")) === false) {
     echo "Bad Request";
 }
 
-$DIC->logger()->root()->info($body_stream);
+//$DIC->logger()->root()->info($body_stream);
 $encrypted = json_decode($body_stream, true);
 require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/src/CryptoService/JwtService.php';
 $decrypted = \srag\Plugins\OnlyOffice\CryptoService\JwtService::jwtDecode($encrypted['token'], "secret"); //ToDo: Set password globally
-$DIC->logger()->root()->info($decrypted);
+//$DIC->logger()->root()->info($decrypted);
 $data = json_decode($decrypted, true);
 
 if ($data["status"] == 2) {
@@ -30,17 +30,18 @@ if ($data["status"] == 2) {
     $file_ext = $_GET['ext'];
 
     $downloadUri = $data["url"];
-    $changes_object = (json_encode($data["history"]["changes"]));
 
-    $DIC->logger()->root()->info("Changes: " . $changes_object);
     $editor = $data["users"][0];
-    $DIC->logger()->root()->info("Editor: " . $editor);
+    //$DIC->logger()->root()->info("Editor: " . $editor);
     $serverVersion = $data["history"]["serverVersion"];
-    $DIC->logger()->root()->info("Server: " . $serverVersion);
+    //$DIC->logger()->root()->info("Server: " . $serverVersion);
     $OO_changesurl = $data["changesurl"];
-    $DIC->logger()->root()->info("ChangesUrl: " . $OO_changesurl);
+    //$DIC->logger()->root()->info("ChangesUrl: " . $OO_changesurl);
     $change_ext = pathinfo($OO_changesurl, PATHINFO_EXTENSION);
-    $DIC->logger()->root()->info("Extension: " . $change_ext);
+    //$DIC->logger()->root()->info("Extension: " . $change_ext);
+
+    $changes_object = (json_encode($data["history"]["changes"]));
+    //$DIC->logger()->root()->info("Changes: " . $changes_object);
 
     if (($new_data = file_get_contents($downloadUri)) === false  ||
         ($new_change = file_get_contents($OO_changesurl)) === false) {
@@ -49,11 +50,6 @@ if ($data["status"] == 2) {
     } else {
         $callback_handler = new xonoCallbackHandler($DIC, $new_data, $uuid, $file_id, $editor, $file_ext, $changes_object, $serverVersion, $new_change, $change_ext);
         $callback_handler->handleCallback();
-       /*
-        string $changes_object,
-        string $serverVersion,
-        string $change_content,
-        string $change_extension */
     }
 }
 echo "{\"error\":0}";

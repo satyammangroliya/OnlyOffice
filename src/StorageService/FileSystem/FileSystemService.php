@@ -8,6 +8,7 @@ use ILIAS\FileUpload\DTO\UploadResult;
 use ILIAS\FileUpload\Location;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
 use ILIAS\Filesystem\Stream\Streams;
+use srag\Plugins\OnlyOffice\StorageService\DTO\FileChange;
 
 /**
  * Class FileSystemService
@@ -82,15 +83,33 @@ class FileSystemService
         return $path;
     }
 
+    public function storeVersionCopy(FileVersion $parent_version, string $uuid, int $file_id): string {
+        $parent_path = $parent_version->getUrl();
+        $extension = pathinfo($parent_path, PATHINFO_EXTENSION);
+        $child_path = $this->createAndGetPath($file_id, $uuid, false) . $parent_version->getVersion() . '.' . $extension;;
+        $web = $this->dic->filesystem()->web();
+        $web->copy($parent_path, $child_path);
+        return $child_path;
+    }
+
+    public function storeChangeCopy(FileChange $parent_change, string $uuid, int $file_id): string {
+        $parent_path = $parent_change->getChangesUrl();
+        $extension = pathinfo($parent_path, PATHINFO_EXTENSION);
+        $child_path = $this->createAndGetPath($file_id, $uuid, true) . $parent_change->getVersion() . '.' . $extension;;
+        $web = $this->dic->filesystem()->web();
+        $web->copy($parent_path, $child_path);
+        return $child_path;
+    }
+
     /**
      * @param int $obj_id
      * @param string $file_id
      * @return string
      * @throws IOException
      */
-    protected function createAndGetPath(int $obj_id, string $file_id, bool $isVersion = false) : string
+    protected function createAndGetPath(int $obj_id, string $file_id, bool $isChange = false) : string
     {
-        if (!$isVersion) {
+        if (!$isChange) {
             $path = self::BASE_PATH . $obj_id . DIRECTORY_SEPARATOR . $file_id . DIRECTORY_SEPARATOR;
         } else {
             $path = self::BASE_PATH . $obj_id . DIRECTORY_SEPARATOR . $file_id . DIRECTORY_SEPARATOR . 'changes' . DIRECTORY_SEPARATOR;

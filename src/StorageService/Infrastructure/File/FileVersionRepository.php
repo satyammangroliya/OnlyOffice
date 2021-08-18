@@ -21,7 +21,7 @@ interface FileVersionRepository
      * @param ilDateTime $created_at
      * @return int created version
      */
-    public function create(UUID $file_uuid, int $user_id, ilDateTime $created_at, string $url) : int;
+    public function create(UUID $file_uuid, int $user_id, ilDateTime $created_at, string $url, int $version = -1) : int;
 
     public function getByObjectID(int $object_id) : FileVersion;
 

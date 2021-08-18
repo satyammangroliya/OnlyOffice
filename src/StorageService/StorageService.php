@@ -132,6 +132,32 @@ class StorageService
         return $fileVersion;
     }
 
+    public function createClone(int $child_id, int $parent_id)
+    {
+        $uuid = new UUID();
+        $parent_file = $this->file_repository->getFile($parent_id);
+        $this->file_repository->create($uuid, $child_id, $parent_file->getTitle(), $parent_file->getFileType(),
+            $parent_file->getOpenSetting());
+
+        // clone file versions
+        $parent_file_versions = $this->file_version_repository->getAllVersions($parent_file->getFileUuid());
+        foreach ($parent_file_versions as $version) {
+            $path = $this->file_system_service->storeVersionCopy($version, $uuid->asString(), $child_id);
+            $created_at = new ilDateTime(time(), IL_CAL_UNIX);
+            $version = $this->file_version_repository->create($uuid, $this->dic->user()->getId(), $created_at, $path, $version->getVersion());
+        }
+
+        // clone file changes
+        $parent_changes = $this->file_change_repository->getAllChanges($parent_file->getUuid()->asString());
+        foreach ($parent_changes as $changes) {
+            $path = $this->file_system_service->storeChangeCopy($changes, $uuid->asString(), $child_id);
+            $changeId = $this->file_change_repository->getNextId();
+            $this->file_change_repository->create($changeId, $uuid, $changes->getVersion(),
+                $changes->getChangesObjectString(), $changes->getServerVersion(), $path);
+        }
+
+    }
+
     public function getAllVersions(int $object_id) : array
     {
         $file = $this->file_repository->getFile($object_id);

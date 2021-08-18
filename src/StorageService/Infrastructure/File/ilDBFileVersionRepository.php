@@ -18,17 +18,26 @@ class ilDBFileVersionRepository implements FileVersionRepository
 {
 
     /**
-     * @param UUID       $file_uuid
-     * @param int        $user_id
+     * @param UUID $file_uuid
+     * @param int $user_id
      * @param ilDateTime $created_at
      * @return int
      * @throws arException
      */
-    public function create(UUID $file_uuid, int $user_id, ilDateTime $created_at, string $url) : int
-    {
+    public function create(
+        UUID $file_uuid,
+        int $user_id,
+        ilDateTime $created_at,
+        string $url,
+        int $version = -1
+    ) : int {
         $file_version_AR = new FileVersionAR();
         $file_version_AR->setFileUuid($file_uuid);
-        $file_version_AR->setVersion($this->determineVersion($file_uuid));
+        if ($version < 0) {
+            $file_version_AR->setVersion($this->determineVersion($file_uuid));
+        } else {
+            $file_version_AR->setVersion($version);
+        }
         $file_version_AR->setUserId($user_id);
         $file_version_AR->setCreatedAt($created_at);
         $file_version_AR->setUrl($url);
@@ -107,7 +116,7 @@ class ilDBFileVersionRepository implements FileVersionRepository
     public function getPreviousVersion(string $uuid, int $version) : FileVersion
     {
         /** @var FileVersionAR $previous_ar */
-        $previous_ar = FileVersionAR::where(['file_uuid' => $uuid, 'version' => ($version-1)])->first();
+        $previous_ar = FileVersionAR::where(['file_uuid' => $uuid, 'version' => ($version - 1)])->first();
         return $this->buildFileVersionFromAR($previous_ar);
     }
 }
