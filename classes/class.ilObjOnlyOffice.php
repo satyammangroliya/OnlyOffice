@@ -47,8 +47,8 @@ class ilObjOnlyOffice extends ilObjectPlugin
     public function doCreate()/*: void*/
     {
         $this->object_settings = new ObjectSettings();
-
         $this->object_settings->setObjId($this->id);
+        $this->object_settings->setOpen($_POST[ilObjOnlyOfficeGUI::POST_VAR_OPEN_SETTING]);
 
         self::onlyOffice()->objectSettings()->storeObjectSettings($this->object_settings);
     }

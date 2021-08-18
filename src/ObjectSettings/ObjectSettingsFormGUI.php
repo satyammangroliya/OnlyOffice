@@ -87,6 +87,24 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
             ],
             "online"      => [
                 self::PROPERTY_CLASS => ilCheckboxInputGUI::class
+            ],
+            "open" => [
+                self::PROPERTY_CLASS => \ilRadioGroupInputGUI::class,
+                self::PROPERTY_REQUIRED => true,
+                self::PROPERTY_SUBITEMS => [
+                    [
+                        self::PROPERTY_CLASS => \ilRadioOption::class,
+                        self::PROPERTY_VALUE => "ilias"
+                    ],
+                    [
+                        self::PROPERTY_CLASS => \ilRadioOption::class,
+                        self::PROPERTY_VALUE => "editor"
+                    ],
+                    [
+                        self::PROPERTY_CLASS => \ilRadioOption::class,
+                        self::PROPERTY_VALUE => "download"
+                    ]
+                ]
             ]
         ];
     }

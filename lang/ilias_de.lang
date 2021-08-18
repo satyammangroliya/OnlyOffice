@@ -19,8 +19,8 @@ xono_editor#:#Erstellt von
 xono_download#:#Herunterladen
 form_open_editor#:#Im ONLYOFFICE online Editor öffnen
 form_open_download#:Datei herunterladen
-form_open_ilias#:#Alle Versionsverlauf auf ILIAS anzeigen
-form_open_setting#:Wie soll die Datei geöffnet werden?
+form_open_ilias#:#Versionsverlauf auf ILIAS anzeigen
+form_open_setting#:#Wie soll die Datei geöffnet werden?
 config_baseurl#:#ILIAS root URL
 config_onlyoffice_url#:#ONLYOFFICE root URL
 config_onlyoffice_secret#:#ONLYOFFICE secret für die Token-Validierung
@@ -39,3 +39,7 @@ settings_save#:#Speichern
 settings_saved#:#Einstellungen gespeichert
 settings_settings#:#Einstellungen
 settings_title#:#Titel
+settings_open#:#Wie soll die Datei geöffnet werden?
+settings_open_0#:#Versionsverlauf auf ILIAS anzeigen
+settings_open_1#:#Im ONLYOFFICE online Editor öffnen
+settings_open_2#:#Datei herunterladen

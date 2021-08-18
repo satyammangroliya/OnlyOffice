@@ -74,10 +74,9 @@ class StorageService
     {
         // Create DB Entries for File & FileVersion
         $new_file_id = new UUID();
-        $open_setting = $_POST['open_setting'];
         $path = $this->file_system_service->storeUploadResult($upload_result, $obj_id, $new_file_id->asString());
         $extension = pathinfo($path, PATHINFO_EXTENSION);
-        $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $extension, $open_setting);
+        $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $extension);
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
         $version = $this->file_version_repository->create($new_file_id, $this->dic->user()->getId(), $created_at,
             $path);
@@ -115,7 +114,8 @@ class StorageService
         // Store FileVersion and Create Database Entry
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
         $version = $this->getLatestVersions($uuid)->getVersion() + 1;
-        $path = $this->file_system_service->storeNewVersionFromString($content, $file_id, $uuid->asString(), $version, $file_extension);
+        $path = $this->file_system_service->storeNewVersionFromString($content, $file_id, $uuid->asString(), $version,
+            $file_extension);
         $this->file_version_repository->create($uuid, $editor_id, $created_at, $path);
 
         //Store Changes and Create Database Entry
@@ -135,15 +135,15 @@ class StorageService
         // create new file
         $uuid = new UUID();
         $parent_file = $this->file_repository->getFile($parent_id);
-        $this->file_repository->create($uuid, $child_id, $parent_file->getTitle(), $parent_file->getFileType(),
-            $parent_file->getOpenSetting());
+        $this->file_repository->create($uuid, $child_id, $parent_file->getTitle(), $parent_file->getFileType());
 
         // clone file versions
         $parent_file_versions = $this->file_version_repository->getAllVersions($parent_file->getFileUuid());
         foreach ($parent_file_versions as $version) {
             $path = $this->file_system_service->storeVersionCopy($version, $uuid->asString(), $child_id);
             $created_at = new ilDateTime(time(), IL_CAL_UNIX);
-            $version = $this->file_version_repository->create($uuid, $this->dic->user()->getId(), $created_at, $path, $version->getVersion());
+            $version = $this->file_version_repository->create($uuid, $this->dic->user()->getId(), $created_at, $path,
+                $version->getVersion());
         }
 
         // clone file changes
@@ -157,21 +157,22 @@ class StorageService
 
     }
 
-    public function deleteFile(int $file_id) {
+    public function deleteFile(int $file_id)
+    {
         // remove physical structure
         $this->file_system_service->deletePath($file_id);
         $uuid = $this->file_repository->getFile($file_id)->getUuid();
 
         // delete File entry
-        $query = 'DELETE FROM xono_file WHERE obj_id='.$file_id.';';
+        $query = 'DELETE FROM xono_file WHERE obj_id=' . $file_id . ';';
         $this->dic->database()->query($query);
 
         // delete FileVersion entries
-        $query = 'DELETE FROM xono_file_version WHERE file_uuid="'.$uuid->asString() .'";';
+        $query = 'DELETE FROM xono_file_version WHERE file_uuid="' . $uuid->asString() . '";';
         $this->dic->database()->query($query);
 
         // delete FileChange entries
-        $query = 'DELETE FROM xono_file_change WHERE file_uuid="'.$uuid->asString() .'";';
+        $query = 'DELETE FROM xono_file_change WHERE file_uuid="' . $uuid->asString() . '";';
         $this->dic->database()->query($query);
 
     }
@@ -208,14 +209,4 @@ class StorageService
     {
         return $this->file_version_repository->getLatestVersion($file_uuid);
     }
-
-    public function updateOpenSetting(int $file_id, string $open_setting)
-    {
-        $file_ar = $this->file_repository->getAR($file_id);
-        $query = 'UPDATE ' . $file_ar->getConnectorContainerName() .
-            ' SET open_setting="' . $open_setting . '"' .
-            ' WHERE obj_id=' . $file_id . ';';
-        $this->dic->database()->query($query);
-    }
-
 }

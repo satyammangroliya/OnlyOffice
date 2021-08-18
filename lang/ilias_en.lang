@@ -39,3 +39,7 @@ settings_save#:#Save
 settings_saved#:#Settings saved
 settings_settings#:#Settings
 settings_title#:#Title
+settings_open#:#How should the file be opened?
+settings_open_0#:#Show Version History on ILIAS
+settings_open_1#:#Open in ONLYOFFICE Online Editor
+settings_open_2#:#Download the File

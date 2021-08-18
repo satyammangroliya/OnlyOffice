@@ -19,4 +19,11 @@
 <?php
 \srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileAR::updateDB();
 ?>
-
+<#5>
+<?php
+\srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings::updateDB();
+?>
+<#6>
+<?php
+\srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileAR::updateDB();
+?>
