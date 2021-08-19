@@ -131,8 +131,7 @@ class xonoContentGUI extends xonoAbstractGUI
 
     protected function buttonName()
     {
-        // ToDo: Determine ButtonName based on access rights -> Does this work?
-        if (ilObjOnlyOfficeAccess::hasWriteAccess()) {
+        if (ilObjOnlyOfficeAccess::hasEditFileAccess()) {
             return $this->plugin->txt('xono_edit_button');
         } else {
             return $this->plugin->txt('xono_view_button');

@@ -70,7 +70,8 @@ class ilObjOnlyOfficeAccess extends ilObjectPluginAccess
             case "delete":
                 return boolval(self::dic()->access()->checkAccessOfUser($a_user_id, "delete", "", $a_ref_id)
                     || self::dic()->access()->checkAccessOfUser($a_user_id, "write", "", $a_ref_id));
-
+            case "editFile":
+                return boolval(self::dic()->access()->checkAccessOfUser($a_user_id, "rep_robj_xono_perm_editFile", "", $a_ref_id));
             case "write":
             case "edit_permission":
             default:
@@ -157,6 +158,10 @@ class ilObjOnlyOfficeAccess extends ilObjectPluginAccess
     public static function hasWriteAccess(/*?int*/ $ref_id = null) : bool
     {
         return self::checkAccess("write", "write", $ref_id);
+    }
+
+    public static function hasEditFileAccess(/*?int*/ $ref_id = null): bool {
+        return self::checkAccess("editFile", "editFile", $ref_id);
     }
 
 

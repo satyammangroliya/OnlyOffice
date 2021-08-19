@@ -290,7 +290,7 @@ class xonoEditorGUI extends xonoAbstractGUI
     }
 
     protected function determineAccessRights(): string {
-        if (ilObjOnlyOfficeAccess::hasWriteAccess())
+        if (ilObjOnlyOfficeAccess::hasEditFileAccess())
             return "edit";
         else
             return "view";
