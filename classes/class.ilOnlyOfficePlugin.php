@@ -71,7 +71,7 @@ class ilOnlyOfficePlugin extends ilRepositoryObjectPlugin
     /**
      * @inheritDoc
      */
-    protected function deleteData()/*: void*/
+    protected function deleteData()/*: void */
     {
         self::onlyOffice()->dropTables();
     }
@@ -80,6 +80,14 @@ class ilOnlyOfficePlugin extends ilRepositoryObjectPlugin
     {
         // TODO: Implement shouldUseOneUpdateStepOnly() method.
         return false;
+    }
+
+    protected function uninstallCustom() {
+        // ToDo: Implement
+    }
+
+    public static function checkPluginClassNameConst() {
+        return self::PLUGIN_CLASS_NAME;
     }
 
     public function allowCopy()

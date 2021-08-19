@@ -33,9 +33,6 @@ use ILIAS\Filesystem\Filesystems;
 use ILIAS\FileUpload\FileUpload;
 use ILIAS\GlobalScreen\Services as GlobalScreenService;
 use ILIAS\Refinery\Factory as RefineryFactory;
-use ILIAS\ResourceStorage\Services as ResourceStorageServices;
-use ILIAS\Skill\Service\SkillService;
-use ILIAS\UI\Implementation\Render\ImagePathResolver;
 use ILIAS\UI\Implementation\Render\JavaScriptBinding;
 use ILIAS\UI\Implementation\Render\Loader;
 use ILIAS\UI\Implementation\Render\ResourceRegistry;
@@ -57,22 +54,27 @@ use ilObjectService;
 use ilObjUseBookDBRepository;
 use ilObjUser;
 use ilPluginAdmin;
+use ilRbacAdmin;
+use ilRbacReview;
+use ilRbacSystem;
 use ilSetting;
 use ilStyleDefinition;
 use ilTabsGUI;
 use ilTaskService;
+use ilTemplate;
 use ilToolbarGUI;
 use ilTree;
 use ilUIService;
 use Session;
 use srag\DIC\OnlyOffice\DIC\AbstractDIC;
+use srag\DIC\OnlyOffice\Exception\DICException;
 
 /**
- * Class ILIAS70DIC
+ * Class ILIAS54DIC
  *
  * @package srag\DIC\OnlyOffice\DIC\Implementation
  */
-final class ILIAS70DIC extends AbstractDIC
+final class ILIAS54DIC extends AbstractDIC
 {
 
     /**
@@ -131,7 +133,7 @@ final class ILIAS70DIC extends AbstractDIC
      */
     public function bookingManager() : ilBookingManagerService
     {
-        return $this->dic->bookingManager();
+        throw new DICException("ilBookingManagerService not exists in ILIAS 5.4 or below!");
     }
 
 
@@ -140,7 +142,7 @@ final class ILIAS70DIC extends AbstractDIC
      */
     public function bookingObjUseBook() : ilObjUseBookDBRepository
     {
-        return new ilObjUseBookDBRepository($this->database());
+        throw new DICException("ilObjUseBookDBRepository not exists in ILIAS 5.4 or below!");
     }
 
 
@@ -149,7 +151,7 @@ final class ILIAS70DIC extends AbstractDIC
      */
     public function bookingReservation() : ilBookingReservationDBRepositoryFactory
     {
-        return new ilBookingReservationDBRepositoryFactory();
+        throw new DICException("ilBookingReservationDBRepositoryFactory not exists in ILIAS 5.4 or below!");
     }
 
 
@@ -257,7 +259,7 @@ final class ILIAS70DIC extends AbstractDIC
      */
     public function exercise() : ilExerciseFactory
     {
-        return $this->dic->exercise();
+        throw new DICException("ilExerciseFactory not exists in ILIAS 5.4 or below!");
     }
 
 
@@ -266,7 +268,7 @@ final class ILIAS70DIC extends AbstractDIC
      */
     public function favourites() : ilFavouritesDBRepository
     {
-        return new ilFavouritesDBRepository();
+        throw new DICException("ilFavouritesDBRepository not exists in ILIAS 5.4 or below!");
     }
 
 
@@ -330,15 +332,6 @@ final class ILIAS70DIC extends AbstractDIC
     public function iliasIni() : ilIniFile
     {
         return $this->dic->iliasIni();
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function imagePathResolver() : ImagePathResolver
-    {
-        return $this->dic["ui.pathresolver"];
     }
 
 
@@ -447,6 +440,17 @@ final class ILIAS70DIC extends AbstractDIC
 
     /**
      * @inheritDoc
+     *
+     * @deprecated Please use `self::dic()->ui()->mainTemplate()`
+     */
+    public function mainTemplate() : ilTemplate
+    {
+        return $this->dic->ui()->mainTemplate();
+    }
+
+
+    /**
+     * @inheritDoc
      */
     public function news() : ilNewsService
     {
@@ -495,7 +499,7 @@ final class ILIAS70DIC extends AbstractDIC
      */
     public function question() : ilAsqFactory
     {
-        return $this->dic->question();
+        throw new DICException("ilAsqFactory not exists in ILIAS 5.4 or below!");
     }
 
 
@@ -510,10 +514,43 @@ final class ILIAS70DIC extends AbstractDIC
 
     /**
      * @inheritDoc
+     *
+     * @deprecated Please use `self::dic()->rba()->admin()`
+     */
+    public function rbacadmin() : ilRbacAdmin
+    {
+        return $this->rbac()->admin();
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @deprecated Please use `self::dic()->rba()->review()`
+     */
+    public function rbacreview() : ilRbacReview
+    {
+        return $this->rbac()->review();
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @deprecated Please use `self::dic()->rba()->system()`
+     */
+    public function rbacsystem() : ilRbacSystem
+    {
+        return $this->rbac()->system();
+    }
+
+
+    /**
+     * @inheritDoc
      */
     public function refinery() : RefineryFactory
     {
-        return $this->dic->refinery();
+        throw new DICException("RefineryFactory not exists in ILIAS 5.4 or below!");
     }
 
 
@@ -547,15 +584,6 @@ final class ILIAS70DIC extends AbstractDIC
     /**
      * @inheritDoc
      */
-    public function resourceStorage() : ResourceStorageServices
-    {
-        return $this->dic()->resourceStorage();
-    }
-
-
-    /**
-     * @inheritDoc
-     */
     public function session() : Session
     {
         return $this->dic["sess"];
@@ -568,15 +596,6 @@ final class ILIAS70DIC extends AbstractDIC
     public function settings() : ilSetting
     {
         return $this->dic->settings();
-    }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function skills() : SkillService
-    {
-        return $this->dic()->skills();
     }
 
 
@@ -603,7 +622,7 @@ final class ILIAS70DIC extends AbstractDIC
      */
     public function task() : ilTaskService
     {
-        return $this->dic->task();
+        throw new DICException("ilTaskService not exists in ILIAS 5.4 or below!");
     }
 
 
@@ -627,6 +646,17 @@ final class ILIAS70DIC extends AbstractDIC
 
     /**
      * @inheritDoc
+     *
+     * @deprecated Please use `self::dic()->repositoryTree()`
+     */
+    public function tree() : ilTree
+    {
+        return $this->repositoryTree();
+    }
+
+
+    /**
+     * @inheritDoc
      */
     public function ui() : UIServices
     {
@@ -639,7 +669,7 @@ final class ILIAS70DIC extends AbstractDIC
      */
     public function uiService() : ilUIService
     {
-        return $this->dic->uiService();
+        throw new DICException("ilUIService not exists in ILIAS 5.4 or below!");
     }
 
 

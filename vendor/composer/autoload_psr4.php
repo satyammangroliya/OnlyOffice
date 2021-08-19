@@ -13,4 +13,6 @@ return array(
     'srag\\DIC\\OnlyOffice\\' => array($vendorDir . '/srag/dic/src'),
     'srag\\CustomInputGUIs\\OnlyOffice\\' => array($vendorDir . '/srag/custominputguis/src'),
     'srag\\ActiveRecordConfig\\OnlyOffice\\' => array($vendorDir . '/srag/activerecordconfig/src'),
+    'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
+    'Ramsey\\Uuid\\' => array($vendorDir . '/ramsey/uuid/src'),
 );

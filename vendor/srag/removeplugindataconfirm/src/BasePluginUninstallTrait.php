@@ -34,13 +34,13 @@ trait BasePluginUninstallTrait
     /**
      * Delete your plugin data in this method
      */
-    protected abstract function deleteData() : void;
+    protected abstract function deleteData()/* : void*/;
 
 
     /**
      *
      */
-    protected function installRemovePluginDataConfirmLanguages() : void
+    protected function installRemovePluginDataConfirmLanguages()/* : void*/
     {
         LibraryLanguageInstaller::getInstance()->withPlugin(self::plugin())->withLibraryLanguageDirectory(__DIR__
             . "/../lang")->updateLanguages();

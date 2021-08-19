@@ -43,7 +43,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    public function getByline() : ?string
+    public function getByline()/* : ?string*/
     {
         return $this->input->getInfo();
     }
@@ -52,7 +52,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    public function getError() : ?string
+    public function getError()/* : ?string*/
     {
         return $this->input->getAlert();
     }
@@ -70,7 +70,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @param ilFormPropertyGUI $input
      */
-    public function setInput(ilFormPropertyGUI $input) : void
+    public function setInput(ilFormPropertyGUI $input)/* : void*/
     {
         $this->input = $input;
     }
@@ -239,7 +239,7 @@ class InputGUIWrapperUIInputComponent extends Input
     /**
      * @inheritDoc
      */
-    protected function getConstraintForRequirement() : ?Constraint
+    protected function getConstraintForRequirement()/* : ?Constraint*/
     {
         return new InputGUIWrapperConstraint($this->input, $this->data_factory, self::dic()->language());
     }
