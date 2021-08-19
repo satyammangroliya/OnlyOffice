@@ -111,6 +111,13 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     }
 
+    /**
+     * Builds and returns the config array as string
+     *
+     * @param File        $file
+     * @param FileVersion $fileVersion
+     * @return string
+     */
     protected function config(File $file, FileVersion $fileVersion) : string
     {
         $as_array = array(); // Config Array
@@ -152,6 +159,13 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     }
 
+    /**
+     * Builds and returns an array containing the version history of a file as string
+     *
+     * @param FileVersion $latestVersion
+     * @param array       $all_versions
+     * @return string
+     */
     protected function history(FileVersion $latestVersion, array $all_versions) : string
     {
         $all_changes = $this->storage_service->getAllChanges($latestVersion->getFileUuid()->asString());
@@ -183,6 +197,11 @@ class xonoEditorGUI extends xonoAbstractGUI
         return $result;
     }
 
+    /**
+     * Builds and returns an array containing information about all versions as string
+     * @param array $allVersions
+     * @return string
+     */
     protected function historyData(array $allVersions) : string
     {
         $result = array();

@@ -100,7 +100,7 @@ class StorageService
     }
 
     public function updateFileFromUpload(
-        string $content,
+        string $file_content,
         int $file_id,
         UUID $uuid,
         int $editor_id,
@@ -114,7 +114,7 @@ class StorageService
         // Store FileVersion and Create Database Entry
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
         $version = $this->getLatestVersions($uuid)->getVersion() + 1;
-        $path = $this->file_system_service->storeNewVersionFromString($content, $file_id, $uuid->asString(), $version,
+        $path = $this->file_system_service->storeNewVersionFromString($file_content, $file_id, $uuid->asString(), $version,
             $file_extension);
         $this->file_version_repository->create($uuid, $editor_id, $created_at, $path);
 
