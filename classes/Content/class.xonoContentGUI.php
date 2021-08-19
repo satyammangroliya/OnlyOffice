@@ -146,12 +146,13 @@ class xonoContentGUI extends xonoAbstractGUI
     // ToDo
     protected function getDownloadUrlArray(array $fileVersions, string $filename, string $extension) : array
     {
+
         $result = array();
         foreach ($fileVersions as $fv) {
-            $url = ltrim(WebAccessService::getWACUrl($fv->getUrl()), ".");
+            $url = ILIAS_ABSOLUTE_PATH . '/data/default' . $fv->getUrl();
             $version = $fv->getVersion();
             $name = $filename . '_V' . $version . '.' . $extension;
-            $this->dic->ctrl()->setParameter($this, 'path', self::BASE_URL . $url);
+            $this->dic->ctrl()->setParameter($this, 'path', $url);
             $this->dic->ctrl()->setParameter($this, 'name', $name);
             $path = $this->dic->ctrl()->getLinkTarget($this, self::CMD_DOWNLOAD);
             $result[$version] = '/' . $path;
