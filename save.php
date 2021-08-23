@@ -11,7 +11,7 @@ chdir($directory);
 
 initializeILIAS();
 global $DIC;
-$DIC->logger()->root()->info("Ilias initialized");
+//$DIC->logger()->root()->info("Ilias initialized");
 
 if (($body_stream = file_get_contents("php://input")) === false) {
     echo "Bad Request";
@@ -25,7 +25,8 @@ $decrypted = \srag\Plugins\OnlyOffice\CryptoService\JwtService::jwtDecode($encry
 //$DIC->logger()->root()->info($decrypted);
 $data = json_decode($decrypted, true);
 
-if ($data["status"] == 2) {
+if ($data["status"] == 2 && !$data["notmodified"] || $data["status"] == 6) {
+    $DIC->logger()->root()->info("Save File");
     $uuid = $_GET['uuid'];
     $file_id = $_GET['file_id'];
     $file_ext = $_GET['ext'];
