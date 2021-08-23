@@ -46,3 +46,4 @@ settings_open_2#:#Download the File
 rep_robj_xono_perm_editFile#:#Edit File
 form_input_file#:#File
 object_tab_info#:#Information
+xono_reload_info#:#Are you returning from ONLYOFFICE editor and cannot see your newly created file version?<br>Please wait 10s and press F5.

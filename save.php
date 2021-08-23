@@ -21,7 +21,7 @@ if (($body_stream = file_get_contents("php://input")) === false) {
 $encrypted = json_decode($body_stream, true);
 require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/src/CryptoService/JwtService.php';
 $decrypted = \srag\Plugins\OnlyOffice\CryptoService\JwtService::jwtDecode($encrypted['token'],
-    "secret"); //ToDo: Set password globally
+    "secret"); //ToDo: Define Key globally
 //$DIC->logger()->root()->info($decrypted);
 $data = json_decode($decrypted, true);
 
@@ -34,6 +34,7 @@ if ($data["status"] == 2 && !$data["notmodified"] || $data["status"] == 6) {
     try {
         $callback_handler = new xonoCallbackHandler($DIC, $uuid, $file_id, $data);
         $callback_handler->handleCallback();
+
     } catch (Exception $e) {
         echo $e->getMessage();
     }

@@ -107,11 +107,11 @@ class xonoContentGUI extends xonoAbstractGUI
         $tpl->setVariable('CREATED', $this->plugin->txt('xono_date'));
         $tpl->setVariable('EDITOR', $this->plugin->txt('xono_editor'));
         $tpl->setVariable('DOWNLOAD', $this->plugin->txt('xono_download'));
+        $tpl->setVariable('RELOAD_INFO', $this->plugin->txt('xono_reload_info'));
         $content = $tpl->get();
         $this->dic->ui()->mainTemplate()->setContent($content);
     }
 
-    // ToDo: Does not work yet!
     protected function downloadFileVersion()
     {
         $path = $_GET['path'];
