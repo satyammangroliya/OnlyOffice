@@ -144,7 +144,6 @@ class xonoContentGUI extends xonoAbstractGUI
         return $this->dic->ctrl()->getLinkTargetByClass(xonoEditorGUI::class, xonoEditorGUI::CMD_EDIT);
     }
 
-    // ToDo
     protected function getDownloadUrlArray(array $fileVersions, string $filename, string $extension) : array
     {
         $file = $this->storage_service->getFile($this->file_id);

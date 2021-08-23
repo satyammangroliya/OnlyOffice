@@ -205,7 +205,7 @@ class StorageService
         return $this->file_repository->getFile($file_id);
     }
 
-    public function getLatestVersions(UUID $file_uuid) : FileVersion
+    public function getLatestVersion(UUID $file_uuid) : FileVersion
     {
         return $this->file_version_repository->getLatestVersion($file_uuid);
     }

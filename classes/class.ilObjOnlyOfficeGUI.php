@@ -113,6 +113,16 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                         switch ($open_setting) {
                             case "download":
                                 $next_cmd = xonoContentGUI::CMD_DOWNLOAD;
+                                $file = $this->storage_service->getFile($this->obj_id);
+                                $file_version = $this->storage_service->getLatestVersion($file->getUuid());
+                                $ext = pathinfo($file_version->getUrl(), PATHINFO_EXTENSION);
+                                $filename = rtrim($file->getTitle(), '.'. $ext);
+                                self::dic()->ctrl()->setParameterByClass(xonoContentGUI::class, 'path',
+                                    ILIAS_ABSOLUTE_PATH . '/data/default' . $file_version->getUrl());
+                                self::dic()->ctrl()->setParameterByClass(xonoContentGUI::class, 'name',
+                                    $filename . '_V' . $file_version->getVersion() . '.' . $file->getFileType());
+                                self::dic()->ctrl()->setParameterByClass(xonoContentGUI::class, 'mime',
+                                    $file->getMimeType());
                                 break;
                             case "editor":
                                 $next_cmd = xonoContentGUI::CMD_EDIT;
