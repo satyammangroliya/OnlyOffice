@@ -113,7 +113,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                         if (!ilObjOnlyOfficeAccess::hasReadAccess()) {
                             ilObjOnlyOfficeAccess::redirectNonAccess(ilRepositoryGUI::class);
                         }
-                        $file_info = new InfoService(self::dic()->dic());
+                        $file_info = new InfoService();
                         $open_setting = $file_info->getOpenSetting($this->obj_id);
                         switch ($open_setting) {
                             case "download":
@@ -202,9 +202,9 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $opening_setting = new ilRadioGroupInputGUI($this->plugin->txt("form_open_setting"),
             self::POST_VAR_OPEN_SETTING);
         // ToDo: Can I set a default value?
+        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_ilias"), "ilias"));
         $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_editor"), "editor"));
         $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_download"), "download"));
-        $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_ilias"), "ilias"));
         $opening_setting->setRequired(true);
         $form->addItem($opening_setting);
 
