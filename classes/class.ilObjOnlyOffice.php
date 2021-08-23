@@ -117,4 +117,8 @@ class ilObjOnlyOffice extends ilObjectPlugin
     {
         $this->object_settings->setOnline($is_online);
     }
+
+    public function setOpen(string $open = 'ilias') {
+        $this->object_settings->setOpen($open);
+    }
 }
