@@ -40,11 +40,13 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     const CMD_SHOW_VERSIONS = "showVersions";
     const CMD_SAVE = 'save';
     const CMD_CANCEL = 'cancel';
+    const CMD_SHOW_INFO = 'infoScreen';
     const LANG_MODULE_OBJECT = "object";
     const LANG_MODULE_SETTINGS = "settings";
     const TAB_CONTENTS = "contents";
     const TAB_PERMISSIONS = "perm_settings";
     const TAB_SETTINGS = "settings";
+    const TAB_INFO = "info";
 
     const TAB_SHOW_CONTENTS = "show_contents";
     const POST_VAR_FILE = 'upload_files';
@@ -116,7 +118,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                                 $file = $this->storage_service->getFile($this->obj_id);
                                 $file_version = $this->storage_service->getLatestVersion($file->getUuid());
                                 $ext = pathinfo($file_version->getUrl(), PATHINFO_EXTENSION);
-                                $filename = rtrim($file->getTitle(), '.'. $ext);
+                                $filename = rtrim($file->getTitle(), '.' . $ext);
                                 self::dic()->ctrl()->setParameterByClass(xonoContentGUI::class, 'path',
                                     ILIAS_ABSOLUTE_PATH . '/data/default' . $file_version->getUrl());
                                 self::dic()->ctrl()->setParameterByClass(xonoContentGUI::class, 'name',
@@ -240,7 +242,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
      */
     protected function settings()/*: void*/
     {
-        self::dic()->logger()->root()->info("Settings Post");
         self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
 
         $form = $this->getSettingsForm();
@@ -276,6 +277,8 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
             self::plugin()->translate("show_contents", self::LANG_MODULE_OBJECT), self::dic()->ctrl()
                                                                                       ->getLinkTarget($this,
                                                                                           self::CMD_SHOW_VERSIONS));
+        self::dic()->tabs()->addTab(self::TAB_INFO, self::plugin()->translate("tab_info", self::LANG_MODULE_OBJECT),
+            self::dic()->ctrl()->getLinkTarget($this, self::CMD_SHOW_INFO));
 
         if (ilObjOnlyOfficeAccess::hasWriteAccess()) {
             self::dic()->tabs()->addTab(self::TAB_SETTINGS,

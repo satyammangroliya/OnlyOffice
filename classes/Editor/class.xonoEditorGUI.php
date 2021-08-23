@@ -94,7 +94,7 @@ class xonoEditorGUI extends xonoAbstractGUI
     {
         $file = $this->storage_service->getFile($this->file_id);
         $all_versions = $this->storage_service->getAllVersions($this->file_id);
-        $latest_version = $this->storage_service->getLatestVersions($file->getUuid());
+        $latest_version = $this->storage_service->getLatestVersion($file->getUuid());
 
         $tpl = $this->plugin->getTemplate('html/tpl.editor.html');
         $tpl->setVariable('FILE_TITLE', $file->getTitle());
