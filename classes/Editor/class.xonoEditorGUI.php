@@ -140,6 +140,7 @@ class xonoEditorGUI extends xonoAbstractGUI
             $file->getObjId(), $extension);
         $editor['user'] = $this->buildUserArray($this->dic->user()->getId());
         $editor['mode'] = $this->determineAccessRights();
+        $editor['lang'] = $this->dic->user()->getLanguage();
         $editor['customization']= array("forcesave" => true);
         $as_array['editorConfig'] = $editor;
 
