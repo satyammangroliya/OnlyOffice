@@ -40,6 +40,7 @@ class ilObjOnlyOfficeListGUI extends ilObjectPluginListGUI
 
     /**
      * @inheritDoc
+     * ToDo: Can I add a command?
      */
     public function initCommands() : array
     {
@@ -54,7 +55,7 @@ class ilObjOnlyOfficeListGUI extends ilObjectPluginListGUI
         $this->comments_enabled = false;
         $this->comments_settings_enabled = false;
         $this->expand_enabled = false;
-        $this->info_screen_enabled = false;
+        $this->info_screen_enabled = true;
         $this->link_enabled = true;
         $this->notes_enabled = false;
         $this->payment_enabled = false;

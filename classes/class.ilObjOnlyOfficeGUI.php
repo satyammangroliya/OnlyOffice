@@ -32,23 +32,26 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     use OnlyOfficeTrait;
 
     const PLUGIN_CLASS_NAME = ilOnlyOfficePlugin::class;
+
     const CMD_MANAGE_CONTENTS = "manageContents";
     const CMD_PERMISSIONS = "perm";
     const CMD_SETTINGS = "settings";
     const CMD_SETTINGS_STORE = "settingsStore";
     const CMD_SHOW_CONTENTS = "showContents";
     const CMD_SHOW_VERSIONS = "showVersions";
+    /* standard commands */
     const CMD_SAVE = 'save';
     const CMD_CANCEL = 'cancel';
     const CMD_SHOW_INFO = 'infoScreen';
+
     const LANG_MODULE_OBJECT = "object";
     const LANG_MODULE_SETTINGS = "settings";
-    const TAB_CONTENTS = "contents";
+
     const TAB_PERMISSIONS = "perm_settings";
     const TAB_SETTINGS = "settings";
     const TAB_INFO = "info";
-
     const TAB_SHOW_CONTENTS = "show_contents";
+
     const POST_VAR_FILE = 'upload_files';
     const POST_VAR_OPEN_SETTING = 'open_setting';
     /**
