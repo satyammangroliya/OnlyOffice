@@ -61,6 +61,14 @@ class FileAR extends ActiveRecord
     protected $file_type;
 
     /**
+     * @var string
+     * @db_has_field        true
+     * @db_fieldtype        text
+     * @db_length           64
+     */
+    protected $mime_type;
+
+    /**
      * @return UUID
      */
     public function getUUID() : UUID
@@ -138,6 +146,14 @@ class FileAR extends ActiveRecord
     public function setFileType(string $file_type)
     {
         $this->file_type = $file_type;
+    }
+
+    public function getMimeType(): string {
+        return $this->mime_type;
+    }
+
+    public function setMimeType(string $mime_type) {
+        $this->mime_type = $mime_type;
     }
 
     /**

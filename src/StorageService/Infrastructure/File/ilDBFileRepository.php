@@ -16,13 +16,14 @@ class ilDBFileRepository implements FileRepository
     /**
      * @inheritDoc
      */
-    public function create(UUID $file_uuid, int $obj_id, string $title, string $file_type)
+    public function create(UUID $file_uuid, int $obj_id, string $title, string $file_type, string $mime_type)
     {
         $file_AR = new FileAR();
         $file_AR->setUUID($file_uuid);
         $file_AR->setObjId($obj_id);
         $file_AR->setTitle($title);
         $file_AR->setFileType($file_type);
+        $file_AR->setMimeType($mime_type);
         $file_AR->create();
     }
 
@@ -38,7 +39,8 @@ class ilDBFileRepository implements FileRepository
         $obj_id = $ar->getObjId();
         $title = $ar->getTitle();
         $file_type = $ar->getFileType();
-        return new File($uuid, $obj_id, $title, $file_type);
+        $mime_type = $ar->getMimeType();
+        return new File($uuid, $obj_id, $title, $file_type, $mime_type);
 
     }
 

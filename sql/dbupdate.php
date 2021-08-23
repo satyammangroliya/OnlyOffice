@@ -35,3 +35,8 @@ if($offering_admin)
     ilDBUpdateNewObjectType::addRBACOperation($xono_type_id, $offering_admin);
 }
 ?>
+<#8>
+<?php
+\srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileAR::updateDB();
+?>
+

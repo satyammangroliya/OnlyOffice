@@ -76,7 +76,7 @@ class StorageService
         $new_file_id = new UUID();
         $path = $this->file_system_service->storeUploadResult($upload_result, $obj_id, $new_file_id->asString());
         $extension = pathinfo($path, PATHINFO_EXTENSION);
-        $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $extension);
+        $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $extension, $upload_result->getMimeType());
         $created_at = new ilDateTime(time(), IL_CAL_UNIX);
         $version = $this->file_version_repository->create($new_file_id, $this->dic->user()->getId(), $created_at,
             $path);
@@ -95,7 +95,7 @@ class StorageService
 
         // Create & Return FileVersion object
         $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
-        $file = new File($new_file_id, $obj_id, $upload_result->getName(), $upload_result->getMimeType());
+        $file = new File($new_file_id, $obj_id, $upload_result->getName(),$extension, $upload_result->getMimeType());
         return $file;
     }
 

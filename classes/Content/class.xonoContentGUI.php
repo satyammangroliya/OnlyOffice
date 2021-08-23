@@ -116,7 +116,8 @@ class xonoContentGUI extends xonoAbstractGUI
     {
         $path = $_GET['path'];
         $name = $_GET['name'];
-        ilFileDelivery::deliverFileAttached($path, $name);
+        $mime_type = $_GET['mime'];
+        ilFileDelivery::deliverFileAttached($path, $name, $mime_type);
         exit;
     }
 
@@ -146,6 +147,7 @@ class xonoContentGUI extends xonoAbstractGUI
     // ToDo
     protected function getDownloadUrlArray(array $fileVersions, string $filename, string $extension) : array
     {
+        $file = $this->storage_service->getFile($this->file_id);
 
         $result = array();
         foreach ($fileVersions as $fv) {
@@ -154,6 +156,7 @@ class xonoContentGUI extends xonoAbstractGUI
             $name = $filename . '_V' . $version . '.' . $extension;
             $this->dic->ctrl()->setParameter($this, 'path', $url);
             $this->dic->ctrl()->setParameter($this, 'name', $name);
+            $this->dic->ctrl()->setParameter($this, 'mime', $file->getMimeType());
             $path = $this->dic->ctrl()->getLinkTarget($this, self::CMD_DOWNLOAD);
             $result[$version] = '/' . $path;
         }
