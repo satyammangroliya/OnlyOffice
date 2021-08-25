@@ -21,7 +21,7 @@ if (($body_stream = file_get_contents("php://input")) === false) {
 $encrypted = json_decode($body_stream, true);
 require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/src/CryptoService/JwtService.php';
 require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/src/StorageService/InfoService.php';
-$secret = \srag\Plugins\OnlyOffice\StorageService\InfoService::getSecret();
+$secret = \srag\Plugins\OnlyOffice\InfoService\InfoService::getSecret();
 $decrypted = \srag\Plugins\OnlyOffice\CryptoService\JwtService::jwtDecode($encrypted['token'],
     $secret);
 //$DIC->logger()->root()->info($decrypted);

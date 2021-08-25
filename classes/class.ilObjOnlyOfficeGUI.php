@@ -10,7 +10,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRep
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
-use srag\Plugins\OnlyOffice\StorageService\InfoService;
+use srag\Plugins\OnlyOffice\InfoService\InfoService;
 
 /**
  * Class ilObjOnlyOfficeGUI

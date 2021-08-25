@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Plugins\OnlyOffice\StorageService;
+namespace srag\Plugins\OnlyOffice\InfoService;
 
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
