@@ -40,9 +40,9 @@ settings_saved#:#Einstellungen gespeichert
 settings_settings#:#Einstellungen
 settings_title#:#Titel
 settings_open#:#Wie soll die Datei geöffnet werden?
-settings_open_0#:#Versionsverlauf auf ILIAS anzeigen
-settings_open_1#:#Im ONLYOFFICE online Editor öffnen
-settings_open_2#:#Datei herunterladen
+settings_open_ilias#:#Versionsverlauf auf ILIAS anzeigen
+settings_open_editor#:#Im ONLYOFFICE online Editor öffnen
+settings_open_download#:#Datei herunterladen
 rep_robj_xono_perm_editFile#:#Datei bearbeiten
 form_input_file#:#Datei
 object_tab_info#:#Info

@@ -117,6 +117,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                         $open_setting = $file_info->getOpenSetting($this->obj_id);
                         switch ($open_setting) {
                             case "download":
+                            case "2":
                                 $next_cmd = xonoContentGUI::CMD_DOWNLOAD;
                                 $file = $this->storage_service->getFile($this->obj_id);
                                 $file_version = $this->storage_service->getLatestVersion($file->getUuid());
@@ -130,9 +131,10 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                                     $file->getMimeType());
                                 break;
                             case "editor":
+                            case "1":
                                 $next_cmd = xonoContentGUI::CMD_EDIT;
                                 break;
-                            default:
+                            default: // "ilias" / "0"
                                 $next_cmd = xonoContentGUI::CMD_SHOW_VERSIONS;
                         }
 
@@ -201,10 +203,10 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $form->addItem($file_input);
         $opening_setting = new ilRadioGroupInputGUI($this->plugin->txt("form_open_setting"),
             self::POST_VAR_OPEN_SETTING);
-        // ToDo: Can I set a default value?
         $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_ilias"), "ilias"));
         $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_editor"), "editor"));
         $opening_setting->addOption(new ilRadioOption($this->plugin->txt("form_open_download"), "download"));
+        $opening_setting->setValue("ilias");
         $opening_setting->setRequired(true);
         $form->addItem($opening_setting);
 

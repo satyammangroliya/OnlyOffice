@@ -23,7 +23,6 @@ class ConfigFormGUI extends PropertyFormGUI
 
     use OnlyOfficeTrait;
     const PLUGIN_CLASS_NAME = ilOnlyOfficePlugin::class;
-    const KEY_BASEURL = "baseurl";
     const KEY_ONLYOFFICE_URL = "onlyoffice_url";
     const KEY_ONLYOFFICE_SECRET = "onlyoffice_secret";
     const LANG_MODULE = ilOnlyOfficeConfigGUI::LANG_MODULE;
@@ -66,10 +65,6 @@ class ConfigFormGUI extends PropertyFormGUI
     protected function initFields()/*: void*/
     {
         $this->fields = [
-            self::KEY_BASEURL => [
-                self::PROPERTY_CLASS => ilTextInputGUI::class,
-                self::PROPERTY_REQUIRED => true
-            ],
             self::KEY_ONLYOFFICE_URL => [
                 self::PROPERTY_CLASS => ilTextInputGUI::class,
                 self::PROPERTY_REQUIRED => true

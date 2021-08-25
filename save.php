@@ -20,8 +20,10 @@ if (($body_stream = file_get_contents("php://input")) === false) {
 //$DIC->logger()->root()->info($body_stream);
 $encrypted = json_decode($body_stream, true);
 require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/src/CryptoService/JwtService.php';
+require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/src/StorageService/InfoService.php';
+$secret = \srag\Plugins\OnlyOffice\StorageService\InfoService::getSecret();
 $decrypted = \srag\Plugins\OnlyOffice\CryptoService\JwtService::jwtDecode($encrypted['token'],
-    "secret"); //ToDo: Define Key globally
+    $secret);
 //$DIC->logger()->root()->info($decrypted);
 $data = json_decode($decrypted, true);
 
@@ -47,19 +49,14 @@ exit;
 
 function initializeILIAS()
 {
-    $session_jwt = $_GET['token'];
-    require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/src/CryptoService/JwtService.php';
-    $session = \srag\Plugins\OnlyOffice\CryptoService\JwtService::jwtDecode($session_jwt,
-        "secret"); // ToDo: Define Key globally
-    $session_array = json_decode(json_decode($session, true), true);
-    $session_id = $session_array['session_id'];
-    //$client_id = $session_array['client_id'];
-    $file_id = $_GET['file_id'];
-    $uuid = $_GET['uuid'];
-
-    $_COOKIE['PHPSESSID'] = $session_id;
-    $_COOKIE['ilClientId'] = 'default';
-    ilContext::init(ilContext::CONTEXT_SOAP_NO_AUTH);
-    require_once("Services/Init/classes/class.ilInitialisation.php");
-    ilInitialisation::initILIAS();
+    try {
+        require_once ("Services/Context/classes/class.ilContext.php");
+        ilContext::init(ilContext::CONTEXT_SOAP_NO_AUTH);
+        require_once("Services/Init/classes/class.ilInitialisation.php");
+        ilInitialisation::initILIAS();
+    }
+    catch (Exception $exception) {
+        echo "Bad Request";
+        exit;
+    }
 }

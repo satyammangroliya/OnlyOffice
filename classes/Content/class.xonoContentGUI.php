@@ -8,8 +8,6 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepositor
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
 
-define('baseurl', \srag\Plugins\OnlyOffice\StorageService\InfoService::getBaseUrl());
-
 /**
  * Class xonoContentGUI
  * @author            Theodor Truffer <tt@studer-raimann.ch>
@@ -18,7 +16,7 @@ define('baseurl', \srag\Plugins\OnlyOffice\StorageService\InfoService::getBaseUr
  */
 class xonoContentGUI extends xonoAbstractGUI
 {
-    const BASE_URL = baseurl;
+    const BASE_URL = ILIAS_HTTP_PATH;
 
     /** @var ilOnlyOfficePlugin */
     protected $plugin;

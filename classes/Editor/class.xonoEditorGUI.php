@@ -15,7 +15,6 @@ use \ILIAS\DI\Container;
 use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
 
 
-define('baseurl', InfoService::getBaseUrl());
 define('oo_url', InfoService::getOnlyOfficeUrl());
 define('secret', InfoService::getSecret());
 
@@ -44,7 +43,7 @@ class xonoEditorGUI extends xonoAbstractGUI
     const CMD_SAVE = "saveChanges";
     const CMD_STANDARD = "editFile";
 
-    const BASE_URL = baseurl;
+    const BASE_URL = ILIAS_HTTP_PATH;
     const ONLYOFFICE_URL = oo_url;
     const ONLYOFFICE_KEY = secret;
 
@@ -276,10 +275,7 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     protected function generateCallbackUrl(UUID $file_uuid, int $file_id, string $extension) : string
     {
-        $session = array("session_id" => $GLOBALS['DIC']['ilAuthSession']->getId(), "client_id" => CLIENT_ID);
-        $session_jwt = JwtService::jwtEncode(json_encode($session), self::ONLYOFFICE_KEY);
         $path = 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/save.php?' .
-            'token=' . $session_jwt .
             '&uuid=' . $file_uuid->asString() .
             '&file_id=' . $file_id .
             '&client_id=' . CLIENT_ID .

@@ -13,10 +13,6 @@ class InfoService
         return self::onlyOffice()->objectSettings()->getObjectSettingsById($file_id)->getOpen();
     }
 
-    public static final function getBaseUrl(): string{
-        return self::onlyOffice()->config()->getValue("baseurl");
-    }
-
     public static final function getOnlyOfficeUrl(): string {
         return self::onlyOffice()->config()->getValue("onlyoffice_url");
     }

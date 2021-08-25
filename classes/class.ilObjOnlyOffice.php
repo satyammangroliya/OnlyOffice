@@ -121,4 +121,8 @@ class ilObjOnlyOffice extends ilObjectPlugin
     public function setOpen(string $open = 'ilias') {
         $this->object_settings->setOpen($open);
     }
+
+    public function getOpen(): string {
+        return $this->object_settings->getOpen();
+    }
 }
