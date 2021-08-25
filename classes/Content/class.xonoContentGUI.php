@@ -92,6 +92,8 @@ class xonoContentGUI extends xonoAbstractGUI
         $json = json_encode($fileVersions);
         $url = $this->getDownloadUrlArray($fileVersions, $fileName, $ext);
 
+        ilUtil::sendInfo($this->plugin->txt('xono_reload_info'));
+
         $tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
         $tpl->setVariable('TBL_TITLE', $this->plugin->txt('object_show_contents'));
         $tpl->setVariable('FORWARD', $this->buttonTarget());
@@ -105,7 +107,7 @@ class xonoContentGUI extends xonoAbstractGUI
         $tpl->setVariable('CREATED', $this->plugin->txt('xono_date'));
         $tpl->setVariable('EDITOR', $this->plugin->txt('xono_editor'));
         $tpl->setVariable('DOWNLOAD', $this->plugin->txt('xono_download'));
-        $tpl->setVariable('RELOAD_INFO', $this->plugin->txt('xono_reload_info'));
+        //$tpl->setVariable('RELOAD_INFO', );
         $content = $tpl->get();
         $this->dic->ui()->mainTemplate()->setContent($content);
     }

@@ -113,8 +113,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                         if (!ilObjOnlyOfficeAccess::hasReadAccess()) {
                             ilObjOnlyOfficeAccess::redirectNonAccess(ilRepositoryGUI::class);
                         }
-                        $file_info = new InfoService();
-                        $open_setting = $file_info->getOpenSetting($this->obj_id);
+                        $open_setting = InfoService::getOpenSetting($this->obj_id);
                         switch ($open_setting) {
                             case "download":
                             case "2":
