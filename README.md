@@ -1,12 +1,11 @@
-This is an OpenSource project by studer + raimann ag, CH-Burgdorf (https://studer-raimann.ch)
+# ILIAS Plugin OnlyOffice
+This plugin offers a way to connect an OnlyOffice document server to ILIAS. Users can upload files by creating an ILIAS repository object, which then can be collaboratively edited in OnlyOffice's online editors.
 
-## Description
-See in [doc/DESCRIPTION.md](./doc/DESCRIPTION.md)
+## Getting Started
 
-## Documentation
-See in [doc/DOCUMENTATION.md](./doc/DOCUMENTATION.md)
+### Requirements
 
-## Installation
+* ILIAS 5.4.x / 6.x / 7.x
 
 ### Install OnlyOffice 
 Install the desired edition of OnlyOffice Docs on your server. 
@@ -45,27 +44,18 @@ Next you must navigate to the plugin's configuration form.
 Enter the root URLs of your ILIAS installation and OnlyOffice Docs.
 Enter the JWT-Secret which you specified in OnlyOffice's docker-compose.yml file.
 
+## Authors
 
+This is an OpenSource project by fluxlabs ag (https://fluxlabs.ch)
 
+## License
 
-### Requirements
-* ILIAS 5.4
-* PHP >=7.0
-
-### Adjustment suggestions
-* External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_PLONLYOFFICE
-* Adjustment suggestions by pull requests via github
-* Customer of studer + raimann ag: 
-	* Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/PLONLYOFFICE
-	* Bug reports under https://jira.studer-raimann.ch/projects/PLONLYOFFICE
-
-### Legal Notice
-The icon for this plugin is licensed under the [Creative Commons Attribution-Share Alike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/deed.en) license.  
-Author: Alisa Bulatova | Source: https://www.onlyoffice.com/press-downloads.aspx
+This project is licensed under the GPL v3 License
 
 ### ILIAS Plugin SLA
-Wir lieben und leben die Philosophie von Open Source Software! Die meisten unserer Entwicklungen, welche wir im Kundenauftrag oder in Eigenleistung entwickeln, stellen wir öffentlich allen Interessierten kostenlos unter https://github.com/studer-raimann zur Verfügung.
 
-Setzen Sie eines unserer Plugins professionell ein? Sichern Sie sich mittels SLA die termingerechte Verfügbarkeit dieses Plugins auch für die kommenden ILIAS Versionen. Informieren Sie sich hierzu unter https://studer-raimann.ch/produkte/ilias-plugins/plugin-sla.
+We love and live the philosophy of Open Source Software! Most of our developments, which we develop on behalf of customers or on our own account, are publicly available free of charge to all interested parties at https://github.com/fluxapps.
 
-Bitte beachten Sie, dass wir nur Institutionen, welche ein SLA abschliessen Unterstützung und Release-Pflege garantieren.
+Do you use one of our plugins professionally? Secure the timely availability of this plugin for the upcoming ILIAS versions via SLA. Please contact us at connect@fluxlabs.ch.
+
+Please note that we only guarantee support and release maintenance for institutions that sign a SLA.
