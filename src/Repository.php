@@ -15,7 +15,7 @@ use srag\DIC\OnlyOffice\DICTrait;
  *
  * @package srag\Plugins\OnlyOffice
  *
- * @author studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author Theodor Truffer <theo@fluxlabs.ch>
  */
 final class Repository
 {

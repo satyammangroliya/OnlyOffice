@@ -15,7 +15,8 @@ use srag\ActiveRecordConfig\OnlyOffice\Config\Config;
  *
  * @package srag\Plugins\OnlyOffice\Config
  *
- * @author studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author Theodor Truffer <theo@fluxlabs.ch>
+ *         Sophie Pfister <sophie@fluxlabs.ch>
  */
 final class Repository extends AbstractRepository
 {

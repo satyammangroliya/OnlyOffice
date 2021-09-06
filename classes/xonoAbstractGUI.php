@@ -3,9 +3,9 @@
 use ILIAS\DI\Container;
 
 /**
- * Class xoofAbstractGUI
+ * Class xonoAbstractGUI
  *
- * @author Theodor Truffer <tt@studer-raimann.ch>
+ * @author Theodor Truffer <theo@fluxlabs.ch>
  */
 abstract class xonoAbstractGUI
 {

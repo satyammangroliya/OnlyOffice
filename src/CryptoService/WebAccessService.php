@@ -7,6 +7,13 @@ use ilWebAccessChecker;
 use ilUtil;
 use ilFileDelivery;
 
+/**
+ * Class WebAccessService
+ *
+ * Appends a token to a given URL to grant access to the location.
+ *
+ * @author      Sophie Pfister <sophie@fluxlabs.ch>
+ */
 class WebAccessService
 {
 

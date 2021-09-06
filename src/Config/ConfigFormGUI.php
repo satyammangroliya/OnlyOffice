@@ -16,7 +16,8 @@ use srag\CustomInputGUIs\OnlyOffice\PropertyFormGUI\PropertyFormGUI;
  *
  * @package srag\Plugins\OnlyOffice\Config
  *
- * @author studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author Theodor Truffer <theo@fluxlabs.ch>
+ *         Sophie Pfister<sophie@fluxlabs.ch>
  */
 class ConfigFormGUI extends PropertyFormGUI
 {

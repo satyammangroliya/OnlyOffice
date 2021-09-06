@@ -6,11 +6,10 @@ use srag\DIC\OnlyOffice\DICStatic;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
-use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
 
 /**
  * Class xonoContentGUI
- * @author            Theodor Truffer <tt@studer-raimann.ch>
+ * @author            Theodor Truffer <theo@fluxlabs.ch>
  * @author            Sophie Pfister <sophie@fluxlabs.ch>
  * @ilCtrl_isCalledBy xonoContentGUI: ilObjOnlyOfficeGUI
  */

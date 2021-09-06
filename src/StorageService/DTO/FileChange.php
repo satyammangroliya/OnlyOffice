@@ -7,7 +7,6 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 /**
  * Class FileChange
  * @author  Sophie Pfister <sophie@fluxlabs.ch>
- * @package srag\Plugins\OnlyOffice\StorageService\DTO
  */
 class FileChange
 {

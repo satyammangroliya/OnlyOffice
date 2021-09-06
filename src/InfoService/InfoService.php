@@ -4,6 +4,11 @@ namespace srag\Plugins\OnlyOffice\InfoService;
 
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 
+/**
+ * Class InfoService
+ * Used to access information using OnlyOfficeTrait.
+ * @author      Sophie Pfister
+ */
 class InfoService
 {
     use OnlyOfficeTrait;

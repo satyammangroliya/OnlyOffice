@@ -8,7 +8,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 /**
  * Class FileVersion
  * @package srag\Plugins\OnlyOffice\StorageService\DTO
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @author  Theodor Truffer <theo@fluxlabs.ch>
  */
 class FileVersion implements \JsonSerializable
 {

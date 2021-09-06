@@ -13,14 +13,13 @@ use srag\Plugins\OnlyOffice\StorageService\FileSystem\FileSystemService;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionRepository;
-use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeRepository;
-use srag\Plugins\OnlyOffice\StorageService\DTO\FileChange;
 
 /**
  * Class StorageService
  * @package srag\Plugins\OnlyOffice\StorageService
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @author  Theodor Truffer <theo@fluxlabs.ch>
+ *          Sophie Pfister <sophie@fluxlabs.ch>
  */
 class StorageService
 {
@@ -135,7 +134,7 @@ class StorageService
         // create new file
         $uuid = new UUID();
         $parent_file = $this->file_repository->getFile($parent_id);
-        $this->file_repository->create($uuid, $child_id, $parent_file->getTitle(), $parent_file->getFileType());
+        $this->file_repository->create($uuid, $child_id, $parent_file->getTitle(), $parent_file->getFileType(), $parent_file->getMimeType());
 
         // clone file versions
         $parent_file_versions = $this->file_version_repository->getAllVersions($parent_file->getFileUuid());

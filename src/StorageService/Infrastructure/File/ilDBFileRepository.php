@@ -8,7 +8,7 @@ use srag\Plugins\OnlyOffice\StorageService\DTO\File;
 /**
  * Class ilDBFileRepository
  * @package srag\Plugins\OnlyOffice\StorageService\Infrastructure\File
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @author  Theodor Truffer <theo@fluxlabs.ch>
  */
 class ilDBFileRepository implements FileRepository
 {

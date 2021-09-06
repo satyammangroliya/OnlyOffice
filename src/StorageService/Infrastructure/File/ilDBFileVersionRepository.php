@@ -12,7 +12,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 /**
  * Class FileRepository
  * @package srag\Plugins\OnlyOffice\StorageService\Infrastructure
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @author  Theodor Truffer <theo@fluxlabs.ch>
  */
 class ilDBFileVersionRepository implements FileVersionRepository
 {

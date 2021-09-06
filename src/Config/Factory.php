@@ -14,7 +14,7 @@ use srag\ActiveRecordConfig\OnlyOffice\Config\AbstractFactory;
  *
  * @package srag\Plugins\OnlyOffice\Config
  *
- * @author studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author Theodor Truffer <theo@fluxlabs.ch>
  */
 final class Factory extends AbstractFactory
 {

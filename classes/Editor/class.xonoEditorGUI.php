@@ -21,6 +21,7 @@ define('secret', InfoService::getSecret());
 
 /**
  * Class xonoEditorGUI
+ *
  * @author              Sophie Pfister <sophie@fluxlabs.ch>
  * @ilCtrl_IsCalledBy   xonoEditorGUI: ilObjOnlyOfficeGUI
  */
@@ -232,6 +233,7 @@ class xonoEditorGUI extends xonoAbstractGUI
         }
         return json_encode($result);
     }
+
 
     /* --- Helper Methods --- */
     protected function generateReturnUrl() : string

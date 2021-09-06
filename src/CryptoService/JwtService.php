@@ -4,6 +4,13 @@ namespace srag\Plugins\OnlyOffice\CryptoService;
 
 require_once 'libs/composer/vendor/autoload.php';
 
+/**
+ * Class JWTService
+ * Encodes a given payload using a given key to a JsonWebToken or
+ * decodes a given token using a given key.
+ *
+ * @author Sophie Pfister <sophie@fluxlabs.ch>
+ */
 class JwtService {
 
     public static function jwtEncode($payload, $key)

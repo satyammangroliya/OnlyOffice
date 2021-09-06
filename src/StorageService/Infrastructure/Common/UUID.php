@@ -10,7 +10,7 @@ use Ramsey\Uuid\Uuid as RamseyUuid;
  *
  * @package srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common
  *
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @author  Theodor Truffer <thoe@fluxlabs.ch>
  */
 class UUID
 {

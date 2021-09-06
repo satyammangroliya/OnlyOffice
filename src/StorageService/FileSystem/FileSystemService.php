@@ -13,7 +13,8 @@ use srag\Plugins\OnlyOffice\StorageService\DTO\FileChange;
 /**
  * Class FileSystemService
  * @package srag\Plugins\OnlyOffice\StorageService\FileSystem
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @author  Theodor Truffer <theo@fluxlabs.ch>
+ *          Sophie Pfister <sophie@fluxlabs.ch>
  */
 class FileSystemService
 {

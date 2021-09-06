@@ -11,7 +11,7 @@ use srag\Plugins\OnlyOffice\Repository;
  *
  * @package srag\Plugins\OnlyOffice\Utils
  *
- * @author studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author Theodor Truffer <theo@fluxlabs.ch>
  */
 trait OnlyOfficeTrait
 {
