@@ -10,7 +10,7 @@ See in [doc/DOCUMENTATION.md](./doc/DOCUMENTATION.md)
 
 ### Install OnlyOffice 
 Install the desired edition of OnlyOffice Docs on your server. 
-Note that the free community edition does not provide all features and only allows 20 simultaneous connections.
+Note that the free community edition allows only 20 simultaneous connections.
 Installation Guides can be found [here](https://helpcenter.onlyoffice.com/installation/docs-index.aspx)
 We recommend using docker-compose for installation as specifications can easily be set within the .yml file.
 We also recommend to set up HTTPS.
@@ -26,7 +26,7 @@ Start at your ILIAS root directory
 ```bash
 mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
 cd Customizing/global/plugins/Services/Repository/RepositoryObject
-git clone https://github.com/studer-raimann/OnlyOffice.git OnlyOffice
+git clone https://github.com/fluxapps/OnlyOffice.git OnlyOffice
 ```
 
 Now you can install, update & activate the OnlyOffice plugin in your ILIAS installation.
@@ -42,10 +42,8 @@ Where "onlyoffice_docs.example" is the name of the server where OnlyOffice Docs 
 If you did not set up https, use "http://" instead.
 
 Next you must navigate to the plugin's configuration form. 
-Enter the root URLs of your ILIAS installation and OnlyOffice Docs.
+Enter the root URL of your OnlyOffice Docs installation.
 Enter the JWT-Secret which you specified in OnlyOffice's docker-compose.yml file.
-
-
 
 
 ### Requirements
