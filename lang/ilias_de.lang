@@ -47,3 +47,6 @@ rep_robj_xono_perm_editFile#:#Datei bearbeiten
 form_input_file#:#Datei
 object_tab_info#:#Info
 xono_reload_info#:#Kehren Sie vom ONLYOFFICE editor zurück und können Ihre neuste Version noch nicht sehen?<br>Bitte warten Sie 10s und drücken Sie dann F5.
+create_title_info#:#Falls kein Titel eingegeben wird, wird der Titel der Datei übernommen.
+create_number_of_versions#:#Max. Anzahl Versionen
+number_of_versions_info#:#Die Anzahl Versionen, die im Versionsverlauf geladen werden (default = 10).
