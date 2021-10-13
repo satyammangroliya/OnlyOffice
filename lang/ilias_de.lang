@@ -43,6 +43,7 @@ settings_open#:#Wie soll die Datei geöffnet werden?
 settings_open_ilias#:#Versionsverlauf auf ILIAS anzeigen
 settings_open_editor#:#Im ONLYOFFICE online Editor öffnen
 settings_open_download#:#Datei herunterladen
+settings_number_of_versions#:#Max. Anzahl Versionen
 rep_robj_xono_perm_editFile#:#Datei bearbeiten
 form_input_file#:#Datei
 object_tab_info#:#Info

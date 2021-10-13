@@ -49,6 +49,22 @@ class ObjectSettings extends ActiveRecord
      * @con_is_primary   true
      */
     protected $obj_id;
+
+    /**
+     * @var string
+     * @con_has_field  ture
+     * @con_fieldtype  text
+     * @con_is_notnull true
+     */
+    protected $title;
+
+    /**
+     * @var string
+     * @con_has_field true
+     * @con_fieldtype text
+     */
+    protected $description;
+
     /**
      * @var bool
      * @con_has_field    true
@@ -57,6 +73,14 @@ class ObjectSettings extends ActiveRecord
      * @con_is_notnull   true
      */
     protected $is_online = false;
+
+    /**
+     * @var int
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_is_notnull true
+     */
+    protected $number_of_versions = 10;
 
     /**
      * @var string
@@ -134,6 +158,26 @@ class ObjectSettings extends ActiveRecord
         $this->obj_id = $obj_id;
     }
 
+    public function getTitle() : string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title)
+    {
+        $this->title = $title;
+    }
+
+    public function getDescription() : string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+    }
+
     /**
      * @return bool
      */
@@ -148,6 +192,16 @@ class ObjectSettings extends ActiveRecord
     public function setOnline(bool $is_online = true)/*: void*/
     {
         $this->is_online = $is_online;
+    }
+
+    public function getNumberOfVersions() : int
+    {
+        return $this->number_of_versions;
+    }
+
+    public function setNumberOfVersions(int $number)
+    {
+        $this->number_of_versions = $number;
     }
 
     public function getOpen() : string

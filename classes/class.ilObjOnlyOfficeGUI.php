@@ -199,7 +199,24 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
      */
     public function initCreateForm(/*string*/ $a_new_type) : ilPropertyFormGUI
     {
-        $form = parent::initCreateForm($a_new_type); // title, description
+        include_once("Services/Form/classes/class.ilPropertyFormGUI.php");
+        $form = new ilPropertyFormGUI();
+        $form->setTarget("_top");
+        $form->setFormAction($this->ctrl->getFormAction($this, "save"));
+        $form->setTitle($this->txt($a_new_type . "_new"));
+
+        // title
+        $ti = new ilTextInputGUI($this->lng->txt("title"), "title");
+        $ti->setSize(min(40, ilObject::TITLE_LENGTH));
+        $ti->setMaxLength(ilObject::TITLE_LENGTH);
+        $ti->setInfo(self::plugin()->translate("create_title_info"));
+        $form->addItem($ti);
+
+        // description
+        $ta = new ilTextAreaInputGUI($this->lng->txt("description"), "desc");
+        $ta->setCols(40);
+        $ta->setRows(2);
+        $form->addItem($ta);
 
         // file
         $file_input = new ilFileInputGUI(self::plugin()->translate('form_input_file'), self::POST_VAR_FILE);
@@ -229,6 +246,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $opening_setting->setRequired(true);
         $form->addItem($opening_setting);
 
+        // Buttons
         $form->addCommandButton("save", $this->txt($a_new_type . "_add"));
         $form->addCommandButton("cancel", $this->lng->txt("cancel"));
 

@@ -30,13 +30,16 @@ $xono_type_id = ilDBUpdateNewObjectType::addNewType(ilOnlyOfficePlugin::PLUGIN_I
 //Adding a new Permission rep_robj_xono_editFile ("editFile")
 $offering_admin = ilDBUpdateNewObjectType::addCustomRBACOperation( //$a_id, $a_title, $a_class, $a_pos
     'rep_robj_xono_perm_editFile', 'editFile', 'object', 2010);
-if($offering_admin)
-{
+if ($offering_admin) {
     ilDBUpdateNewObjectType::addRBACOperation($xono_type_id, $offering_admin);
 }
 ?>
 <#8>
 <?php
 \srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileAR::updateDB();
+?>
+<#9>
+<?php
+\srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings::updateDB();
 ?>
 

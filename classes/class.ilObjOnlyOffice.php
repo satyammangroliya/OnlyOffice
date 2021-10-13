@@ -46,11 +46,26 @@ class ilObjOnlyOffice extends ilObjectPlugin
      */
     public function doCreate()/*: void*/
     {
-       $title = $_POST['title'];
-       $description = $_POST['description'];
+        $title = $_POST['title'];
+        $description = $_POST['desc'];
+        $online = $_POST[ilObjOnlyOfficeGUI::POST_VAR_ONLINE];
+        $number_of_versions = $_POST[ilObjOnlyOfficeGUI::POST_VAR_NUMBER_OF_VERSIONS];
+        $open_settings = $_POST[ilObjOnlyOfficeGUI::POST_VAR_OPEN_SETTING];
+
+        if ($title == null) {
+            $title = $_POST[ilObjOnlyOfficeGUI::POST_VAR_FILE];
+        }
+        if ($number_of_versions == null) {
+            $number_of_versions = 10;
+        }
+
         $this->object_settings = new ObjectSettings();
         $this->object_settings->setObjId($this->id);
-        $this->object_settings->setOpen($_POST[ilObjOnlyOfficeGUI::POST_VAR_OPEN_SETTING]);
+        $this->object_settings->setTitle($title);
+        $this->object_settings->setDescription($description);
+        $this->object_settings->setOnline($online);
+        $this->object_settings->setNumberOfVersions($number_of_versions);
+        $this->object_settings->setOpen($open_settings);
 
         self::onlyOffice()->objectSettings()->storeObjectSettings($this->object_settings);
     }
@@ -120,11 +135,13 @@ class ilObjOnlyOffice extends ilObjectPlugin
         $this->object_settings->setOnline($is_online);
     }
 
-    public function setOpen(string $open = 'ilias') {
+    public function setOpen(string $open = 'ilias')
+    {
         $this->object_settings->setOpen($open);
     }
 
-    public function getOpen(): string {
+    public function getOpen() : string
+    {
         return $this->object_settings->getOpen();
     }
 }

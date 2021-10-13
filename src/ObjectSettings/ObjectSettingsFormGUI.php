@@ -8,6 +8,7 @@ use ilObjOnlyOffice;
 use ilObjOnlyOfficeGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
+use ilNumberInputGUI;
 use srag\CustomInputGUIs\OnlyOffice\PropertyFormGUI\Items\Items;
 use srag\CustomInputGUIs\OnlyOffice\PropertyFormGUI\PropertyFormGUI;
 
@@ -85,6 +86,9 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
             ],
             "online"      => [
                 self::PROPERTY_CLASS => ilCheckboxInputGUI::class
+            ],
+            "number_of_versions" => [
+                self::PROPERTY_CLASS => ilNumberInputGUI::class,
             ],
             "open" => [
                 self::PROPERTY_CLASS => \ilRadioGroupInputGUI::class,
