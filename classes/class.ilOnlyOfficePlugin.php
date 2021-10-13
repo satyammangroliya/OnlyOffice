@@ -4,6 +4,10 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\RemovePluginDataConfirm\OnlyOffice\RepositoryObjectPluginUninstallTrait;
+use srag\Plugins\OnlyOffice\StorageService\StorageService;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 
 /**
  * Class ilOnlyOfficePlugin
@@ -89,6 +93,15 @@ class ilOnlyOfficePlugin extends ilRepositoryObjectPlugin
         $op_id = \ilDBUpdateNewObjectType::getCustomRBACOperationId('rep_robj_xono_perm_editFile');
         $type = \ilDBUpdateNewObjectType::getObjectTypeId(ilOnlyOfficePlugin::PLUGIN_ID);
         \ilDBUpdateNewObjectType::deleteRBACOperation($type, $op_id);
+
+        // Delete all file data
+        global $DIC;
+        $all_files = \srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileAR::get();
+        $storage = new StorageService($DIC, new ilDBFileVersionRepository(), new ilDBFileRepository(), new ilDBFileChangeRepository());
+        $storage->deleteAll();
+        \srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings::truncateDB();
+
+
     }
 
     public static function checkPluginClassNameConst() {

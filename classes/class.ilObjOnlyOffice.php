@@ -53,7 +53,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
         $open_settings = $_POST[ilObjOnlyOfficeGUI::POST_VAR_OPEN_SETTING];
 
         if ($title == null) {
-            $title = $_POST[ilObjOnlyOfficeGUI::POST_VAR_FILE];
+            $title = explode('.', $_POST[ilObjOnlyOfficeGUI::POST_VAR_FILE]['name'])[0];
         }
         if ($number_of_versions == null) {
             $number_of_versions = 10;
@@ -61,7 +61,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
 
         $this->object_settings = new ObjectSettings();
         $this->object_settings->setObjId($this->id);
-        $this->object_settings->setTitle($title);
+        $this->object_settings->setTitle($title); //
         $this->object_settings->setDescription($description);
         $this->object_settings->setOnline($online);
         $this->object_settings->setNumberOfVersions($number_of_versions);

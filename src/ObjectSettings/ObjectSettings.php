@@ -52,7 +52,7 @@ class ObjectSettings extends ActiveRecord
 
     /**
      * @var string
-     * @con_has_field  ture
+     * @con_has_field  true
      * @con_fieldtype  text
      * @con_is_notnull true
      */

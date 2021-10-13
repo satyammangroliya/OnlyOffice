@@ -48,4 +48,15 @@ class ilDBFileRepository implements FileRepository
     {
         return FileAR::where(['obj_id' => $file_id])->first();
     }
+
+    public function getAllFiles(): array
+    {
+        $ars = FileAR::get();
+        $result = array();
+        /** @var FileAR $ar */
+        foreach ($ars as $ar) {
+            array_push($result, $this->buildFileFromAR($ar));
+        }
+        return $result;
+    }
 }

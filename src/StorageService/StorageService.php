@@ -14,6 +14,9 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileAR;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionAR;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeAR;
 
 /**
  * Class StorageService
@@ -207,5 +210,21 @@ class StorageService
     public function getLatestVersion(UUID $file_uuid) : FileVersion
     {
         return $this->file_version_repository->getLatestVersion($file_uuid);
+    }
+
+    /**
+     * Deletes all file data from storage and all related database entries
+     * Should only be called when uninstalling the plugin
+     */
+    public function deleteAll()
+    {
+        $all_files = $this->file_repository->getAllFiles();
+        /** @var File $file */
+        foreach ($all_files as $file) {
+            $this->deleteFile($file->getObjId());
+        }
+        FileAR::truncateDB();
+        FileVersionAR::truncateDB();
+        FileChangeAR::truncateDB();
     }
 }
