@@ -137,7 +137,7 @@ class FileVersion implements \JsonSerializable
         $user = new \ilObjUser($this->user_id);
         return [
             'version' => $this->version,
-            'createdAt' => $this->created_at->get(2),
+            'createdAt' => $this->created_at->get(1),
             'userId' => $this->user_id,
             'user' => $user->getPublicName(),
             'url' => $this->url,
