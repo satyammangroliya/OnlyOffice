@@ -77,12 +77,10 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     {
         $this->fields = [
             "title"       => [
-                self::PROPERTY_CLASS    => ilTextInputGUI::class,
-                self::PROPERTY_REQUIRED => true
+                self::PROPERTY_CLASS    => ilTextInputGUI::class
             ],
             "description" => [
-                self::PROPERTY_CLASS    => ilTextAreaInputGUI::class,
-                self::PROPERTY_REQUIRED => false
+                self::PROPERTY_CLASS    => ilTextAreaInputGUI::class
             ],
             "online"      => [
                 self::PROPERTY_CLASS => ilCheckboxInputGUI::class

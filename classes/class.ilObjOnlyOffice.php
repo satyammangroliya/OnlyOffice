@@ -54,6 +54,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
 
         if ($title == null) {
             $title = explode('.', $_POST[ilObjOnlyOfficeGUI::POST_VAR_FILE]['name'])[0];
+            $_POST['title'] = $title;
         }
 
         $this->object_settings = new ObjectSettings();

@@ -111,6 +111,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
             default:
                 switch ($cmd) {
                     case self::CMD_SHOW_CONTENTS:
+                    case self::CMD_MANAGE_CONTENTS:
                         // Read commands
                         if (!ilObjOnlyOfficeAccess::hasReadAccess()) {
                             ilObjOnlyOfficeAccess::redirectNonAccess(ilRepositoryGUI::class);
@@ -144,10 +145,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
 
                     case self::CMD_SHOW_VERSIONS:
                         self::dic()->ctrl()->redirectByClass(xonoContentGUI::class, xonoContentGUI::CMD_SHOW_VERSIONS);
-                        break;
-
-                    case self::CMD_MANAGE_CONTENTS:
-                        self::dic()->ctrl()->redirectByClass(xonoEditorGUI::class, xonoEditorGUI::CMD_EDIT);
                         break;
 
                     case self::CMD_SETTINGS:
