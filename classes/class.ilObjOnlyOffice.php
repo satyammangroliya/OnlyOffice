@@ -3,6 +3,7 @@
 use srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
+use srag\Plugins\OnlyOffice\StorageService\StorageService;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
@@ -49,14 +50,10 @@ class ilObjOnlyOffice extends ilObjectPlugin
         $title = $_POST['title'];
         $description = $_POST['desc'];
         $online = $_POST[ilObjOnlyOfficeGUI::POST_VAR_ONLINE];
-        $number_of_versions = $_POST[ilObjOnlyOfficeGUI::POST_VAR_NUMBER_OF_VERSIONS];
         $open_settings = $_POST[ilObjOnlyOfficeGUI::POST_VAR_OPEN_SETTING];
 
         if ($title == null) {
             $title = explode('.', $_POST[ilObjOnlyOfficeGUI::POST_VAR_FILE]['name'])[0];
-        }
-        if ($number_of_versions == null) {
-            $number_of_versions = 10;
         }
 
         $this->object_settings = new ObjectSettings();
@@ -64,7 +61,6 @@ class ilObjOnlyOffice extends ilObjectPlugin
         $this->object_settings->setTitle($title); //
         $this->object_settings->setDescription($description);
         $this->object_settings->setOnline($online);
-        $this->object_settings->setNumberOfVersions($number_of_versions);
         $this->object_settings->setOpen($open_settings);
 
         self::onlyOffice()->objectSettings()->storeObjectSettings($this->object_settings);
@@ -94,9 +90,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
         if ($this->object_settings !== null) {
             self::onlyOffice()->objectSettings()->deleteObjectSettings($this->object_settings);
         }
-        $storage = new srag\Plugins\OnlyOffice\StorageService\StorageService(self::dic()->dic(),
-            new ilDBFileVersionRepository(),
-            new ilDBFileRepository(),
+        $storage = new StorageService(self::dic()->dic(), new ilDBFileVersionRepository(), new ilDBFileRepository(),
             new ilDBFileChangeRepository());
         $storage->deleteFile($this->getId());
 
@@ -112,9 +106,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
         $new_obj->object_settings = self::onlyOffice()->objectSettings()->cloneObjectSettings($this->object_settings);
         $new_obj->object_settings->setObjId($new_obj->id);
         self::onlyOffice()->objectSettings()->storeObjectSettings($new_obj->object_settings);
-        $storage = new srag\Plugins\OnlyOffice\StorageService\StorageService(self::dic()->dic(),
-            new ilDBFileVersionRepository(),
-            new ilDBFileRepository(),
+        $storage = new StorageService(self::dic()->dic(), new ilDBFileVersionRepository(), new ilDBFileRepository(),
             new ilDBFileChangeRepository());
         $storage->createClone($new_obj->getId(), $this->getId());
     }

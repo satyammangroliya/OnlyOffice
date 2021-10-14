@@ -75,14 +75,6 @@ class ObjectSettings extends ActiveRecord
     protected $is_online = false;
 
     /**
-     * @var int
-     * @con_has_field  true
-     * @con_fieldtype  integer
-     * @con_is_notnull true
-     */
-    protected $number_of_versions = 10;
-
-    /**
      * @var string
      * @con_has_field  true
      * @con_fieldtype  text
@@ -192,16 +184,6 @@ class ObjectSettings extends ActiveRecord
     public function setOnline(bool $is_online = true)/*: void*/
     {
         $this->is_online = $is_online;
-    }
-
-    public function getNumberOfVersions() : int
-    {
-        return $this->number_of_versions;
-    }
-
-    public function setNumberOfVersions(int $number)
-    {
-        $this->number_of_versions = $number;
     }
 
     public function getOpen() : string

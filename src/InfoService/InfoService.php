@@ -25,4 +25,12 @@ class InfoService
         return self::onlyOffice()->config()->getValue("onlyoffice_secret");
     }
 
+    public static final function getNumberOfVersions(): int {
+        $num = self::onlyOffice()->config()->getValue("number_of_versions");
+        if ($num < 1)
+            return 10;
+        else
+            return $num;
+    }
+
 }

@@ -54,7 +54,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
 
     const POST_VAR_FILE = 'upload_files';
     const POST_VAR_OPEN_SETTING = 'open_setting';
-    const POST_VAR_NUMBER_OF_VERSIONS = 'number_versions';
     const POST_VAR_ONLINE = 'online';
 
     /**
@@ -227,14 +226,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $online = new ilCheckboxInputGUI(self::plugin()->translate('online', ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS),
             self::POST_VAR_ONLINE);
         $form->addItem($online);
-
-        // max. number of file versions
-        $number = new ilNumberInputGUI(self::plugin()->translate('create_number_of_versions'),
-            self::POST_VAR_NUMBER_OF_VERSIONS);
-        $number->setSize(min(40, ilObject::TITLE_LENGTH));
-        $number->setMaxLength(ilObject::TITLE_LENGTH);
-        $number->setInfo(self::plugin()->translate("number_of_versions_info"));
-        $form->addItem($number);
 
         // Settings for opening a file
         $opening_setting = new ilRadioGroupInputGUI(self::plugin()->translate("form_open_setting"),

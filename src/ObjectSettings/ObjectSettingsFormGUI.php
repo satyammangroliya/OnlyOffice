@@ -87,9 +87,6 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
             "online"      => [
                 self::PROPERTY_CLASS => ilCheckboxInputGUI::class
             ],
-            "number_of_versions" => [
-                self::PROPERTY_CLASS => ilNumberInputGUI::class,
-            ],
             "open" => [
                 self::PROPERTY_CLASS => \ilRadioGroupInputGUI::class,
                 self::PROPERTY_REQUIRED => true,

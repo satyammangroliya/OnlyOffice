@@ -78,7 +78,8 @@ final class Repository extends AbstractRepository
     {
         return [
             ConfigFormGUI::KEY_ONLYOFFICE_URL => Config::TYPE_STRING,
-            ConfigFormGUI::KEY_ONLYOFFICE_SECRET => Config::TYPE_STRING
+            ConfigFormGUI::KEY_ONLYOFFICE_SECRET => Config::TYPE_STRING,
+            ConfigFormGUI::KEY_NUM_VERSIONS => Config::TYPE_INTEGER
         ];
     }
 }

@@ -49,6 +49,6 @@ form_input_file#:#File
 object_tab_info#:#Information
 xono_reload_info#:#Are you returning from ONLYOFFICE editor and cannot see your newly created file version?<br>Please wait 10s and press F5.
 create_title_info#:#If no title is specified, the title of the uploaded file is taken.
-create_number_of_versions#:#Max. Number of Versions
+config_number_of_versions#:#Max. Number of Versions
 number_of_versions_info#:#The number of versions loaded in the version history (default = 10).
 

@@ -26,6 +26,7 @@ class ConfigFormGUI extends PropertyFormGUI
     const PLUGIN_CLASS_NAME = ilOnlyOfficePlugin::class;
     const KEY_ONLYOFFICE_URL = "onlyoffice_url";
     const KEY_ONLYOFFICE_SECRET = "onlyoffice_secret";
+    const KEY_NUM_VERSIONS = "number_of_versions";
     const LANG_MODULE = ilOnlyOfficeConfigGUI::LANG_MODULE;
 
 
@@ -73,6 +74,9 @@ class ConfigFormGUI extends PropertyFormGUI
             self::KEY_ONLYOFFICE_SECRET => [
                 self::PROPERTY_CLASS => \ilPasswordInputGUI::class,
                 self::PROPERTY_REQUIRED => true
+            ],
+            self::KEY_NUM_VERSIONS => [
+                self::PROPERTY_CLASS => \ilNumberInputGUI::class
             ]
         ];
     }
