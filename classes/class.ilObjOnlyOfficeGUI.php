@@ -337,11 +337,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
      */
     public static function getStartCmd() : string
     {
-        if (ilObjOnlyOfficeAccess::hasWriteAccess()) {
-            return self::CMD_MANAGE_CONTENTS;
-        } else {
-            return self::CMD_SHOW_CONTENTS;
-        }
+        return self::CMD_SHOW_CONTENTS;
     }
 
     /**

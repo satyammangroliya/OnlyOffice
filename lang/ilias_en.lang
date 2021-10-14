@@ -51,4 +51,5 @@ xono_reload_info#:#Are you returning from ONLYOFFICE editor and cannot see your 
 create_title_info#:#If no title is specified, the title of the uploaded file is taken.
 config_number_of_versions#:#Max. Number of Versions
 number_of_versions_info#:#The number of versions loaded in the version history (default = 10).
+last_edit#:#Last edited
 
