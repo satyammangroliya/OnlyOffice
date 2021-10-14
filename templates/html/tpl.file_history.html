@@ -31,12 +31,14 @@
 </body>
 
 <script type="text/javascript">
+
   function renderBody() {
     const url_array = JSON.parse('{URL}');
     const base_url = '{BASE_URL}';
     const data = JSON.parse('{TBL_DATA}');
     let table = "";
-    for (let i = 0; i < data.length; i++) {
+    let limit = Math.min(data.length, {LIMIT})
+    for (let i = 0; i < limit ; i++) {
       var rowData = data[i];
       var version = rowData.version;
       var url = url_array[version];

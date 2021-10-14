@@ -6,6 +6,7 @@ use srag\DIC\OnlyOffice\DICStatic;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
+use srag\Plugins\OnlyOffice\InfoService\InfoService;
 
 /**
  * Class xonoContentGUI
@@ -106,6 +107,7 @@ class xonoContentGUI extends xonoAbstractGUI
         $tpl->setVariable('CREATED', $this->plugin->txt('xono_date'));
         $tpl->setVariable('EDITOR', $this->plugin->txt('xono_editor'));
         $tpl->setVariable('DOWNLOAD', $this->plugin->txt('xono_download'));
+        $tpl->setVariable('LIMIT', InfoService::getNumberOfVersions());
         //$tpl->setVariable('RELOAD_INFO', );
         $content = $tpl->get();
         $this->dic->ui()->mainTemplate()->setContent($content);
