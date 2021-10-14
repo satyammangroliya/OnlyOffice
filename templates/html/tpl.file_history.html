@@ -37,17 +37,17 @@
       var rowData = data[i];
       var version = rowData.version;
       var url = url_array[version];
-      if (i % 2 === 0)
+      if (i % 2 === 1)
         table += "<tr class='tblrow1'>";
-      else
+      else // i % 2 == 0
         table += "<tr class='tblrow2'>";
 
-      table += "<td>" + version + "</td>";
-      table += "<td>" + rowData.createdAt + "</td>";
-      table += "<td>" + rowData.user + "</td>";
-      table += "<td> " +
+      table += "<td class='std'>" + version + "</td>";
+      table += "<td class='std'>" + rowData.createdAt + "</td>";
+      table += "<td class='std'>" + rowData.user + "</td>";
+      table += "<td class='std small'> " +
         "<a href='" + url + "'>" +
-        "<button><i class=\"fa fa-download\"></i></button" +
+        "<button class='btn btn-default'><i class=\"fa fa-download\"></i></button" +
         "></a>";
       table += "</tr>";
     }
