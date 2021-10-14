@@ -18,7 +18,7 @@ xono_date#:#Datum
 xono_editor#:#Erstellt von
 xono_download#:#Herunterladen
 form_open_editor#:#Im ONLYOFFICE online Editor öffnen
-form_open_download#:Datei herunterladen
+form_open_download#:#Datei herunterladen
 form_open_ilias#:#Versionsverlauf auf ILIAS anzeigen
 form_open_setting#:#Wie soll die Datei geöffnet werden?
 config_baseurl#:#ILIAS root URL
