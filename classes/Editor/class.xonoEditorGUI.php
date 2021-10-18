@@ -41,7 +41,6 @@ class xonoEditorGUI extends xonoAbstractGUI
     protected $file_id;
 
     const CMD_EDIT = "editFile";
-    const CMD_SAVE = "saveChanges";
     const CMD_STANDARD = "editFile";
 
     const BASE_URL = ILIAS_HTTP_PATH;
@@ -200,7 +199,7 @@ class xonoEditorGUI extends xonoAbstractGUI
     }
 
     /**
-     * Builds and returns an array containing information about all versions as string
+     * Builds and returns an array containing information about all file versions (as string)
      * @param array $allVersions
      * @return string
      */

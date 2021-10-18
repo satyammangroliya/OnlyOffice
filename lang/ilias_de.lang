@@ -52,3 +52,5 @@ create_title_info#:#Falls kein Titel eingegeben wird, wird der Titel der Datei Ã
 config_number_of_versions#:#Max. Anzahl Versionen
 config_number_of_versions_info#:#Die Anzahl Versionen, die im Versionsverlauf geladen werden (default = 10).
 last_edit#:#Zuletzt bearbeitet
+-edit_settings-#:#Inhalt Bearbeiten
+-show_versions-#:#Versionen

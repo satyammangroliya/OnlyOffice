@@ -78,7 +78,19 @@ class ilObjOnlyOfficeListGUI extends ilObjectPluginListGUI
                 "permission" => "read",
                 "cmd" => ilObjOnlyOfficeGUI::getStartCmd(),
                 "default" => true
-            ]
+            ],
+            [
+                // Settings
+                "permission" => "edit_permission",
+                "cmd" => ilObjOnlyOfficeGUI::CMD_SETTINGS,
+                "lang_var" => "settings"
+            ],
+            [
+                // Versions
+                "permission" => "read",
+                "cmd" => ilObjOnlyOfficeGUI::CMD_SHOW_VERSIONS,
+                "lang_var" => "versions"
+            ],
         ];
 
         return $commands;
@@ -108,7 +120,6 @@ class ilObjOnlyOfficeListGUI extends ilObjectPluginListGUI
                 'propertyNameVisible' => true
             ]
         ];
-
 
         if (ilObjOnlyOfficeAccess::_isOffline($this->obj_id)) {
             array_push($props, [
