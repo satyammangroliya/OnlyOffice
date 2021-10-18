@@ -270,8 +270,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     protected function getSettingsForm() : ObjectSettingsFormGUI
     {
         $form = new ObjectSettingsFormGUI($this, $this->object);
-        $open_setting = new ilRadioGroupInputGUI($this->plugin->txt("form_open_setting"),
-            self::POST_VAR_OPEN_SETTING);
         return $form;
     }
 
