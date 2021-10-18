@@ -126,7 +126,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                                 $ext = pathinfo($file_version->getUrl(), PATHINFO_EXTENSION);
                                 $filename = rtrim($file->getTitle(), '.' . $ext);
                                 self::dic()->ctrl()->setParameterByClass(xonoContentGUI::class, 'path',
-                                    ILIAS_ABSOLUTE_PATH . '/data/default' . $file_version->getUrl());
+                                    ILIAS_ABSOLUTE_PATH . '/data/' . CLIENT_ID . $file_version->getUrl());
                                 self::dic()->ctrl()->setParameterByClass(xonoContentGUI::class, 'name',
                                     $filename . '_V' . $file_version->getVersion() . '.' . $file->getFileType());
                                 self::dic()->ctrl()->setParameterByClass(xonoContentGUI::class, 'mime',
@@ -256,6 +256,11 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $results = self::dic()->upload()->getResults();
         $result = end($results);
         $this->storage_service->createNewFileFromUpload($result, $a_new_object->getId());
+        $title = $a_new_object->title;
+        if ($title == "") {
+            $a_new_object->title = explode("." , $result->getName())[0];
+            $a_new_object->update();
+        }
         parent::afterSave($a_new_object);
     }
 

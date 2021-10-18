@@ -43,12 +43,4 @@ if ($offering_admin) {
 // ToDo: Bundle all updates from here
 \srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings::updateDB();
 ?>
-<#10>
-<?php
-\srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings::updateDB();
-?>
-<#11>
-<?php
-\srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings::updateDB();
-?>
 

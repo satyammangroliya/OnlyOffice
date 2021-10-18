@@ -151,7 +151,7 @@ class xonoContentGUI extends xonoAbstractGUI
 
         $result = array();
         foreach ($fileVersions as $fv) {
-            $url = ILIAS_ABSOLUTE_PATH . '/data/default' . $fv->getUrl();
+            $url = ILIAS_ABSOLUTE_PATH . '/data/' . CLIENT_ID . $fv->getUrl();
             $version = $fv->getVersion();
             $name = $filename . '_V' . $version . '.' . $extension;
             $this->dic->ctrl()->setParameter($this, 'path', $url);
