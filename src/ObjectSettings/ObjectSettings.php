@@ -103,16 +103,6 @@ class ObjectSettings extends ActiveRecord
         switch ($field_name) {
             case "is_online":
                 return ($field_value ? 1 : 0);
-            case "open":
-                switch ($field_value) {
-                    case "1":
-                        return "editor";
-                    case "2":
-                        return "download";
-                    default: // "" / "0"
-                        return "ilias";
-                }
-
             default:
                 return null;
         }
@@ -126,7 +116,6 @@ class ObjectSettings extends ActiveRecord
         switch ($field_name) {
             case "obj_id":
                 return intval($field_value);
-
             case "is_online":
                 return boolval($field_value);
             default:
