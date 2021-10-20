@@ -58,6 +58,8 @@ class xonoContentGUI extends xonoAbstractGUI
 
     public function executeCommand()
     {
+        self::dic()->tabs()->activateTab(ilObjOnlyOfficeGUI::TAB_SHOW_CONTENTS);
+
         self::dic()->help()->setScreenIdComponent(ilOnlyOfficePlugin::PLUGIN_ID);
         $next_class = $this->dic->ctrl()->getNextClass($this);
         $cmd = $this->dic->ctrl()->getCmd(self::CMD_STANDARD);
@@ -95,7 +97,6 @@ class xonoContentGUI extends xonoAbstractGUI
         ilUtil::sendInfo($this->plugin->txt('xono_reload_info'));
 
         $tpl = $this->plugin->getTemplate('html/tpl.file_history.html');
-        $tpl->setVariable('TBL_TITLE', $this->plugin->txt('object_show_contents'));
         $tpl->setVariable('FORWARD', $this->buttonTarget());
         $tpl->setVariable('BUTTON', $this->buttonName());
         $tpl->setVariable('TBL_DATA', $json);

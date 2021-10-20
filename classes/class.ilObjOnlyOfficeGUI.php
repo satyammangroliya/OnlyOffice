@@ -49,7 +49,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
 
     const TAB_PERMISSIONS = "perm_settings";
     const TAB_SETTINGS = "settings";
-    const TAB_INFO = "info";
+    const TAB_INFO = "info_short";
     const TAB_SHOW_CONTENTS = "show_contents";
 
     const POST_VAR_FILE = 'upload_files';
