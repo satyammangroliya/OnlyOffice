@@ -71,7 +71,7 @@ class ilObjOnlyOfficeListGUI extends ilObjectPluginListGUI
         $this->static_link_enabled = false;
         $this->subscribe_enabled = false;
         $this->tags_enabled = false;
-        $this->timings_enabled = false;
+        $this->timings_enabled = true;
 
         $commands = [
             [
