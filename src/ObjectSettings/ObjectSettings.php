@@ -63,7 +63,7 @@ class ObjectSettings extends ActiveRecord
      * @con_has_field true
      * @con_fieldtype text
      */
-    protected $description;
+    protected $desc;
 
     /**
      * @var bool
@@ -81,7 +81,7 @@ class ObjectSettings extends ActiveRecord
      * @con_length     10
      * @con_is_notnull true
      */
-    protected $open = "ilias";
+    protected $open_settings = "ilias";
 
     /**
      * @var bool

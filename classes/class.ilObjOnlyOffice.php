@@ -83,10 +83,10 @@ class ilObjOnlyOffice extends ilObjectPlugin
     public function doUpdate()/*: void*/
     {
         $this->object_settings->setTitle($_POST["title"]);
-        $this->object_settings->setDescription($_POST["description"]);
-        $this->object_settings->setAllowEdit(boolval($_POST["allow_edit"]));
-        $this->object_settings->setOpen($_POST["open"]);
-        $this->object_settings->setOnline($_POST["online"]);
+        $this->object_settings->setDescription($_POST["desc"]);
+        $this->object_settings->setAllowEdit(boolval($_POST[ilObjOnlyOfficeGUI::POST_VAR_EDIT]));
+        $this->object_settings->setOpen($_POST[ilObjOnlyOfficeGUI::POST_VAR_OPEN_SETTING]);
+        $this->object_settings->setOnline($_POST[ilObjOnlyOfficeGUI::POST_VAR_ONLINE]);
         self::onlyOffice()->objectSettings()->storeObjectSettings($this->object_settings);
     }
 

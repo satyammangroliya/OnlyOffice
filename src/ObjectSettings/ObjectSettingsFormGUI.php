@@ -75,18 +75,18 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
             "title" => [
                 self::PROPERTY_CLASS => ilTextInputGUI::class
             ],
-            "description" => [
+            "desc" => [
                 self::PROPERTY_CLASS => ilTextAreaInputGUI::class
             ],
-            "online" => [
+            ilObjOnlyOfficeGUI::POST_VAR_ONLINE => [
                 self::PROPERTY_CLASS => ilCheckboxInputGUI::class
             ],
             // ToDo: Warum bleibt dieses Häckchen nicht?
-            "allow_edit" => [
+            ilObjOnlyOfficeGUI::POST_VAR_EDIT => [
                 self::PROPERTY_CLASS=> ilCheckboxInputGUI::class,
                 self::PROPERTY_VALUE => $this->object->isAllowedEdit()
             ],
-            "open" => [
+            ilObjOnlyOfficeGUI::POST_VAR_OPEN_SETTING => [
                 self::PROPERTY_CLASS => \ilRadioGroupInputGUI::class,
                 self::PROPERTY_REQUIRED => true,
                 self::PROPERTY_SUBITEMS => [
