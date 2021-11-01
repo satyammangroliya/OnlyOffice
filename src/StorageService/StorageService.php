@@ -17,6 +17,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeReposit
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileAR;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionAR;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeAR;
+use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 
 /**
  * Class StorageService
@@ -26,6 +27,8 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeAR;
  */
 class StorageService
 {
+    use OnlyOfficeTrait;
+
     /**
      * @var Container
      */
@@ -99,6 +102,30 @@ class StorageService
         $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
         $file = new File($new_file_id, $obj_id, $upload_result->getName(),$extension, $upload_result->getMimeType());
         return $file;
+    }
+
+    public function createNewFileFromTemplate(int $file_id, string $title, string $template) {
+        $parent_path = self::onlyOffice()->config()->getValue($template);
+        $extension = pathinfo($parent_path, PATHINFO_EXTENSION);
+        $file_uuid = new UUID();
+        $path = $this->file_system_service->copyTemplateAs($parent_path, $file_id, $file_uuid->asString(), $title, $extension);
+        $this->file_repository->create($file_uuid, $file_id, $title, $extension, "unknown"); //ToDo
+        $created_at = new ilDateTime(time(), IL_CAL_UNIX);
+        $this->file_version_repository->create($file_uuid, $this->dic->user()->getId(), $created_at, $path, FileVersion::FIRST_VERSION);
+        $changeId = $this->file_change_repository->getNextId();
+        $changes = json_encode([
+            "created" => rtrim($created_at->__toString(), '<br>'),
+            "user" => [
+                "id" => $this->dic->user()->getId(),
+                "name" => $this->dic->user()->getFullname()
+            ]
+        ]);
+        $this->file_change_repository->create($changeId, $file_uuid, FileVersion::FIRST_VERSION, $changes,
+            FileChangeRepository::DEFAULT_SERVER_VERSION, $path);
+
+
+
+
     }
 
     public function updateFileFromUpload(

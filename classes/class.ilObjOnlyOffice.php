@@ -47,6 +47,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
      */
     public function doCreate()/*: void*/
     {
+        // ToDo: anpassen, damit es auch vom template aus geht
         $title = $_POST['title'];
         $description = $_POST['desc'];
         $online = $_POST[ilObjOnlyOfficeGUI::POST_VAR_ONLINE];

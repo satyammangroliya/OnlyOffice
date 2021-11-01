@@ -60,6 +60,19 @@ class FileSystemService
         return $path;
     }
 
+    public function copyTemplateAs(
+        string $template_path,
+        int $file_id,
+        string $uuid,
+        string $title,
+        string $extension,
+        string $file_name = FileVersion::FIRST_VERSION
+    ) : string {
+        $child_path = $this->createAndGetPath($file_id, $uuid) . $file_name . DIRECTORY_SEPARATOR . $title . "." . $extension;
+        $this->dic->filesystem()->web()->copy($template_path, $child_path);
+        return $child_path;
+    }
+
     public function storeNewVersionFromString(
         string $content,
         int $obj_id,
@@ -77,13 +90,12 @@ class FileSystemService
 
     /**
      * Store a template from the config form
-     *
-     * @param string $tmp_path the path where the file is currently stored
-     * @param string $type     word, excel or powerpoint
+     * @param string $tmp_path  the path where the file is currently stored
+     * @param string $type      word, excel or powerpoint
      * @param string $extension file extension
      * @throws IOException
      */
-    public function storeTemplate(string $tmp_path, string $type, string $extension): string
+    public function storeTemplate(string $tmp_path, string $type, string $extension) : string
     {
         // Define path and create it if it does not exist
         $path = self::BASE_PATH . "templates/" . $type . "/";

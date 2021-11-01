@@ -194,7 +194,11 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         self::output()->output($html);
     }
 
-    protected function initCreationForms($a_new_type)
+    /* --- Create new OnlyOffice File --- */
+    /**
+     * @inheritDoc
+     */
+    protected function initCreationForms($a_new_type): array
     {
         $forms = parent::initCreationForms($a_new_type);
         if (self::onlyOffice()->config()->hasTemplates()) {
@@ -264,6 +268,12 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         return $form;
     }
 
+    /**
+     * Form to create a new OnlyOffice File from a template
+     * The template must be stored in the plugin config
+     * @param $a_new_type
+     * @return ilPropertyFormGUI
+     */
     public function initCreateFromTemplateForm($a_new_type): ilPropertyFormGUI {
         $form = new ilPropertyFormGUI();
         $form->setTarget("_top");
@@ -357,6 +367,19 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         parent::afterSave($a_new_object);
     }
 
+    public function createFromTemplate() {
+        // create ilObject
+        $object = new ilObjOnlyOffice();
+        $object->setTitle($title = $_POST['title']);
+        $object->setDescription($_POST["desc"]);
+        $object->setOnline(!$_POST[self::POST_VAR_ONLINE]==null);
+        $object->create(); // creates also object_settings
+
+        $this->storage_service->createNewFileFromTemplate($object->getId(), $title, $_POST[self::POST_VAR_CREATE] . "_doc");
+
+
+    }
+    /* -- Setiings -- */
     /**
      * @return ObjectSettingsFormGUI
      */
