@@ -81,6 +81,11 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
             "online" => [
                 self::PROPERTY_CLASS => ilCheckboxInputGUI::class
             ],
+            // ToDo: Warum bleibt dieses Häckchen nicht?
+            "allow_edit" => [
+                self::PROPERTY_CLASS=> ilCheckboxInputGUI::class,
+                self::PROPERTY_VALUE => $this->object->isAllowedEdit()
+            ],
             "open" => [
                 self::PROPERTY_CLASS => \ilRadioGroupInputGUI::class,
                 self::PROPERTY_REQUIRED => true,

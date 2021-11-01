@@ -55,6 +55,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     const POST_VAR_FILE = 'upload_files';
     const POST_VAR_OPEN_SETTING = 'open_setting';
     const POST_VAR_ONLINE = 'online';
+    const POST_VAR_EDIT = 'allow_edit';
 
     /**
      * @var ilObjOnlyOffice
@@ -224,6 +225,13 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
             self::POST_VAR_ONLINE);
         $form->addItem($online);
 
+        // Users are allowed to edit checkbox
+        $edit = new ilCheckboxInputGUI(self::plugin()->translate('allow_edit',
+            ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS), self::POST_VAR_EDIT);
+        $edit->setInfo(self::plugin()->translate('allow_edit_info',
+            ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS));
+        $form->addItem($edit);
+
         // Settings for opening a file
         $opening_setting = new ilRadioGroupInputGUI(self::plugin()->translate("form_open_setting"),
             self::POST_VAR_OPEN_SETTING);
@@ -258,7 +266,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $this->storage_service->createNewFileFromUpload($result, $a_new_object->getId());
         $title = $a_new_object->title;
         if ($title == "") {
-            $a_new_object->title = explode("." , $result->getName())[0];
+            $a_new_object->title = explode(".", $result->getName())[0];
             $a_new_object->update();
         }
         parent::afterSave($a_new_object);

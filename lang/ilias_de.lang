@@ -54,3 +54,5 @@ config_number_of_versions_info#:#Die Anzahl Versionen, die im Versionsverlauf ge
 last_edit#:#Zuletzt bearbeitet
 -edit_settings-#:#Inhalt Bearbeiten
 -show_versions-#:#Versionen
+settings_allow_edit#:#Benutzer dürfen bearbeiten
+settings_allow_edit_info#:#Alle Benutzer mit Anzeigerecht (z.B. Kursmitglieder) dürfen die Datei auch bearbeiten

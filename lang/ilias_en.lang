@@ -54,4 +54,6 @@ number_of_versions_info#:#The number of versions loaded in the version history (
 last_edit#:#Last edited
 edit_settings#:#Edit Content
 show_versions#:#Versions
+settings_allow_edit#:#Users are allowed to edit
+settings_allow_edit_info#:#All users that are allowed to read the file are allowed to edit it.
 
