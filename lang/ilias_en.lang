@@ -27,6 +27,9 @@ config_onlyoffice_secret#:#ONLYOFFICE secret for token validation
 config_configuration#:#Configuration
 config_configuration_saved#:#Configuration saved
 config_save#:#Save
+config_word_doc#:#Text Template (Word)
+config_excel_doc#:#Table Template (Excel)
+config_ppt_doc#:#Presentation Template (PowerPoint)
 object_manage_contents#:#Edit
 object_offline#:#Offline
 object_permission_denied#:#Permission denied

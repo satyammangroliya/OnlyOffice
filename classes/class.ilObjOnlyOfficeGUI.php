@@ -10,6 +10,7 @@ use srag\Plugins\OnlyOffice\StorageService\StorageService;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
 use srag\Plugins\OnlyOffice\InfoService\InfoService;
+use srag\Plugins\OnlyOffice\Config\ConfigFormGUI;
 
 /**
  * Class ilObjOnlyOfficeGUI
@@ -43,6 +44,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     const CMD_SAVE = 'save';
     const CMD_CANCEL = 'cancel';
     const CMD_SHOW_INFO = 'infoScreen';
+    const CMD_TEMPLATE = 'createFromTemplate';
 
     const LANG_MODULE_OBJECT = "object";
     const LANG_MODULE_SETTINGS = "settings";
@@ -56,6 +58,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     const POST_VAR_OPEN_SETTING = 'open_setting';
     const POST_VAR_ONLINE = 'online';
     const POST_VAR_EDIT = 'allow_edit';
+    const POST_VAR_CREATE = 'createFrom';
 
     /**
      * @var ilObjOnlyOffice
@@ -191,12 +194,21 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         self::output()->output($html);
     }
 
+    protected function initCreationForms($a_new_type)
+    {
+        $forms = parent::initCreationForms($a_new_type);
+        if (self::onlyOffice()->config()->hasTemplates()) {
+            array_push($forms, $this->initCreateFromTemplateForm($a_new_type));
+        }
+
+        return $forms;
+    }
+
     /**
      * @inheritDoc
      */
     public function initCreateForm(/*string*/ $a_new_type) : ilPropertyFormGUI
     {
-        include_once("Services/Form/classes/class.ilPropertyFormGUI.php");
         $form = new ilPropertyFormGUI();
         $form->setTarget("_top");
         $form->setFormAction($this->ctrl->getFormAction($this, "save"));
@@ -250,6 +262,76 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $form->addCommandButton("cancel", $this->lng->txt("cancel"));
 
         return $form;
+    }
+
+    public function initCreateFromTemplateForm($a_new_type): ilPropertyFormGUI {
+        $form = new ilPropertyFormGUI();
+        $form->setTarget("_top");
+        $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_TEMPLATE));
+        $form->setTitle(self::plugin()->translate($a_new_type . "_new_from_template"));
+
+        // title
+        $ti = new ilTextInputGUI($this->lng->txt("title"), "title");
+        $ti->setSize(min(40, ilObject::TITLE_LENGTH));
+        $ti->setMaxLength(ilObject::TITLE_LENGTH);
+        $ti->setRequired(true);
+        $form->addItem($ti);
+
+        // description
+        $ta = new ilTextAreaInputGUI($this->lng->txt("description"), "desc");
+        $ta->setCols(40);
+        $ta->setRows(2);
+        $form->addItem($ta);
+
+        // filetype
+        $ft = new ilRadioGroupInputGUI(self::plugin()->translate("create_from_template"), self::POST_VAR_CREATE);
+        if (self::onlyOffice()->config()->getValue(ConfigFormGUI::KEY_DOC_WORD)) {
+            $word = new ilRadioOption(self::plugin()->translate("filetype_word"), "word");
+            $ft->addOption($word);
+        }
+        if (self::onlyOffice()->config()->getValue(ConfigFormGUI::KEY_DOC_EXCEL)) {
+            $excel = new ilRadioOption(self::plugin()->translate("filetype_excel"), "excel");
+            $ft->addOption($excel);
+        }
+        if (self::onlyOffice()->config()->getValue(ConfigFormGUI::KEY_DOC_PPT)) {
+            $excel = new ilRadioOption(self::plugin()->translate("filetype_ppt"), "ppt");
+            $ft->addOption($excel);
+        }
+        $ft->setInfo(self::plugin()->translate("create_from_template_info"));
+        $ft->setRequired(true);
+        $form->addItem($ft);
+
+        // online checkbox
+        $online = new ilCheckboxInputGUI(self::plugin()->translate('online', ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS),
+            self::POST_VAR_ONLINE);
+        $form->addItem($online);
+
+        // Users are allowed to edit checkbox
+        $edit = new ilCheckboxInputGUI(self::plugin()->translate('allow_edit',
+            ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS), self::POST_VAR_EDIT);
+        $edit->setInfo(self::plugin()->translate('allow_edit_info',
+            ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS));
+        $form->addItem($edit);
+
+        // Settings for opening a file
+        $opening_setting = new ilRadioGroupInputGUI(self::plugin()->translate("form_open_setting"),
+            self::POST_VAR_OPEN_SETTING);
+        $opening_setting->addOption(new ilRadioOption(self::plugin()->translate("open_setting_ilias",
+            self::LANG_MODULE_SETTINGS), "ilias"));
+        $opening_setting->addOption(new ilRadioOption(self::plugin()->translate("open_setting_editor",
+            self::LANG_MODULE_SETTINGS), "editor"));
+        $opening_setting->addOption(new ilRadioOption(self::plugin()->translate("open_setting_download",
+            self::LANG_MODULE_SETTINGS), "download"));
+        $opening_setting->setValue("ilias");
+        $opening_setting->setRequired(true);
+        $form->addItem($opening_setting);
+
+        // Buttons
+        $form->addCommandButton(self::CMD_TEMPLATE, $this->txt($a_new_type . "_add"));
+        $form->addCommandButton("cancel", $this->lng->txt("cancel"));
+
+        return $form;
+
     }
 
     /**

@@ -75,6 +75,35 @@ class FileSystemService
         return $path;
     }
 
+    /**
+     * Store a template from the config form
+     *
+     * @param string $tmp_path the path where the file is currently stored
+     * @param string $type     word, excel or powerpoint
+     * @param string $extension file extension
+     * @throws IOException
+     */
+    public function storeTemplate(string $tmp_path, string $type, string $extension): string
+    {
+        // Define path and create it if it does not exist
+        $path = self::BASE_PATH . "templates/" . $type . "/";
+        if (!$this->dic->filesystem()->web()->hasDir($path)) {
+            $this->dic->filesystem()->web()->createDir($path);
+        }
+        $file_name = $type . "." . $extension;
+        $path .= $file_name;
+
+        // delete the old template file if it already exists
+        if ($this->dic->filesystem()->web()->has($path)) {
+            $this->dic->filesystem()->web()->delete($path);
+        }
+        // store the new template file
+        $stream = Streams::ofString($tmp_path);
+        $this->dic->filesystem()->web()->writeStream($path, $stream);
+        return $path;
+
+    }
+
     public function storeChanges(string $content, int $obj_id, string $uuid, int $version, string $extension) : string
     {
         $path = $this->createAndGetPath($obj_id, $uuid, true) . $version . '.' . $extension;
@@ -84,16 +113,19 @@ class FileSystemService
         return $path;
     }
 
-    public function storeVersionCopy(FileVersion $parent_version, string $uuid, int $file_id): string {
+    public function storeVersionCopy(FileVersion $parent_version, string $uuid, int $file_id) : string
+    {
         $parent_path = $parent_version->getUrl();
         $extension = pathinfo($parent_path, PATHINFO_EXTENSION);
-        $child_path = $this->createAndGetPath($file_id, $uuid, false) . $parent_version->getVersion() . '.' . $extension;;
+        $child_path = $this->createAndGetPath($file_id, $uuid,
+                false) . $parent_version->getVersion() . '.' . $extension;;
         $web = $this->dic->filesystem()->web();
         $web->copy($parent_path, $child_path);
         return $child_path;
     }
 
-    public function storeChangeCopy(FileChange $parent_change, string $uuid, int $file_id): string {
+    public function storeChangeCopy(FileChange $parent_change, string $uuid, int $file_id) : string
+    {
         $parent_path = $parent_change->getChangesUrl();
         $extension = pathinfo($parent_path, PATHINFO_EXTENSION);
         $child_path = $this->createAndGetPath($file_id, $uuid, true) . $parent_change->getVersion() . '.' . $extension;;
@@ -102,15 +134,16 @@ class FileSystemService
         return $child_path;
     }
 
-    public function deletePath(int $file_id) {
-        $path = self::BASE_PATH.$file_id;
+    public function deletePath(int $file_id)
+    {
+        $path = self::BASE_PATH . $file_id;
         $web = $this->dic->filesystem()->web();
         $web->deleteDir($path);
 
     }
 
     /**
-     * @param int $obj_id
+     * @param int    $obj_id
      * @param string $file_id
      * @return string
      * @throws IOException

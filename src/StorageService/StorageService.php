@@ -132,6 +132,12 @@ class StorageService
         return $fileVersion;
     }
 
+    public function createFileTemplate(string $tmp_path, string $type, string $extension): string {
+        return $this->file_system_service->storeTemplate($tmp_path, $type, $extension);
+
+
+    }
+
     public function createClone(int $child_id, int $parent_id)
     {
         // create new file

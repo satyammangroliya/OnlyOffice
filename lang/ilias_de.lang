@@ -17,6 +17,12 @@ xono_version#:#Version
 xono_date#:#Datum
 xono_editor#:#Erstellt von
 xono_download#:#Herunterladen
+xono_new_from_template#:#Von Template erstellen
+create_from_template#:#Template
+create_from_template_info#:#Verwende Template aus der Plugin-Konfiguration
+filetype_word#:#Text
+filetype_excel#:#Tabelle
+filetype_ppt#:#Präsentation
 form_open_editor#:#Im ONLYOFFICE online Editor öffnen
 form_open_download#:#Datei herunterladen
 form_open_ilias#:#Versionsverlauf auf ILIAS anzeigen
@@ -27,6 +33,9 @@ config_onlyoffice_secret#:#ONLYOFFICE secret für die Token-Validierung
 config_configuration#:#Konfiguration
 config_configuration_saved#:#Konfiguration gespeichert
 config_save#:#Speichern
+config_word_doc#:#Vorlage Text (Word)
+config_excel_doc#:#Vorlage Tabelle (Excel)
+config_ppt_doc#:#Vorlage Präsentation (PowerPoint)
 object_manage_contents#:#Bearbeiten
 object_offline#:#Offline
 object_permission_denied#:#Zugriff verweigert
