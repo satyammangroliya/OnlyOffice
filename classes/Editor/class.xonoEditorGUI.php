@@ -13,6 +13,7 @@ use srag\Plugins\OnlyOffice\InfoService\InfoService;
 use srag\Plugins\OnlyOffice\CryptoService\JwtService;
 use \ILIAS\DI\Container;
 use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
+use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 
 
 define('oo_url', InfoService::getOnlyOfficeUrl());
@@ -27,6 +28,8 @@ define('secret', InfoService::getSecret());
  */
 class xonoEditorGUI extends xonoAbstractGUI
 {
+    use OnlyOfficeTrait;
+
     /**
      * @var ilOnlyOfficePlugin
      */
@@ -307,8 +310,13 @@ class xonoEditorGUI extends xonoAbstractGUI
         return array("id" => $user_id, "name" => $user->getPublicName());
     }
 
+    /**
+     * Determines access rights based on object settings and RBAC
+     * @return string
+     */
     protected function determineAccessRights(): string {
-        if (ilObjOnlyOfficeAccess::hasEditFileAccess())
+        if (self::onlyOffice()->objectSettings()->getObjectSettingsById($this->file_id)->allowEdit() ||
+            ilObjOnlyOfficeAccess::hasEditFileAccess())
             return "edit";
         else
             return "view";

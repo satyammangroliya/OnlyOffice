@@ -7,6 +7,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRe
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\InfoService\InfoService;
+use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 
 /**
  * Class xonoContentGUI
@@ -16,6 +17,9 @@ use srag\Plugins\OnlyOffice\InfoService\InfoService;
  */
 class xonoContentGUI extends xonoAbstractGUI
 {
+
+    use OnlyOfficeTrait;
+
     const BASE_URL = ILIAS_HTTP_PATH;
 
     /** @var ilOnlyOfficePlugin */
@@ -132,9 +136,14 @@ class xonoContentGUI extends xonoAbstractGUI
         return DICStatic::dic();
     }
 
+    /**
+     * Determines the button name based on the object settings and RBAC
+     * @return string
+     */
     protected function buttonName()
     {
-        if (ilObjOnlyOfficeAccess::hasEditFileAccess()) {
+        if (self::onlyOffice()->objectSettings()->getObjectSettingsById($this->file_id)->allowEdit() ||
+            ilObjOnlyOfficeAccess::hasEditFileAccess()) {
             return $this->plugin->txt('xono_edit_button');
         } else {
             return $this->plugin->txt('xono_view_button');
