@@ -163,12 +163,12 @@ class ObjectSettings extends ActiveRecord
 
     public function getDescription() : string
     {
-        return $this->description;
+        return $this->desc;
     }
 
     public function setDescription(string $description)
     {
-        $this->description = $description;
+        $this->desc = $description;
     }
 
     public function allowEdit(): bool {
