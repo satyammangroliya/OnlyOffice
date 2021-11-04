@@ -137,7 +137,7 @@ class xonoEditorGUI extends xonoAbstractGUI
         $as_array['document'] = $document;
 
         // editor config
-        $editor = array();
+        $editor = array(); // SubArray "editor"
         $editor['callbackUrl'] = $this->generateCallbackUrl($file->getUuid(),
             $file->getObjId(), $extension);
         $editor['user'] = $this->buildUserArray($this->dic->user()->getId());
@@ -238,6 +238,10 @@ class xonoEditorGUI extends xonoAbstractGUI
 
 
     /* --- Helper Methods --- */
+    /**
+     * Generates the URL for the return button
+     * @return string
+     */
     protected function generateReturnUrl() : string
     {
         $content_gui = new xonoContentGUI($this->dic, $this->plugin, $this->file_id);
@@ -245,6 +249,11 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     }
 
+    /**
+     * Determines the doc type (word, cell, or slide) based on the file extension
+     * @param string $extension
+     * @return string
+     */
     protected function determineDocType(string $extension) : string
     {
         switch ($extension) {
@@ -277,6 +286,13 @@ class xonoEditorGUI extends xonoAbstractGUI
         }
     }
 
+    /**
+     * generates the callback URL for the only office document server
+     * @param UUID   $file_uuid
+     * @param int    $file_id
+     * @param string $extension
+     * @return string
+     */
     protected function generateCallbackUrl(UUID $file_uuid, int $file_id, string $extension) : string
     {
         $path = 'Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice/save.php?' .
