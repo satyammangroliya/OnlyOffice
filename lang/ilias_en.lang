@@ -42,7 +42,7 @@ settings_save#:#Save
 settings_saved#:#Settings saved
 settings_settings#:#Settings
 settings_title#:#Title
-settings_open#:#How should the file be opened?
+settings_open_setting#:#How should the file be opened?
 settings_open_setting_ilias#:#Show Version History on ILIAS
 settings_open_setting_editor#:#Open in ONLYOFFICE Online Editor
 settings_open_setting_download#:#Download the File

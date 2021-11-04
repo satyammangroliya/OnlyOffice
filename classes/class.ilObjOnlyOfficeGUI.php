@@ -117,13 +117,13 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                     case self::CMD_SHOW_CONTENTS:
                     case self::CMD_MANAGE_CONTENTS:
                         // Read commands
-                        if (!ilObjOnlyOfficeAccess::hasReadAccess()) {
+                        if (!ilObjOnlyOfficeAccess::hasReadAccess() &&
+                            !self::onlyOffice()->objectSettings()->getObjectSettingsById($this->object_id)->allowEdit()) {
                             ilObjOnlyOfficeAccess::redirectNonAccess(ilRepositoryGUI::class);
                         }
                         $open_setting = InfoService::getOpenSetting($this->obj_id);
                         switch ($open_setting) {
                             case "download":
-                            case "2":
                                 $next_cmd = xonoContentGUI::CMD_DOWNLOAD;
                                 $file = $this->storage_service->getFile($this->obj_id);
                                 $file_version = $this->storage_service->getLatestVersion($file->getUuid());
@@ -137,7 +137,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                                     $file->getMimeType());
                                 break;
                             case "editor":
-                            case "1":
                                 $next_cmd = xonoContentGUI::CMD_EDIT;
                                 break;
                             default: // "ilias" / "0"
@@ -201,10 +200,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     protected function initCreationForms($a_new_type): array
     {
         $forms = parent::initCreationForms($a_new_type);
-        if (self::onlyOffice()->config()->hasTemplates()) {
-            array_push($forms, $this->initCreateFromTemplateForm($a_new_type));
-        }
-
         return $forms;
     }
 
@@ -268,81 +263,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         return $form;
     }
 
-    /**
-     * Form to create a new OnlyOffice File from a template
-     * The template must be stored in the plugin config
-     * @param $a_new_type
-     * @return ilPropertyFormGUI
-     */
-    public function initCreateFromTemplateForm($a_new_type): ilPropertyFormGUI {
-        $form = new ilPropertyFormGUI();
-        $form->setTarget("_top");
-        $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_TEMPLATE));
-        $form->setTitle(self::plugin()->translate($a_new_type . "_new_from_template"));
-
-        // title
-        $ti = new ilTextInputGUI($this->lng->txt("title"), "title");
-        $ti->setSize(min(40, ilObject::TITLE_LENGTH));
-        $ti->setMaxLength(ilObject::TITLE_LENGTH);
-        $ti->setRequired(true);
-        $form->addItem($ti);
-
-        // description
-        $ta = new ilTextAreaInputGUI($this->lng->txt("description"), "desc");
-        $ta->setCols(40);
-        $ta->setRows(2);
-        $form->addItem($ta);
-
-        // filetype
-        $ft = new ilRadioGroupInputGUI(self::plugin()->translate("create_from_template"), self::POST_VAR_CREATE);
-        if (self::onlyOffice()->config()->getValue(ConfigFormGUI::KEY_DOC_WORD)) {
-            $word = new ilRadioOption(self::plugin()->translate("filetype_word"), "word");
-            $ft->addOption($word);
-        }
-        if (self::onlyOffice()->config()->getValue(ConfigFormGUI::KEY_DOC_EXCEL)) {
-            $excel = new ilRadioOption(self::plugin()->translate("filetype_excel"), "excel");
-            $ft->addOption($excel);
-        }
-        if (self::onlyOffice()->config()->getValue(ConfigFormGUI::KEY_DOC_PPT)) {
-            $excel = new ilRadioOption(self::plugin()->translate("filetype_ppt"), "ppt");
-            $ft->addOption($excel);
-        }
-        $ft->setInfo(self::plugin()->translate("create_from_template_info"));
-        $ft->setRequired(true);
-        $form->addItem($ft);
-
-        // online checkbox
-        $online = new ilCheckboxInputGUI(self::plugin()->translate('online', ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS),
-            self::POST_VAR_ONLINE);
-        $form->addItem($online);
-
-        // Users are allowed to edit checkbox
-        $edit = new ilCheckboxInputGUI(self::plugin()->translate('allow_edit',
-            ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS), self::POST_VAR_EDIT);
-        $edit->setInfo(self::plugin()->translate('allow_edit_info',
-            ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS));
-        $form->addItem($edit);
-
-        // Settings for opening a file
-        $opening_setting = new ilRadioGroupInputGUI(self::plugin()->translate("form_open_setting"),
-            self::POST_VAR_OPEN_SETTING);
-        $opening_setting->addOption(new ilRadioOption(self::plugin()->translate("open_setting_ilias",
-            self::LANG_MODULE_SETTINGS), "ilias"));
-        $opening_setting->addOption(new ilRadioOption(self::plugin()->translate("open_setting_editor",
-            self::LANG_MODULE_SETTINGS), "editor"));
-        $opening_setting->addOption(new ilRadioOption(self::plugin()->translate("open_setting_download",
-            self::LANG_MODULE_SETTINGS), "download"));
-        $opening_setting->setValue("ilias");
-        $opening_setting->setRequired(true);
-        $form->addItem($opening_setting);
-
-        // Buttons
-        $form->addCommandButton(self::CMD_TEMPLATE, $this->txt($a_new_type . "_add"));
-        $form->addCommandButton("cancel", $this->lng->txt("cancel"));
-
-        return $form;
-
-    }
 
     /**
      * @inheritDoc
@@ -367,18 +287,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         parent::afterSave($a_new_object);
     }
 
-    public function createFromTemplate() {
-        // create ilObject
-        $object = new ilObjOnlyOffice();
-        $object->setTitle($title = $_POST['title']);
-        $object->setDescription($_POST["desc"]);
-        $object->setOnline(!$_POST[self::POST_VAR_ONLINE]==null);
-        $object->create(); // creates also object_settings
-
-        $this->storage_service->createNewFileFromTemplate($object->getId(), $title, $_POST[self::POST_VAR_CREATE] . "_doc");
-
-
-    }
     /* -- Setiings -- */
     /**
      * @return ObjectSettingsFormGUI

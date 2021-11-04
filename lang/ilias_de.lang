@@ -48,7 +48,7 @@ settings_save#:#Speichern
 settings_saved#:#Einstellungen gespeichert
 settings_settings#:#Einstellungen
 settings_title#:#Titel
-settings_open#:#Wie soll die Datei geöffnet werden?
+settings_open_setting#:#Wie soll die Datei geöffnet werden?
 settings_open_setting_ilias#:#Versionsverlauf auf ILIAS anzeigen
 settings_open_setting_editor#:#Im ONLYOFFICE online Editor öffnen
 settings_open_setting_download#:#Datei herunterladen

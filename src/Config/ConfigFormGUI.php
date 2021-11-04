@@ -33,9 +33,6 @@ class ConfigFormGUI extends PropertyFormGUI
     const KEY_ONLYOFFICE_URL = "onlyoffice_url";
     const KEY_ONLYOFFICE_SECRET = "onlyoffice_secret";
     const KEY_NUM_VERSIONS = "number_of_versions";
-    const KEY_DOC_WORD = "word_doc";
-    const KEY_DOC_EXCEL = "excel_doc";
-    const KEY_DOC_PPT = "ppt_doc";
 
     const LANG_MODULE = ilOnlyOfficeConfigGUI::LANG_MODULE;
 
@@ -83,15 +80,6 @@ class ConfigFormGUI extends PropertyFormGUI
             ],
             self::KEY_NUM_VERSIONS => [
                 self::PROPERTY_CLASS => \ilNumberInputGUI::class
-            ],
-            self::KEY_DOC_WORD => [
-                self::PROPERTY_CLASS => ilFileInputGUI::class
-            ],
-            self::KEY_DOC_EXCEL => [
-                self::PROPERTY_CLASS => ilFileInputGUI::class
-            ],
-            self::KEY_DOC_PPT => [
-                self::PROPERTY_CLASS => ilFileInputGUI::class
             ]
         ];
     }
@@ -118,24 +106,6 @@ class ConfigFormGUI extends PropertyFormGUI
     protected function storeValue(string $key, $value)/*: void*/
     {
         switch ($key) {
-            case self::KEY_DOC_WORD:
-            case self::KEY_DOC_EXCEL:
-            case self::KEY_DOC_PPT:
-                // if a file was added
-                if ($_POST[$key]["error"] == 0) {
-                    $tmp_path = $_POST[$key]["tmp_name"];
-                    $template_type = explode("_", $key)[0]; // word, excel, ppt
-                    $fileNameAsArray = explode(".", $_POST[$key]["name"]);
-                    $extension = end($fileNameAsArray);
-                    $storage_service = new StorageService(self::dic()->dic(), new ilDBFileVersionRepository(),
-                        new ilDBFileRepository(), new ilDBFileChangeRepository());
-                    $path = $storage_service->createFileTemplate($tmp_path, $template_type, $extension);
-                    self::onlyOffice()->config()->setValue($key, $path);
-                }
-                else {
-                    self::onlyOffice()->config()->setValue($key, "");
-                }
-            break;
             // If less than 1 version should be loaded from storage, a default value (10) is stored
             case self::KEY_NUM_VERSIONS:
                 if ($value < 1) {

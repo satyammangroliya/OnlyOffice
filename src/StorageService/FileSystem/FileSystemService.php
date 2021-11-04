@@ -60,19 +60,6 @@ class FileSystemService
         return $path;
     }
 
-    public function copyTemplateAs(
-        string $template_path,
-        int $file_id,
-        string $uuid,
-        string $title,
-        string $extension,
-        string $file_name = FileVersion::FIRST_VERSION
-    ) : string {
-        $child_path = $this->createAndGetPath($file_id, $uuid) . $file_name . DIRECTORY_SEPARATOR . $title . "." . $extension;
-        $this->dic->filesystem()->web()->copy($template_path, $child_path);
-        return $child_path;
-    }
-
     public function storeNewVersionFromString(
         string $content,
         int $obj_id,

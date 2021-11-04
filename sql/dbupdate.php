@@ -46,4 +46,8 @@ if ($offering_admin) {
 <?php
 \srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings::updateDB();
 ?>
+<#11>
+<?php
+\srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings::updateDB();
+?>
 
