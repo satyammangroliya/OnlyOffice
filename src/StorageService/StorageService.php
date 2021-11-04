@@ -87,7 +87,6 @@ class StorageService
             $path);
 
         // Create DB Entry for FileChange
-        $changeId = $this->file_change_repository->getNextId();
         $changes = json_encode([
             "created" => rtrim($created_at->__toString(), '<br>'),
             "user" => [
@@ -95,7 +94,7 @@ class StorageService
                 "name" => $this->dic->user()->getFullname()
             ]
         ]);
-        $this->file_change_repository->create($changeId, $new_file_id, $version, $changes,
+        $this->file_change_repository->create($new_file_id, $version, $changes,
             FileChangeRepository::DEFAULT_SERVER_VERSION, $path);
 
         // Create & Return FileVersion object
@@ -126,8 +125,7 @@ class StorageService
         //Store Changes and Create Database Entry
         $change_path = $this->file_system_service->storeChanges($change_content, $file_id, $uuid->asString(), $version,
             $change_extension);
-        $id = $this->file_change_repository->getNextId(); // ToDo: Do this in a better way
-        $this->file_change_repository->create($id, $uuid, $version, $changes_object, $serverVersion,
+        $this->file_change_repository->create($uuid, $version, $changes_object, $serverVersion,
             $change_path);
 
         // Return FileVersion object
@@ -161,8 +159,7 @@ class StorageService
         $parent_changes = $this->file_change_repository->getAllChanges($parent_file->getUuid()->asString());
         foreach ($parent_changes as $changes) {
             $path = $this->file_system_service->storeChangeCopy($changes, $uuid->asString(), $child_id);
-            $changeId = $this->file_change_repository->getNextId();
-            $this->file_change_repository->create($changeId, $uuid, $changes->getVersion(),
+            $this->file_change_repository->create($uuid, $changes->getVersion(),
                 $changes->getChangesObjectString(), $changes->getServerVersion(), $path);
         }
 

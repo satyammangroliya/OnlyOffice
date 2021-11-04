@@ -83,7 +83,6 @@ class ilOnlyOfficePlugin extends ilRepositoryObjectPlugin
 
     protected function shouldUseOneUpdateStepOnly() : bool
     {
-        // TODO: Implement shouldUseOneUpdateStepOnly() method.
         return false;
     }
 

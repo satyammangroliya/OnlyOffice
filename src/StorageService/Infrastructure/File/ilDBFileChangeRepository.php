@@ -15,7 +15,6 @@ class ilDBFileChangeRepository implements FileChangeRepository
 
 
     public function create(
-        int $change_id,
         UUID $file_uuid,
         int $version,
         string $changesObjectString,
@@ -23,7 +22,6 @@ class ilDBFileChangeRepository implements FileChangeRepository
         string $changesUrl
     ) {
         $file_change_AR = new FileChangeAR();
-        $file_change_AR->setChangeId($change_id);
         $file_change_AR->setFileUuid($file_uuid);
         $file_change_AR->setVersion($version);
         $file_change_AR->setChangesObjectString($changesObjectString);
@@ -35,15 +33,6 @@ class ilDBFileChangeRepository implements FileChangeRepository
         $file_change_AR->create();
     }
 
-    // ToDo: Do this in a better way
-    public function getNextId() : int
-    {
-        if ($latest = FileChangeAR::where('TRUE')->orderBy('change_id', 'desc')->first()) {
-            return $latest->getChangeId() + 1;
-        } else {
-            return 1;
-        }
-    }
 
     public function getAllChanges(string $uuid) : array
     {

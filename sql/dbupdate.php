@@ -50,4 +50,12 @@ if ($offering_admin) {
 <?php
 \srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings::updateDB();
 ?>
+<#12>
+<#13>
+<?php
+\srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeAR::updateDB();
+global $DIC;
+$DIC->database()->query("CREATE TABLE IF NOT EXISTS xono_file_change_seq (sequence INT PRIMARY KEY AUTO_INCREMENT);");
+$DIC->database()->query("INSERT INTO xono_file_change_seq VALUES (1);");
+?>
 
