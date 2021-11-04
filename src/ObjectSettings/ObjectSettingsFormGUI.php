@@ -8,7 +8,8 @@ use ilObjOnlyOffice;
 use ilObjOnlyOfficeGUI;
 use ilTextAreaInputGUI;
 use ilTextInputGUI;
-use ilNumberInputGUI;
+use ilRadioOption;
+use ilRadioGroupInputGUI;
 use srag\CustomInputGUIs\OnlyOffice\PropertyFormGUI\Items\Items;
 use srag\CustomInputGUIs\OnlyOffice\PropertyFormGUI\PropertyFormGUI;
 
@@ -46,8 +47,11 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     protected function getValue(string $key)
     {
         switch ($key) {
-            case "description":
+            case "desc":
                 return Items::getter($this->object, "long_description");
+            case "open_setting":
+                $object_setting = ObjectSettings::where(["obj_id" => $this->object->getId()])->first();
+                return $object_setting->getOpen();
 
             default:
                 return Items::getter($this->object, $key);
@@ -81,23 +85,23 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
             ilObjOnlyOfficeGUI::POST_VAR_ONLINE => [
                 self::PROPERTY_CLASS => ilCheckboxInputGUI::class
             ],
-            // ToDo: Warum bleibt dieses Häckchen nicht?
             ilObjOnlyOfficeGUI::POST_VAR_EDIT => [
                 self::PROPERTY_CLASS=> ilCheckboxInputGUI::class,
                 self::PROPERTY_VALUE => $this->object->isAllowedEdit()
             ],
+            //ToDo: Warum bleibt das "Häckchen" nicht?
             ilObjOnlyOfficeGUI::POST_VAR_OPEN_SETTING => [
-                self::PROPERTY_CLASS => \ilRadioGroupInputGUI::class,
+                self::PROPERTY_CLASS => ilRadioGroupInputGUI::class,
                 self::PROPERTY_REQUIRED => true,
                 self::PROPERTY_SUBITEMS => [
                     "ilias" => [
-                        self::PROPERTY_CLASS => \ilRadioOption::class
+                        self::PROPERTY_CLASS => ilRadioOption::class
                     ],
                     "editor" => [
-                        self::PROPERTY_CLASS => \ilRadioOption::class
+                        self::PROPERTY_CLASS => ilRadioOption::class
                     ],
                     "download" => [
-                        self::PROPERTY_CLASS => \ilRadioOption::class
+                        self::PROPERTY_CLASS => ilRadioOption::class
                     ]
                 ]
             ]

@@ -36,7 +36,7 @@ object_permission_denied#:#Permission denied
 object_show_contents#:#Version History
 object_status#:#Status
 settings_cancel#:#Cancel
-settings_description#:#Description
+settings_desc#:#Description
 settings_online#:#Online
 settings_save#:#Save
 settings_saved#:#Settings saved
