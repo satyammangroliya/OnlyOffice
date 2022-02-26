@@ -63,13 +63,6 @@ final class Repository extends AbstractRepository
         return ilOnlyOfficePlugin::PLUGIN_ID . "_config";
     }
 
-    public function hasTemplates() : bool
-    {
-        return $this->getValue(ConfigFormGUI::KEY_DOC_WORD) ||
-            $this->getValue(ConfigFormGUI::KEY_DOC_EXCEL) ||
-            $this->getValue(ConfigFormGUI::KEY_DOC_PPT);
-    }
-
     /**
      * @inheritDoc
      */
@@ -78,10 +71,7 @@ final class Repository extends AbstractRepository
         return [
             ConfigFormGUI::KEY_ONLYOFFICE_URL => Config::TYPE_STRING,
             ConfigFormGUI::KEY_ONLYOFFICE_SECRET => Config::TYPE_STRING,
-            ConfigFormGUI::KEY_NUM_VERSIONS => Config::TYPE_INTEGER,
-            ConfigFormGUI::KEY_DOC_WORD => Config::TYPE_STRING,
-            ConfigFormGUI::KEY_DOC_EXCEL => Config::TYPE_STRING,
-            ConfigFormGUI::KEY_DOC_PPT => Config::TYPE_STRING
+            ConfigFormGUI::KEY_NUM_VERSIONS => Config::TYPE_INTEGER
         ];
     }
 }

@@ -7,18 +7,15 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 
 /**
  * Class FileChangeAR
- *
  * Stores the changes between file versions
  * such that they can easily be passed back
  * to the OnlyOffice Server
- *
  * @package srag\Plugins\OnlyOffice\StorageService\Infrastructure\File
- * @author Sophie Pfister <sophie@fluxlabs.ch>
+ * @author  Sophie Pfister <sophie@fluxlabs.ch>
  */
 class FileChangeAR extends ActiveRecord
 {
     const TABLE_NAME = 'xono_file_change';
-
 
     /**
      * @return string
@@ -33,6 +30,7 @@ class FileChangeAR extends ActiveRecord
      * @con_has_field    true
      * @con_fieldtype    integer
      * @con_is_primary   true
+     * @con_sequence     true
      */
     protected $change_id;
 
@@ -160,6 +158,5 @@ class FileChangeAR extends ActiveRecord
                 return parent::wakeUp($field_name, $field_value);
         }
     }
-
 
 }

@@ -81,7 +81,7 @@ class ObjectSettings extends ActiveRecord
      * @con_length     10
      * @con_is_notnull true
      */
-    protected $open_settings = "ilias";
+    protected $open_setting = "ilias";
 
     /**
      * @var bool
@@ -163,12 +163,12 @@ class ObjectSettings extends ActiveRecord
 
     public function getDescription() : string
     {
-        return $this->description;
+        return $this->desc;
     }
 
     public function setDescription(string $description)
     {
-        $this->description = $description;
+        $this->desc = $description;
     }
 
     public function allowEdit(): bool {
@@ -197,11 +197,11 @@ class ObjectSettings extends ActiveRecord
 
     public function getOpen() : string
     {
-        return $this->open;
+        return $this->open_setting;
     }
 
     public function setOpen(string $open)
     {
-        $this->open = $open;
+        $this->open_setting = $open;
     }
 }

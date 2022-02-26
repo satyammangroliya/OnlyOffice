@@ -87,7 +87,6 @@ class StorageService
             $path);
 
         // Create DB Entry for FileChange
-        $changeId = $this->file_change_repository->getNextId();
         $changes = json_encode([
             "created" => rtrim($created_at->__toString(), '<br>'),
             "user" => [
@@ -95,37 +94,13 @@ class StorageService
                 "name" => $this->dic->user()->getFullname()
             ]
         ]);
-        $this->file_change_repository->create($changeId, $new_file_id, $version, $changes,
+        $this->file_change_repository->create($new_file_id, $version, $changes,
             FileChangeRepository::DEFAULT_SERVER_VERSION, $path);
 
         // Create & Return FileVersion object
         $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
         $file = new File($new_file_id, $obj_id, $upload_result->getName(),$extension, $upload_result->getMimeType());
         return $file;
-    }
-
-    public function createNewFileFromTemplate(int $file_id, string $title, string $template) {
-        $parent_path = self::onlyOffice()->config()->getValue($template);
-        $extension = pathinfo($parent_path, PATHINFO_EXTENSION);
-        $file_uuid = new UUID();
-        $path = $this->file_system_service->copyTemplateAs($parent_path, $file_id, $file_uuid->asString(), $title, $extension);
-        $this->file_repository->create($file_uuid, $file_id, $title, $extension, "unknown"); //ToDo
-        $created_at = new ilDateTime(time(), IL_CAL_UNIX);
-        $this->file_version_repository->create($file_uuid, $this->dic->user()->getId(), $created_at, $path, FileVersion::FIRST_VERSION);
-        $changeId = $this->file_change_repository->getNextId();
-        $changes = json_encode([
-            "created" => rtrim($created_at->__toString(), '<br>'),
-            "user" => [
-                "id" => $this->dic->user()->getId(),
-                "name" => $this->dic->user()->getFullname()
-            ]
-        ]);
-        $this->file_change_repository->create($changeId, $file_uuid, FileVersion::FIRST_VERSION, $changes,
-            FileChangeRepository::DEFAULT_SERVER_VERSION, $path);
-
-
-
-
     }
 
     public function updateFileFromUpload(
@@ -150,8 +125,7 @@ class StorageService
         //Store Changes and Create Database Entry
         $change_path = $this->file_system_service->storeChanges($change_content, $file_id, $uuid->asString(), $version,
             $change_extension);
-        $id = $this->file_change_repository->getNextId(); // ToDo: Do this in a better way
-        $this->file_change_repository->create($id, $uuid, $version, $changes_object, $serverVersion,
+        $this->file_change_repository->create($uuid, $version, $changes_object, $serverVersion,
             $change_path);
 
         // Return FileVersion object
@@ -185,8 +159,7 @@ class StorageService
         $parent_changes = $this->file_change_repository->getAllChanges($parent_file->getUuid()->asString());
         foreach ($parent_changes as $changes) {
             $path = $this->file_system_service->storeChangeCopy($changes, $uuid->asString(), $child_id);
-            $changeId = $this->file_change_repository->getNextId();
-            $this->file_change_repository->create($changeId, $uuid, $changes->getVersion(),
+            $this->file_change_repository->create($uuid, $changes->getVersion(),
                 $changes->getChangesObjectString(), $changes->getServerVersion(), $path);
         }
 

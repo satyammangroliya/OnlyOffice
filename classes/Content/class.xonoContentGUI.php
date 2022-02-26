@@ -118,6 +118,9 @@ class xonoContentGUI extends xonoAbstractGUI
         $this->dic->ui()->mainTemplate()->setContent($content);
     }
 
+    /**
+     * Delivers a file version for download
+     */
     protected function downloadFileVersion()
     {
         $path = $_GET['path'];
@@ -125,15 +128,6 @@ class xonoContentGUI extends xonoAbstractGUI
         $mime_type = $_GET['mime'];
         ilFileDelivery::deliverFileAttached($path, $name, $mime_type);
         exit;
-    }
-
-    /**
-     * Get DIC interface
-     * @return DICInterface DIC interface
-     */
-    protected static final function dic() : DICInterface
-    {
-        return DICStatic::dic();
     }
 
     /**
@@ -150,11 +144,17 @@ class xonoContentGUI extends xonoAbstractGUI
         }
     }
 
+    /**
+     * generates and returns the target URL for the button
+     */
     protected function buttonTarget()
     {
         return $this->dic->ctrl()->getLinkTargetByClass(xonoEditorGUI::class, xonoEditorGUI::CMD_EDIT);
     }
 
+    /**
+     * generates and returns the URL that is used to download the file
+     */
     protected function getDownloadUrlArray(array $fileVersions, string $filename, string $extension) : array
     {
         $file = $this->storage_service->getFile($this->file_id);
@@ -171,6 +171,15 @@ class xonoContentGUI extends xonoAbstractGUI
             $result[$version] = '/' . $path;
         }
         return $result;
+    }
+
+    /**
+     * Get DIC interface
+     * @return DICInterface DIC interface
+     */
+    protected static final function dic() : DICInterface
+    {
+        return DICStatic::dic();
     }
 
 }
