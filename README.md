@@ -52,10 +52,15 @@ This is an OpenSource project by fluxlabs ag (https://fluxlabs.ch)
 
 This project is licensed under the GPL v3 License
 
-### ILIAS Plugin SLA
+# Contributing :purple_heart:
+Please ...
+1. ... register an account at https://git.fluxlabs.ch
+2. ... write us an email: support@fluxlabs.ch
+3. ... we give you access to the projects you like to contribute :fire:
 
-We love and live the philosophy of Open Source Software! Most of our developments, which we develop on behalf of customers or on our own account, are publicly available free of charge to all interested parties at https://github.com/fluxapps.
 
-Do you use one of our plugins professionally? Secure the timely availability of this plugin for the upcoming ILIAS versions via SLA. Please contact us at connect@fluxlabs.ch.
-
-Please note that we only guarantee support and release maintenance for institutions that sign a SLA.
+# Adjustment suggestions / bug reporting :feet:
+Please ...
+1. ... register an account at https://git.fluxlabs.ch
+2. ... ask us for a sla: support@fluxlabs.ch :kissing_heart:
+3. ... we will give you the access with the possibility to read and create issues or to discuss feature requests with us..
