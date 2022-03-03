@@ -11,7 +11,7 @@ RUN cd "$ILIAS_WEB_DIR" \
 # Plugin CertificateCron
 RUN mkdir -p "$ILIAS_WEB_DIR/Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice" \
     && cd "$ILIAS_WEB_DIR/Customizing/global/plugins/Services/Repository/RepositoryObject/OnlyOffice" \
-    && curl -SL "https://github.com/fluxapps/OnlyOffice/archive/refs/tags/releases/latest.tar.gz" \
+    && curl -SL "https://github.com/fluxapps/OnlyOffice/archive/refs/tags/v1.2.0.tar.gz" \
     | tar -xz --strip-components=1 \
 
 FROM docker-registry.fluxpublisher.ch/flux-ilias/nginx-base:latest AS nginx
