@@ -5,7 +5,7 @@ This plugin offers a way to connect an OnlyOffice document server to ILIAS. User
 
 ### Requirements
 
-* ILIAS 5.4.x / 6.x / 7.x
+* ILIAS 6.x / 7.x
 
 ### Install OnlyOffice 
 Install the desired edition of OnlyOffice Docs on your server. 
@@ -52,15 +52,13 @@ This is an OpenSource project by fluxlabs ag (https://fluxlabs.ch)
 
 This project is licensed under the GPL v3 License
 
-# Contributing :purple_heart:
+## Contributing :purple_heart:
 Please ...
 1. ... register an account at https://git.fluxlabs.ch
-2. ... write us an email: support@fluxlabs.ch
-3. ... we give you access to the projects you like to contribute :fire:
+2. ... create pull requests :fire:
 
-
-# Adjustment suggestions / bug reporting :feet:
+## Adjustment suggestions / bug reporting :feet:
 Please ...
 1. ... register an account at https://git.fluxlabs.ch
-2. ... ask us for a sla: support@fluxlabs.ch :kissing_heart:
-3. ... we will give you the access with the possibility to read and create issues or to discuss feature requests with us..
+2. ... ask us for a Service Level Agreement: support@fluxlabs.ch :kissing_heart:
+3. ... Read and create issues
