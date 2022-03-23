@@ -82,26 +82,30 @@ class StorageService
         $path = $this->file_system_service->storeUploadResult($upload_result, $obj_id, $new_file_id->asString());
         $extension = pathinfo($path, PATHINFO_EXTENSION);
         $this->file_repository->create($new_file_id, $obj_id, $upload_result->getName(), $extension, $upload_result->getMimeType());
-        $created_at = new ilDateTime(time(), IL_CAL_UNIX);
-        $version = $this->file_version_repository->create($new_file_id, $this->dic->user()->getId(), $created_at,
-            $path);
-
-        // Create DB Entry for FileChange
-        $changes = json_encode([
-            "created" => rtrim($created_at->__toString(), '<br>'),
-            "user" => [
-                "id" => $this->dic->user()->getId(),
-                "name" => $this->dic->user()->getFullname()
-            ]
-        ]);
-        $this->file_change_repository->create($new_file_id, $version, $changes,
-            FileChangeRepository::DEFAULT_SERVER_VERSION, $path);
+        list($created_at, $version) = $this->createNewFile($new_file_id, $path);
 
         // Create & Return FileVersion object
         $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
         $file = new File($new_file_id, $obj_id, $upload_result->getName(),$extension, $upload_result->getMimeType());
         return $file;
     }
+
+    public function createNewFileFromTemplate(string $path, int $obj_id) : File
+    {
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        // Create DB Entries for File & FileVersion
+        $new_file_id = new UUID();
+        $this->file_repository->create($new_file_id, $obj_id, basename($path), $extension, $this->dic->filesystem()->web()->getMimeType($path));
+        list($created_at, $version) = $this->createNewFile($new_file_id, $path);
+
+        // Create & Return FileVersion object
+        $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
+        $file = new File($new_file_id, $obj_id, basename($path), $extension, $this->dic->filesystem()->web()->getMimeType($path));
+        return $file;
+    }
+
+
 
     public function updateFileFromUpload(
         string $file_content,
@@ -232,5 +236,29 @@ class StorageService
         FileAR::truncateDB();
         FileVersionAR::truncateDB();
         FileChangeAR::truncateDB();
+    }
+
+    /**
+     * @param UUID $new_file_id
+     * @param string $path
+     * @return array
+     */
+    private function createNewFile(UUID $new_file_id, string $path): array
+    {
+        $created_at = new ilDateTime(time(), IL_CAL_UNIX);
+        $version = $this->file_version_repository->create($new_file_id, $this->dic->user()->getId(), $created_at,
+            $path);
+
+        // Create DB Entry for FileChange
+        $changes = json_encode([
+            "created" => rtrim($created_at->__toString(), '<br>'),
+            "user" => [
+                "id" => $this->dic->user()->getId(),
+                "name" => $this->dic->user()->getFullname()
+            ]
+        ]);
+        $this->file_change_repository->create($new_file_id, $version, $changes,
+            FileChangeRepository::DEFAULT_SERVER_VERSION, $path);
+        return array($created_at, $version);
     }
 }

@@ -49,6 +49,11 @@ settings_open_setting_download#:#Download the File
 settings_number_of_versions#:#Max. Number of Versions
 rep_robj_xono_perm_editFile#:#Edit File
 form_input_file#:#File
+form_input_upload_file#:#Upload a File
+form_input_create_file#:#Create a new File
+form_input_create_file_text#:#Text
+form_input_create_file_table#:#Table
+form_input_create_file_presentation#:#Presentation
 object_tab_info#:#Information
 xono_reload_info#:#Are you returning from ONLYOFFICE editor and cannot see your newly created file version?<br>Please wait 10s and press F5.
 create_title_info#:#If no title is specified, the title of the uploaded file is taken.
