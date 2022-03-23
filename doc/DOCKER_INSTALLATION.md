@@ -53,10 +53,23 @@ sudo git clone https://git.fluxlabs.ch/fluxlabs/ilias/plugins/RepositoryObjects/
 ```
 > You may want to change the permissions of the "ilias-www" folder using chmod if you are planning on editing the files inside.
 
-Now you can install, update & activate the OnlyOffice plugin in your ILIAS installation.
+Now we need to ssh into the running ilias container and make a change to .htaccess. First we need to find the container ID of the running ilias docker.
+
+```bash
+docker container ls
+```
+This will show us all containers. In the picture below, the container ID is 44635c082b62, because it's in front of an image ending with "ilias:latest".
+
+![adjust-jwt](docker-installation-pics/container-id.png)
 
 
-#### Configure ILIAS
+#### OnlyOffice-Plugin Configuration
+```bash
+cd ilias-www/
+sudo mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
+cd Customizing/global/plugins/Services/Repository/RepositoryObject
+sudo git clone https://git.fluxlabs.ch/fluxlabs/ilias/plugins/RepositoryObjects/OnlyOffice.git OnlyOffice
+```
 Start at your ILIAS root directory.
 Open .htaccess file. Add the following line:
 ``` code
