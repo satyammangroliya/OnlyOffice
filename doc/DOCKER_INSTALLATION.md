@@ -13,37 +13,45 @@ This simple guide will guide developers on the installation process of OnlyOffic
 OnlyOffice Docs is used to edit documents from a separate server. First, we need to set OnlyOffice Docs up on a separate docker installation and 
 later connect it to the plugin.
 
-Clone the repository into a folder of your choice and start it up.
+Clone the repository into a folder of your choice and start it up. Instructions were taken from [here](https://helpcenter.onlyoffice.com/installation/docs-community-docker-compose.aspx).
 ```bash
 git clone https://github.com/ONLYOFFICE/Docker-DocumentServer
 cd Docker-DocumentServer
-sudo docker-compose up -d
+sudo docker-compose up
 ```
 
 > You may get an error saying "address already in use". This is likely because your host machine already utilises the port 80 for ilias.
 > To fix this, edit the ports in docker-compose.yml of OnlyOffice Docs to 8180:80.
+>
 >![errorfix_docs](docker-installation-pics/errorfix_docs.png)
-> 
 
-Install the desired edition of OnlyOffice Docs on your server.
-Note that the free community edition allows only 20 simultaneous connections.
-Installation Guides can be found [here](https://helpcenter.onlyoffice.com/installation/docs-index.aspx)
-We recommend using docker-compose for installation as specifications can easily be set within the .yml file.
-We also recommend to set up HTTPS.
+OnlyOffice Docs is now running on your docker server. Let's make it more secure in the next step.
 
-#### Security Configuration in OnlyOffice
-(Note that this can only be done if you installed OnlyOffice docs using docker compose!)  
-Open your OnlyOffice's docker-compose.yml file.
-In onlyoffice-documentserver.environment section, uncomment all variables starting with "JWT".
-Set a safer password in JWT_SECRET variable.
+#### Security Configuration for OnlyOffice Docs
+Open your OnlyOffice Docs' docker-compose.yml file.
 
-### Install OnlyOffice-Plugin
-Start at your ILIAS root directory
+In the environment section, uncomment all variables starting with "JWT". Set a safer password for the JWT_SECRET variable.
+
+![adjust-jwt](docker-installation-pics/adjust-jwt.png)
+
+### Install Ilias & the OnlyOffice-Plugin
+Clone the OnlyOffice repository and run it:
 ```bash
 mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
 cd Customizing/global/plugins/Services/Repository/RepositoryObject
-git clone https://github.com/fluxapps/OnlyOffice.git OnlyOffice
+git clone https://git.fluxlabs.ch/fluxlabs/ilias/plugins/RepositoryObjects/OnlyOffice.git OnlyOffice
+sudo docker-compose up
 ```
+
+Once the docker is running, we need to clone the plugin first to get rid of all errors. From the previous steps, a new folder should appear called "ilias-www". Now do the following:
+
+```bash
+cd ilias-www/
+sudo mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
+cd Customizing/global/plugins/Services/Repository/RepositoryObject
+sudo git clone https://git.fluxlabs.ch/fluxlabs/ilias/plugins/RepositoryObjects/OnlyOffice.git OnlyOffice
+```
+> You may want to change the permissions of the "ilias-www" folder using chmod if you are planning on editing the files inside.
 
 Now you can install, update & activate the OnlyOffice plugin in your ILIAS installation.
 
