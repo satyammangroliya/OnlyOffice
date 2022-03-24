@@ -27,23 +27,26 @@ sudo docker-compose up
 
 OnlyOffice Docs is now running on your docker server. Let's make it more secure in the next step.
 
-#### Security Configuration for OnlyOffice Docs
+### Security Configuration for OnlyOffice Docs
 Open your OnlyOffice Docs' docker-compose.yml file.
 
-In the environment section, uncomment all variables starting with "JWT". Set a safer password for the JWT_SECRET variable.
+In the environment section, uncomment all variables starting with "JWT".
+
+Set a more secure password for the JWT_SECRET variable.
 
 ![adjust-jwt](docker-installation-pics/adjust-jwt.png)
 
+Save and exit the file.
+
 ### Install Ilias & the OnlyOffice-Plugin
-Clone the OnlyOffice repository and run it:
+Clone the OnlyOffice repository, switch directories and run the docker file in it:
 ```bash
-mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
-cd Customizing/global/plugins/Services/Repository/RepositoryObject
 git clone https://git.fluxlabs.ch/fluxlabs/ilias/plugins/RepositoryObjects/OnlyOffice.git OnlyOffice
+cd /OnlyOffice/docker/
 sudo docker-compose up
 ```
 
-Once the docker is running, we need to clone the plugin first to get rid of all errors. From the previous steps, a new folder should appear called "ilias-www". Now do the following:
+Once the docker is running, we need to clone the plugin first to get rid of all errors. From the previous steps, a new folder should have appeared called "ilias-www". Now do the following:
 
 ```bash
 cd ilias-www/
@@ -53,16 +56,36 @@ sudo git clone https://git.fluxlabs.ch/fluxlabs/ilias/plugins/RepositoryObjects/
 ```
 > You may want to change the permissions of the "ilias-www" folder using chmod if you are planning on editing the files inside.
 
-Now we need to ssh into the running ilias container and make a change to .htaccess. First we need to find the container ID of the running ilias docker.
+#### Obtaining the IP address of the docker containers
+
+First, display all the docker containers.
 
 ```bash
 docker container ls
 ```
-This will show us all containers. In the picture below, the container ID is 44635c082b62, because it's in front of an image ending with "ilias:latest".
+Here you need to locate the container IDs of your two docker containers: OnlyOffice Docs and Ilias.
 
-![adjust-jwt](docker-installation-pics/container-id.png)
+In the picture below, the container ID of OnlyOffice Docs is 990bc51a6d7d, because it's in front of an image ending with "onlyoffice-documentserver".
 
-Copy the Container ID and insert it into the following command (Replace CONTAINER_ID with the ID you just copied):
+>![container](docker-installation-pics/container.png)
+
+Similarly, the container ID of ilias is 0a98db0eee39, because it's in front of an image ending with "ilias:latest".
+
+Now, do the following command, where CONTAINER_ID is one of your container IDs.
+
+```bash
+docker container inspect CONTAINER_ID
+```
+
+Here, locate the "Gateway" variable and copy it into a separate text document. Do this for both container IDs.
+
+>![gateway](docker-installation-pics/gateway.png)
+
+#### Adjust .htaccess
+
+Now that we have the IPs, we need to ssh into the running ilias container and make a change to .htaccess. 
+
+Copy the Container ID of Ilias (Not OnlyOffice Docs!) and insert it into the following command (Replace CONTAINER_ID with the ID you just copied):
 
 ```bash
 docker exec -it CONTAINER_ID sh
@@ -76,32 +99,35 @@ ls -all
 
 You should be able to locate .htaccess inside your current directory.
 
+Next, evaluate what needs to be inserted. We need to evaluate the hypothetical value of DOCS_HTTP_WITH_PORT, which is the OnlyOffice Docs gateway (previous picture) with the prefix "http://" and the host port appended to it e.g. http://x.x.x.x:8180
+
+> The port may be different, consult the docker-compose.yml of OnlyOffice Docs, it's the highlighted value in the picture below.
+>
+> ![errorfix_docs](docker-installation-pics/errorfix_docs.png)
+
 Now, edit the .htaccess file with a text editor of your choice.
 
-Add the following line:
+Add the following line to the file (Where DOCS_HTTP_WITH_PORT is the previously evaluated http url. (Do not forget the "")
+
 ``` code
-Header set Access-Control-Allow-Origin "https://onlyoffic_docs.example"
+Header set Access-Control-Allow-Origin "DOCS_HTTP_WITH_PORT"
 ```
-Where "onlyoffice_docs.example" is the name of the server where OnlyOffice Docs is installed.
 
-
+Once the editing is done, save your changes.
 
 
 #### OnlyOffice-Plugin Configuration
-```bash
-cd ilias-www/
-sudo mkdir -p Customizing/global/plugins/Services/Repository/RepositoryObject
-cd Customizing/global/plugins/Services/Repository/RepositoryObject
-sudo git clone https://git.fluxlabs.ch/fluxlabs/ilias/plugins/RepositoryObjects/OnlyOffice.git OnlyOffice
-```
-Start at your ILIAS root directory.
-Open .htaccess file. Add the following line:
-``` code
-Header set Access-Control-Allow-Origin "https://onlyoffic_docs.example"
-```
-Where "onlyoffice_docs.example" is the name of the server where OnlyOffice Docs is installed.
-If you did not set up https, use "http://" instead.
 
-Next you must navigate to the plugin's configuration form.
-Enter the root URL of your OnlyOffice Docs installation.
-Enter the JWT-Secret which you specified in OnlyOffice's docker-compose.yml file.
+Before entering the URL to access ilias, ensure that you do NOT use localhost or http://127.0.0.1/ to access your ilias docker installation, as you will not be able to communicate with OnlyOffice Docs. OnlyOffice Docs returns its callbacks to the actual docker ip, which is the product of the Ilias gateway with the prefix "http://" and the host port appended to it e.g. http://x.x.x.x:9100 (ILIAS_HTTP_WITH_PORT). The port should be 9100 granted you haven't changed anything in the docker-compose.yml of Ilias.
+
+Access Ilias through DOCS_HTTP_WITH_PORT (e.g. http://x.x.x.x:9100).
+
+Switch to the plugin administration and install OnlyOffice if you haven't already. Open the plugin configuration of OnlyOffice.
+
+![pluginconfig](docker-installation-pics/pluginconfig.png)
+
+Insert DOCS_HTTP_WITH_PORT into the field "ONLYOFFICE root URL".
+
+Enter the JWT-Secret which you specified in OnlyOffice's docker-compose.yml file
+
+Save your changes.
