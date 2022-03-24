@@ -6,7 +6,7 @@ services:
     build:
       context: .
       target: 'nginx'
-    image: 'git.fluxlabs.ch:5000/ilias/plugin/OnlyOffice/nginx:latest'
+    image: 'git.fluxlabs.ch:5000/ilias/plugin/onlyoffice/nginx:latest'
     ports:
       - 9100:80
     volumes:
@@ -20,7 +20,7 @@ services:
     build:
       context: .
       target: 'ilias'
-    image: 'git.fluxlabs.ch:5000/ilias/plugin/OnlyOffice/ilias:latest'
+    image: 'git.fluxlabs.ch:5000/ilias/plugin/onlyoffice/ilias:latest'
     volumes:
       - iliasweb:/var/iliasweb
       - iliasdata:/var/iliasdata
@@ -53,7 +53,7 @@ services:
     build:
       context: .
       target: 'cron'
-    image: 'git.fluxlabs.ch:5000/ilias/plugin/OnlyOffice/cron:latest'
+    image: 'git.fluxlabs.ch:5000/ilias/plugin/onlyoffice/cron:latest'
     volumes:
       - iliasweb:/var/iliasweb
       - iliasdata:/var/iliasdata
@@ -68,7 +68,7 @@ services:
     build:
       context: .
       target: 'ilserver'
-    image: 'git.fluxlabs.ch:5000/ilias/plugin/OnlyOffice/ilserver:latest'
+    image: 'git.fluxlabs.ch:5000/ilias/plugin/onlyoffice/ilserver:latest'
     volumes:
       - iliasdata:/var/iliasdata
       - iliasweb:/var/www/html/data
