@@ -7,6 +7,10 @@ This plugin offers a way to connect an OnlyOffice document server to ILIAS. User
 
 * ILIAS 6.x / 7.x
 
+### Simple Docker Installation Guide for Developers
+
+A simple installation guide for developers using docker can be found [here](doc/DOCKER_INSTALLATION.md).
+
 ### Install OnlyOffice 
 Install the desired edition of OnlyOffice Docs on your server. 
 Note that the free community edition allows only 20 simultaneous connections.
