@@ -62,6 +62,30 @@ This will show us all containers. In the picture below, the container ID is 4463
 
 ![adjust-jwt](docker-installation-pics/container-id.png)
 
+Copy the Container ID and insert it into the following command (Replace CONTAINER_ID with the ID you just copied):
+
+```bash
+docker exec -it CONTAINER_ID sh
+```
+
+Now we need to locate and adjust the .htaccess file. Once executing the previous command, you should be inside /var/www/html. Search for .htaccess using:
+
+```bash
+ls -all
+```
+
+You should be able to locate .htaccess inside your current directory.
+
+Now, edit the .htaccess file with a text editor of your choice.
+
+Add the following line:
+``` code
+Header set Access-Control-Allow-Origin "https://onlyoffic_docs.example"
+```
+Where "onlyoffice_docs.example" is the name of the server where OnlyOffice Docs is installed.
+
+
+
 
 #### OnlyOffice-Plugin Configuration
 ```bash
