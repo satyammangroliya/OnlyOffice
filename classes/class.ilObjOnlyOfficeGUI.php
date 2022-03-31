@@ -4,6 +4,7 @@ use ILIAS\Filesystem\Exception\IOException;
 use ILIAS\FileUpload\Exception\IllegalStateException;
 use srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettingsFormGUI;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDbFileTemplateRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
@@ -70,6 +71,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         "table"    => "xlsx",
         "presentation"     => "pptx"
     ];
+
 
     /**
      * @var ilObjOnlyOffice
@@ -323,12 +325,15 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                 $a_new_object->update();
             }
         } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_CREATE) {
-            $template = $this->storage_service->createFileTemplate(
-                "",
+            $template = $this->storage_service->createFileDraft(
                 preg_replace( '/[^a-z0-9]+/', '-', strtolower( $_POST["title"])),
                 self::FILE_EXTENSIONS[$_POST[self::POST_VAR_FILE_CREATION_SETTING]]
             );
-            $this->storage_service->createNewFileFromTemplate($template, $a_new_object->getId());
+
+            $this->storage_service->createNewFileFromDraft(
+                $template,
+                $a_new_object->getId()
+            );
         }
 
         parent::afterSave($a_new_object);

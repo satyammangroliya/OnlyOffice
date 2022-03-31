@@ -2,6 +2,12 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\Plugins\OnlyOffice\StorageService\DTO\File;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDbFileTemplateRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
+use srag\Plugins\OnlyOffice\StorageService\StorageService;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
 
@@ -20,9 +26,17 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
     use OnlyOfficeTrait;
     const PLUGIN_CLASS_NAME = ilOnlyOfficePlugin::class;
     const CMD_CONFIGURE = "configure";
+    const CMD_TEMPLATES = "configureTemplates";
+    const CMD_CREATE_TEMPLATE = "createTemplate";
+    const CMD_EDIT_TEMPLATE = "editTemplate";
+    const CMD_SAVE_EDIT_TEMPLATE = "saveEditTemplate";
+    const CMD_DELETE_TEMPLATE = "deleteTemplate";
     const CMD_UPDATE_CONFIGURE = "updateConfigure";
+    const CMD_UPDATE_TEMPLATES = "updateTemplates";
     const LANG_MODULE = "config";
     const TAB_CONFIGURATION = "configuration";
+    const TAB_SUB_CONFIGURATION = "subConfiguration";
+    const TAB_SUB_TEMPLATES = "templates";
 
 
     /**
@@ -49,7 +63,13 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
 
                 switch ($cmd) {
                     case self::CMD_CONFIGURE:
+                    case self::CMD_TEMPLATES:
+                    case self::CMD_CREATE_TEMPLATE:
+                    case self::CMD_SAVE_EDIT_TEMPLATE:
+                    case self::CMD_EDIT_TEMPLATE:
+                    case self::CMD_DELETE_TEMPLATE:
                     case self::CMD_UPDATE_CONFIGURE:
+                    case self::CMD_UPDATE_TEMPLATES:
                         $this->{$cmd}();
                         break;
 
@@ -69,6 +89,12 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
         self::dic()->tabs()->addTab(self::TAB_CONFIGURATION, self::plugin()->translate("configuration", self::LANG_MODULE), self::dic()->ctrl()
             ->getLinkTargetByClass(self::class, self::CMD_CONFIGURE));
 
+        self::dic()->tabs()->addSubTab(self::TAB_SUB_CONFIGURATION, "--General--", self::dic()->ctrl()
+            ->getLinkTargetByClass(self::class, self::CMD_CONFIGURE));
+
+        self::dic()->tabs()->addSubTab(self::TAB_SUB_TEMPLATES, "--Templates--", self::dic()->ctrl()
+            ->getLinkTargetByClass(self::class, self::CMD_TEMPLATES));
+
         self::dic()->locator()->addItem(ilOnlyOfficePlugin::PLUGIN_NAME, self::dic()->ctrl()->getLinkTarget($this, self::CMD_CONFIGURE));
     }
 
@@ -79,10 +105,123 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
     protected function configure()/*: void*/
     {
         self::dic()->tabs()->activateTab(self::TAB_CONFIGURATION);
+        self::dic()->tabs()->activateSubTab(self::TAB_SUB_CONFIGURATION);
 
         $form = self::onlyOffice()->config()->factory()->newFormInstance($this);
 
         self::output()->output($form);
+    }
+
+
+    protected function configureTemplates()
+    {
+        self::dic()->tabs()->activateTab(self::TAB_CONFIGURATION);
+        self::dic()->tabs()->activateSubTab(self::TAB_SUB_TEMPLATES);
+
+        global $ilToolbar;
+
+        $ilToolbar->addButton(
+            "--Create New Template--",
+            self::dic()->ctrl()->getLinkTargetByClass(self::class, self::CMD_CREATE_TEMPLATE)
+        );
+
+        $tpl = self::plugin()->template("html/tpl.config_create_template.html");
+
+        $storage_service = new StorageService(
+            self::dic()->dic(),
+            new ilDBFileVersionRepository(),
+            new ilDBFileRepository(),
+            new ilDBFileChangeRepository()
+        );
+
+        $templates = $storage_service->fetchTemplates("word");
+
+        $tpl->setVariable('TITLE_HEADER', "--Title--");
+        $tpl->setVariable('DESCRIPTION_HEADER', "--Description--");
+        $tpl->setVariable('EXTENSION_HEADER', "--Extension--");
+        $tpl->setVariable('SETTINGS_HEADER', "--Settings--");
+
+        foreach ($templates as $template) {
+            $tpl->setCurrentBlock("entry");
+            $tpl->setVariable('TITLE', $template->getTitle());
+            $tpl->setVariable('DESCRIPTION', $template->getDescription());
+            $tpl->setVariable('EXTENSION', $template->getExtension());
+            $ctrlFormat = "%s&ootarget=%s&ooextension=%s";
+
+            $ilSelect = new ilAdvancedSelectionListGUI();
+            $ilSelect->setListTitle("--Options--");
+            $ilSelect->addItem(
+                "--Edit--",
+                "",
+                self::dic()->ctrl()->getLinkTargetByClass(
+                    self::class,
+                    sprintf($ctrlFormat, self::CMD_EDIT_TEMPLATE, urlencode($template->getTitle()), urlencode($template->getExtension()))
+                )
+            );
+            $ilSelect->addItem(
+                "--Delete--",
+                "",
+                self::dic()->ctrl()->getLinkTargetByClass(
+                    self::class,
+                    sprintf($ctrlFormat, self::CMD_DELETE_TEMPLATE, urlencode($template->getTitle()), urlencode($template->getExtension()))
+                )
+            );
+            $tpl->setVariable('SETTINGS', $ilSelect->getHTML());
+            $tpl->parseCurrentBlock();
+        }
+
+        $content = $tpl->get();
+        self::output()->output($content);
+    }
+
+
+    protected function createTemplate()
+    {
+        self::dic()->tabs()->activateTab(self::TAB_CONFIGURATION);
+        self::dic()->tabs()->activateSubTab(self::TAB_SUB_TEMPLATES);
+
+        $form = $this->initCreateTemplateForm()->getHTML();
+        self::output()->output($form);
+    }
+
+
+    protected function initCreateTemplateForm(bool $edit = false)
+    {
+        $form = new ilPropertyFormGUI();
+        $form->setTarget("_top");
+
+        if ($edit) {
+            $form->setFormAction(self::dic()->ctrl()->getLinkTargetByClass(
+                self::class,
+                self::CMD_SAVE_EDIT_TEMPLATE . "&prevTitle=" . urlencode($_GET["ootarget"]) . "&prevExtension=" . urlencode($_GET["ooextension"])
+            ));
+        } else {
+            $form->setFormAction(self::dic()->ctrl()->getLinkTargetByClass(self::class, self::CMD_UPDATE_TEMPLATES));
+        }
+
+        $form->setTitle("--Create New Template--");
+
+        // title
+        $ti = new ilTextInputGUI("--Title--", "title");
+        $ti->setSize(min(40, ilObject::TITLE_LENGTH));
+        $ti->setMaxLength(ilObject::TITLE_LENGTH);
+        $form->addItem($ti);
+
+        // description
+        $ta = new ilTextAreaInputGUI("--Description--", "desc");
+        $ta->setCols(40);
+        $ta->setRows(2);
+        $form->addItem($ta);
+
+        // file upload option
+        $file_input = new ilFileInputGUI("--File--", "file");
+        $file_input->setRequired(!$edit);
+        $form->addItem($file_input);
+
+        $form->addCommandButton("save", "--Save--");
+        $form->addCommandButton("cancel", "--Cancel--");
+
+        return $form;
     }
 
 
@@ -104,5 +243,117 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
         ilUtil::sendSuccess(self::plugin()->translate("configuration_saved", self::LANG_MODULE), true);
 
         self::dic()->ctrl()->redirect($this, self::CMD_CONFIGURE);
+    }
+
+
+    protected function updateTemplates()
+    {
+        $storage_service = new StorageService(
+            self::dic()->dic(),
+            new ilDBFileVersionRepository(),
+            new ilDBFileRepository(),
+            new ilDBFileChangeRepository()
+        );
+
+        self::dic()->upload()->process();
+        $results = self::dic()->upload()->getResults();
+        $result = end($results);
+
+        $storage_service->createFileTemplate($result, $_POST["title"], $_POST["desc"]);
+
+        ilUtil::sendSuccess(self::plugin()->translate("configuration_saved", self::LANG_MODULE), true);
+
+        self::dic()->ctrl()->redirect($this, self::CMD_TEMPLATES);
+    }
+
+
+    protected function editTemplate()
+    {
+        $storage_service = new StorageService(
+            self::dic()->dic(),
+            new ilDBFileVersionRepository(),
+            new ilDBFileRepository(),
+            new ilDBFileChangeRepository()
+        );
+
+        $target = $_GET["ootarget"];
+        $extension = $_GET["ooextension"];
+
+        $template = $storage_service->fetchTemplate($target, $extension);
+
+        if (!is_null($template)) {
+            $value_array = [
+                "title" => $template->getTitle(),
+                "desc" => $template->getDescription(),
+                "file" => $template->getPath()
+            ];
+
+            $form = $this->initCreateTemplateForm(true);
+            $form->setValuesByArray($value_array);
+            self::output()->output($form->getHTML());
+        }
+
+    }
+
+
+    protected function saveEditTemplate()
+    {
+        $storage_service = new StorageService(
+            self::dic()->dic(),
+            new ilDBFileVersionRepository(),
+            new ilDBFileRepository(),
+            new ilDBFileChangeRepository()
+        );
+
+        $target = $_POST["title"];
+        $description = $_POST["desc"];
+        $prevTitle = $_GET["prevTitle"];
+        $prevExtension = $_GET["prevExtension"];
+        $extension = $_POST["desc"];
+
+        $form = $this->initCreateTemplateForm(true);
+
+        if ($form->checkInput()) {
+            $uploaded_file = $_FILES["file"]["name"];
+
+            // If no file is uploaded, merely change title and description
+            if (empty($uploaded_file)) {
+                // Dont delete previous template
+                $storage_service->modifyFileTemplate($prevTitle, $prevExtension, $target, $description);
+            } else {
+                $success = $storage_service->deleteFileTemplate($target, $extension);
+
+                self::dic()->upload()->process();
+                $results = self::dic()->upload()->getResults();
+                $result = end($results);
+
+                $storage_service->createFileTemplate($result, $_POST["title"], $_POST["desc"]);
+            }
+
+            self::dic()->ctrl()->redirect($this, self::CMD_TEMPLATES);
+        }
+
+    }
+
+
+    protected function deleteTemplate()
+    {
+        $storage_service = new StorageService(
+            self::dic()->dic(),
+            new ilDBFileVersionRepository(),
+            new ilDBFileRepository(),
+            new ilDBFileChangeRepository()
+        );
+
+        $target = $_GET["ootarget"];
+        $extension = $_GET["ooextension"];
+
+        $success = $storage_service->deleteFileTemplate($target, $extension);
+
+        if ($success) {
+            ilUtil::sendSuccess(self::plugin()->translate("configuration_saved", self::LANG_MODULE), true);
+        }
+
+        self::dic()->ctrl()->redirect($this, self::CMD_TEMPLATES);
     }
 }

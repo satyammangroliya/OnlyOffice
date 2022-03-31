@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Ramsey\\Uuid\\BinaryUtils' => $vendorDir . '/ramsey/uuid/src/BinaryUtils.php',
     'Ramsey\\Uuid\\Builder\\DefaultUuidBuilder' => $vendorDir . '/ramsey/uuid/src/Builder/DefaultUuidBuilder.php',
     'Ramsey\\Uuid\\Builder\\DegradedUuidBuilder' => $vendorDir . '/ramsey/uuid/src/Builder/DegradedUuidBuilder.php',
@@ -146,6 +147,7 @@ return array(
     'srag\\Plugins\\OnlyOffice\\Repository' => $baseDir . '/src/Repository.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\File' => $baseDir . '/src/StorageService/DTO/File.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\FileChange' => $baseDir . '/src/StorageService/DTO/FileChange.php',
+    'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\FileTemplate' => $baseDir . '/src/StorageService/DTO/FileTemplate.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\FileVersion' => $baseDir . '/src/StorageService/DTO/FileVersion.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\FileSystem\\FileSystemService' => $baseDir . '/src/StorageService/FileSystem/FileSystemService.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\Infrastructure\\Common\\UUID' => $baseDir . '/src/StorageService/Infrastructure/Common/UUID.php',

@@ -72,6 +72,7 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Ramsey\\Uuid\\BinaryUtils' => __DIR__ . '/..' . '/ramsey/uuid/src/BinaryUtils.php',
         'Ramsey\\Uuid\\Builder\\DefaultUuidBuilder' => __DIR__ . '/..' . '/ramsey/uuid/src/Builder/DefaultUuidBuilder.php',
         'Ramsey\\Uuid\\Builder\\DegradedUuidBuilder' => __DIR__ . '/..' . '/ramsey/uuid/src/Builder/DegradedUuidBuilder.php',
@@ -212,6 +213,7 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
         'srag\\Plugins\\OnlyOffice\\Repository' => __DIR__ . '/../..' . '/src/Repository.php',
         'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\File' => __DIR__ . '/../..' . '/src/StorageService/DTO/File.php',
         'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\FileChange' => __DIR__ . '/../..' . '/src/StorageService/DTO/FileChange.php',
+        'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\FileTemplate' => __DIR__ . '/../..' . '/src/StorageService/DTO/FileTemplate.php',
         'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\FileVersion' => __DIR__ . '/../..' . '/src/StorageService/DTO/FileVersion.php',
         'srag\\Plugins\\OnlyOffice\\StorageService\\FileSystem\\FileSystemService' => __DIR__ . '/../..' . '/src/StorageService/FileSystem/FileSystemService.php',
         'srag\\Plugins\\OnlyOffice\\StorageService\\Infrastructure\\Common\\UUID' => __DIR__ . '/../..' . '/src/StorageService/Infrastructure/Common/UUID.php',

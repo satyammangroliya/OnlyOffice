@@ -8,10 +8,12 @@ use ILIAS\DI\Container;
 use ILIAS\Filesystem\Exception\IOException;
 use ILIAS\FileUpload\DTO\UploadResult;
 use srag\Plugins\OnlyOffice\StorageService\DTO\File;
+use srag\Plugins\OnlyOffice\StorageService\DTO\FileTemplate;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
 use srag\Plugins\OnlyOffice\StorageService\FileSystem\FileSystemService;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileTemplateRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileAR;
@@ -90,7 +92,7 @@ class StorageService
         return $file;
     }
 
-    public function createNewFileFromTemplate(string $path, int $obj_id) : File
+    public function createNewFileFromDraft(string $path, int $obj_id) : File
     {
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
@@ -137,10 +139,41 @@ class StorageService
         return $fileVersion;
     }
 
-    public function createFileTemplate(string $tmp_path, string $type, string $extension): string {
-        return $this->file_system_service->storeTemplate($tmp_path, $type, $extension);
+    public function createFileTemplate(UploadResult $upload_result, string $title, string $description): string {
+        $extension = pathinfo($upload_result->getName(), PATHINFO_EXTENSION);
+        $type = File::determineDocType($extension, false);
+        $path = $this->file_system_service->storeTemplate($upload_result, $type, $title, $description, $extension);
 
+        return $path;
+    }
 
+    public function deleteFileTemplate(string $target, string $extension) : bool {
+        $type = File::determineDocType($extension, false);
+        return $this->file_system_service->deleteTemplate($target, $extension, $type);
+    }
+
+    public function createFileDraft(string $name, string $extension): string {
+        return $this->file_system_service->storeDraft($name, $extension);
+    }
+
+    public function modifyFileTemplate(string $prevTitle, string $prevExtension, string $title, string $description) : bool {
+        $prevType = File::determineDocType($prevExtension, false);
+        return $this->file_system_service->modifyTemplate($prevType, $prevTitle, $prevExtension, $title, $description);
+    }
+
+    /**
+     * @param string $type
+     * @return FileTemplate[]
+     */
+    public function fetchTemplates(string $type) : array
+    {
+        return $this->file_system_service->fetchTemplates($type);
+    }
+
+    public function fetchTemplate(string $target, string $extension) : FileTemplate
+    {
+        $type = File::determineDocType($extension, false);
+        return $this->file_system_service->fetchTemplate($target, $extension, $type);
     }
 
     public function createClone(int $child_id, int $parent_id)
