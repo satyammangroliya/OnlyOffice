@@ -323,9 +323,11 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                 $a_new_object->update();
             }
         } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_CREATE) {
+            $sanitized_file_name = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $_POST["title"]);
+            $sanitized_file_name = mb_ereg_replace("([\.]{2,})", '', $sanitized_file_name);
             $template = $this->storage_service->createFileTemplate(
                 "",
-                preg_replace( '/[^a-z0-9]+/', '-', strtolower( $_POST["title"])),
+                $sanitized_file_name,
                 self::FILE_EXTENSIONS[$_POST[self::POST_VAR_FILE_CREATION_SETTING]]
             );
             $this->storage_service->createNewFileFromTemplate($template, $a_new_object->getId());
