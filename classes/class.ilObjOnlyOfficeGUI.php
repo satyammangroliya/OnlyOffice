@@ -57,10 +57,12 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
 
     const OPTION_SETTING_CREATE = "create_file";
     const OPTION_SETTING_UPLOAD = "upload_file";
+    const OPTION_SETTING_TEMPLATE = "template_file";
 
     const POST_VAR_FILE = 'upload_files';
     const POST_VAR_FILE_SETTING = 'file_setting';
     const POST_VAR_FILE_CREATION_SETTING = 'file_creation_setting';
+    const POST_VAR_FILE_TEMPLATE_SETTING = 'file_template_setting';
     const POST_VAR_OPEN_SETTING = 'open_setting';
     const POST_VAR_ONLINE = 'online';
     const POST_VAR_EDIT = 'allow_edit';
@@ -259,9 +261,35 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $file_creation_settings->addOption(new ilRadioOption(self::plugin()->translate('form_input_create_file_presentation'), "presentation"));
         $file_creation_settings->setRequired(true);
 
+
         $file_settings_create_option = new ilRadioOption(self::plugin()->translate('form_input_create_file'), self::OPTION_SETTING_CREATE);
         $file_settings_create_option->addSubItem($file_creation_settings);
         $file_settings->addOption($file_settings_create_option);
+
+        // file template option
+        $text_templates = $this->storage_service->fetchTemplates("text");
+        $table_templates = $this->storage_service->fetchTemplates("table");
+        $presentation_templates = $this->storage_service->fetchTemplates("presentation");
+        $templates = array_merge($text_templates, $table_templates, $presentation_templates);
+
+        $template_settings = new ilRadioGroupInputGUI("",
+            self::POST_VAR_FILE_TEMPLATE_SETTING);
+
+        foreach ($templates as $template) {
+            $type_translation = sprintf("form_template_%s", $template->getType());
+            $description = empty($template->getDescription()) ? "-" : $template->getDescription();
+            $option = new ilRadioOption(sprintf("%s%s", self::plugin()->translate($type_translation), $template->getTitle()), $template->getPath());
+            $option->setInfo(sprintf("%s: %s", self::plugin()->translate("settings_desc"), $description));
+            $template_settings->addOption($option);
+        }
+
+        $template_settings->setRequired(true);
+
+
+        $file_settings_template_option = new ilRadioOption(self::plugin()->translate('form_input_template'), self::OPTION_SETTING_TEMPLATE);
+        $file_settings_template_option->addSubItem($template_settings);
+        $file_settings->addOption($file_settings_template_option);
+
 
         $file_settings->setValue("ilias");
         $file_settings->setRequired(true);
@@ -325,13 +353,13 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                 $a_new_object->update();
             }
         } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_CREATE) {
-            $template = $this->storage_service->createFileDraft(
-                preg_replace( '/[^a-z0-9]+/', '-', strtolower( $_POST["title"])),
-                self::FILE_EXTENSIONS[$_POST[self::POST_VAR_FILE_CREATION_SETTING]]
-            );
-
             $this->storage_service->createNewFileFromDraft(
-                $template,
+                $_POST["title"],
+                $a_new_object->getId()
+            );
+        } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_TEMPLATE) {
+            $this->storage_service->createNewFileFromTemplate(
+                $_POST[self::POST_VAR_FILE_TEMPLATE_SETTING],
                 $a_new_object->getId()
             );
         }

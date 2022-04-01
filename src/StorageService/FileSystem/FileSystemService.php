@@ -128,6 +128,7 @@ class FileSystemService
 
             $template = new FileTemplate();
             $template->setTitle($title);
+            $template->setType($type);
             $template->setPath($full_path);
             $template->setExtension($extension);
 
@@ -168,6 +169,7 @@ class FileSystemService
 
                 $converted_file = new FileTemplate();
                 $converted_file->setTitle($title);
+                $converted_file->setType($type);
                 $converted_file->setPath($file);
                 $converted_file->setExtension($extension);
 
@@ -232,10 +234,11 @@ class FileSystemService
      * @param string $extension file extension
      * @throws IOException
      */
-    public function storeDraft(string $name, string $extension) : string
+    public function storeDraft(string $name, string $extension, int $obj_id, string $new_file_id) : string
     {
+        $path = $this->createAndGetPath($obj_id, $new_file_id);
+
         // Define path and create it if it does not exist
-        $path = self::BASE_PATH;
         if (!$this->dic->filesystem()->web()->hasDir($path)) {
             $this->dic->filesystem()->web()->createDir($path);
         }
@@ -251,6 +254,33 @@ class FileSystemService
         $this->dic->filesystem()->web()->writeStream($path, $stream);
         return $path;
 
+    }
+
+
+    /**
+     * Store a draft
+     * @param string $name  the preferred name
+     * @param string $extension file extension
+     * @throws IOException
+     */
+    public function createFileFromTemplate(string $template_path, int $obj_id, string $new_file_id) : string
+    {
+        $extension = pathinfo($template_path, PATHINFO_EXTENSION);
+        $name = pathinfo($template_path, PATHINFO_FILENAME);
+
+        $path = $this->createAndGetPath($obj_id, $new_file_id);
+
+        // Define path and create it if it does not exist
+        if (!$this->dic->filesystem()->web()->hasDir($path)) {
+            $this->dic->filesystem()->web()->createDir($path);
+        }
+
+        $file_name = $name . "." . $extension;
+        $path .= $file_name;
+
+        $this->dic->filesystem()->web()->copy($template_path, $path);
+
+        return $path;
     }
 
 

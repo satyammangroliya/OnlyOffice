@@ -7,6 +7,7 @@ use ilDateTimeException;
 use ILIAS\DI\Container;
 use ILIAS\Filesystem\Exception\IOException;
 use ILIAS\FileUpload\DTO\UploadResult;
+use ilObjOnlyOfficeGUI;
 use srag\Plugins\OnlyOffice\StorageService\DTO\File;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileTemplate;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
@@ -92,12 +93,23 @@ class StorageService
         return $file;
     }
 
-    public function createNewFileFromDraft(string $path, int $obj_id) : File
+    public function createNewFileFromDraft(string $title, int $obj_id) : File
     {
+        $sanitized_file_name = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $title);
+        $sanitized_file_name = mb_ereg_replace("([\.]{2,})", '', $sanitized_file_name);
+
+        $new_file_id = new UUID();
+        $path = $this->createFileDraft(
+            $sanitized_file_name,
+            ilObjOnlyOfficeGUI::FILE_EXTENSIONS[$_POST[ilObjOnlyOfficeGUI::POST_VAR_FILE_CREATION_SETTING]],
+            $obj_id,
+            $new_file_id->asString()
+        );
+
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
         // Create DB Entries for File & FileVersion
-        $new_file_id = new UUID();
+
         $this->file_repository->create($new_file_id, $obj_id, basename($path), $extension, $this->dic->filesystem()->web()->getMimeType($path));
         list($created_at, $version) = $this->createNewFile($new_file_id, $path);
 
@@ -107,7 +119,27 @@ class StorageService
         return $file;
     }
 
+    public function createNewFileFromTemplate(string $template_path, int $obj_id)
+    {
+        $new_file_id = new UUID();
+        $extension = pathinfo($template_path, PATHINFO_EXTENSION);
 
+        $path = $this->createFileFromTemplate(
+            $template_path,
+            $obj_id,
+            $new_file_id->asString()
+        );
+
+        // Create DB Entries for File & FileVersion
+
+        $this->file_repository->create($new_file_id, $obj_id, basename($path), $extension, $this->dic->filesystem()->web()->getMimeType($path));
+        list($created_at, $version) = $this->createNewFile($new_file_id, $path);
+
+        // Create & Return FileVersion object
+        $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
+        $file = new File($new_file_id, $obj_id, basename($path), $extension, $this->dic->filesystem()->web()->getMimeType($path));
+        return $file;
+    }
 
     public function updateFileFromUpload(
         string $file_content,
@@ -152,8 +184,12 @@ class StorageService
         return $this->file_system_service->deleteTemplate($target, $extension, $type);
     }
 
-    public function createFileDraft(string $name, string $extension): string {
-        return $this->file_system_service->storeDraft($name, $extension);
+    public function createFileDraft(string $name, string $extension, int $obj_id, string $new_file_id): string {
+        return $this->file_system_service->storeDraft($name, $extension, $obj_id, $new_file_id);
+    }
+
+    public function createFileFromTemplate(string $template_path, int $obj_id, string $new_file_id) {
+        return $this->file_system_service->createFileFromTemplate($template_path, $obj_id, $new_file_id);
     }
 
     public function modifyFileTemplate(string $prevTitle, string $prevExtension, string $title, string $description) : bool {
@@ -162,7 +198,7 @@ class StorageService
     }
 
     /**
-     * @param string $type
+     * @param string $type text, table or presentation
      * @return FileTemplate[]
      */
     public function fetchTemplates(string $type) : array

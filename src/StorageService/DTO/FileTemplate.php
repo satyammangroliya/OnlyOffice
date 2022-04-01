@@ -20,6 +20,10 @@ class FileTemplate
      * @var string
      */
     protected $path;
+    /**
+     * @var string
+     */
+    protected $type;
 
     /**
      * @return string
@@ -84,4 +88,21 @@ class FileTemplate
     {
         $this->path = $path;
     }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type)
+    {
+        $this->type = $type;
+    }
+
 }

@@ -58,7 +58,7 @@ class File
                 if ($formatForEditor) {
                     return "slide";
                 }
-                return "powerpoint";
+                return "presentation";
             case "xlsx":
             case "csv":
             case "fods":
@@ -72,7 +72,7 @@ class File
                 if ($formatForEditor) {
                     return "cell";
                 }
-                return "excel";
+                return "table";
             case "doc":
             case "docx":
             case "dotx":
@@ -93,7 +93,7 @@ class File
                 if ($formatForEditor) {
                     return "word";
                 }
-                return "word";
+                return "text";
             default:
                 return "";
         }

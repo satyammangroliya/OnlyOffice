@@ -134,7 +134,10 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
             new ilDBFileChangeRepository()
         );
 
-        $templates = $storage_service->fetchTemplates("word");
+        $text_templates = $storage_service->fetchTemplates("text");
+        $table_templates = $storage_service->fetchTemplates("table");
+        $presentation_templates = $storage_service->fetchTemplates("presentation");
+        $templates = array_merge($text_templates, $table_templates, $presentation_templates);
 
         $tpl->setVariable('TITLE_HEADER', "--Title--");
         $tpl->setVariable('DESCRIPTION_HEADER', "--Description--");
