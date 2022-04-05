@@ -69,6 +69,21 @@ xono_reload_info#:#Kehren Sie vom ONLYOFFICE editor zurück und können Ihre neu
 create_title_info#:#Falls kein Titel eingegeben wird, wird der Titel der Datei übernommen.
 config_number_of_versions#:#Max. Anzahl Versionen
 config_number_of_versions_info#:#Die Anzahl Versionen, die im Versionsverlauf geladen werden (default = 10).
+config_tab_general#:#Allgemein
+config_tab_templates#:#Vorlagen
+config_create_template#:#Neue Vorlage erstellen
+config_edit_template#:#Vorlage bearbeiten
+config_table_type#:#Typ
+config_table_title#:#Titel
+config_table_description#:#Beschreibung
+config_table_extension#:#Erweiterung
+config_table_settings#:#Einstellungen
+config_table_options#:#Optionen
+config_table_edit#:#Bearbeiten
+config_table_delete#:#Löschen
+config_template_saved#:#Vorlage gespeichert
+config_template_edited#:#Vorlage erfolgreich bearbeitet
+config_template_deleted#:#Vorlage erfolgreich gelöscht
 last_edit#:#Zuletzt bearbeitet
 -edit_settings-#:#Inhalt Bearbeiten
 -show_versions-#:#Versionen

@@ -62,6 +62,21 @@ object_tab_info#:#Information
 xono_reload_info#:#Are you returning from ONLYOFFICE editor and cannot see your newly created file version?<br>Please wait 10s and press F5.
 create_title_info#:#If no title is specified, the title of the uploaded file is taken.
 config_number_of_versions#:#Max. Number of Versions
+config_tab_general#:#General
+config_tab_templates#:#Templates
+config_create_template#:#Create New Template
+config_edit_template#:#Edit Template
+config_table_type#:#Type
+config_table_title#:#Title
+config_table_description#:#Description
+config_table_extension#:#Extension
+config_table_settings#:#Settings
+config_table_options#:#Options
+config_table_edit#:#Edit
+config_table_delete#:#Delete
+config_template_saved#:#Template saved
+config_template_edited#:#Template successfully edited
+config_template_deleted#:#Template successfully deleted
 number_of_versions_info#:#The number of versions loaded in the version history (default = 10).
 last_edit#:#Last edited
 edit_settings#:#Edit Content
