@@ -143,18 +143,20 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
         $presentation_templates = $this->storage_service->fetchTemplates("presentation");
         $templates = array_merge($text_templates, $table_templates, $presentation_templates);
 
-        $tpl->setVariable('TYPE_HEADER', self::plugin()->translate("table_type", self::LANG_MODULE));
-        $tpl->setVariable('TITLE_HEADER', self::plugin()->translate("table_title", self::LANG_MODULE));
-        $tpl->setVariable('DESCRIPTION_HEADER', self::plugin()->translate("table_description", self::LANG_MODULE));
-        $tpl->setVariable('EXTENSION_HEADER', self::plugin()->translate("table_extension", self::LANG_MODULE));
-        $tpl->setVariable('SETTINGS_HEADER', self::plugin()->translate("table_settings", self::LANG_MODULE));
+        if (count($templates) >= 1) {
+            $tpl->setVariable('TYPE_HEADER', self::plugin()->translate("table_type", self::LANG_MODULE));
+            $tpl->setVariable('TITLE_HEADER', self::plugin()->translate("table_title", self::LANG_MODULE));
+            $tpl->setVariable('DESCRIPTION_HEADER', self::plugin()->translate("table_description", self::LANG_MODULE));
+            $tpl->setVariable('EXTENSION_HEADER', self::plugin()->translate("table_extension", self::LANG_MODULE));
+            $tpl->setVariable('SETTINGS_HEADER', self::plugin()->translate("table_settings", self::LANG_MODULE));
+        }
 
         /** @var FileTemplate $template */
         foreach ($templates as $template) {
             $tpl->setCurrentBlock("entry");
             $tpl->setVariable('TITLE', $template->getTitle());
             $tpl->setVariable('TYPE', self::plugin()->translate("form_input_create_file_" . $template->getType()));
-            $tpl->setVariable('DESCRIPTION', $template->getDescription());
+            $tpl->setVariable('DESCRIPTION', empty($template->getDescription()) ? "-" : $template->getDescription());
             $tpl->setVariable('EXTENSION', $template->getExtension());
             $ctrlFormat = "%s&ootarget=%s&ooextension=%s";
 

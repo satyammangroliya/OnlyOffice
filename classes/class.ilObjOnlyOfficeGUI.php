@@ -288,7 +288,13 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
 
         $file_settings_template_option = new ilRadioOption(self::plugin()->translate('form_input_template'), self::OPTION_SETTING_TEMPLATE);
         $file_settings_template_option->addSubItem($template_settings);
-        $file_settings->addOption($file_settings_template_option);
+
+        if (count($templates) >= 1) {
+            $file_settings->addOption($file_settings_template_option);
+        } else {
+            $file_settings->setInfo(self::plugin()->translate('form_input_template_no_templates'));
+        }
+
 
 
         $file_settings->setValue("ilias");

@@ -58,6 +58,7 @@ form_template_table#:#<b>Table Template: </b>
 form_input_create_file_presentation#:#Presentation
 form_template_presentation#:#<b>Presentation Template: </b>
 form_input_template#:#Create from Template
+form_input_template_no_templates#:#Add a template in the plugin configuration to create a new file from a template.
 object_tab_info#:#Information
 xono_reload_info#:#Are you returning from ONLYOFFICE editor and cannot see your newly created file version?<br>Please wait 10s and press F5.
 create_title_info#:#If no title is specified, the title of the uploaded file is taken.

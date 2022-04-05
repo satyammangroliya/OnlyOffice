@@ -64,6 +64,7 @@ form_template_table#:#<b>Tabellenvorlage: </b>
 form_input_create_file_presentation#:#Präsentation
 form_template_presentation#:#<b>Präsentationsvorlage: </b>
 form_input_template#:#Aus Vorlage erstellen
+form_input_template_no_templates#:#Fügen Sie eine Vorlage in der Plugin-Konfiguration hinzu, um eine Datei aus einer Vorlage zu erstellen.
 object_tab_info#:#Info
 xono_reload_info#:#Kehren Sie vom ONLYOFFICE editor zurück und können Ihre neuste Version noch nicht sehen?<br>Bitte warten Sie 10s und drücken Sie dann F5.
 create_title_info#:#Falls kein Titel eingegeben wird, wird der Titel der Datei übernommen.
