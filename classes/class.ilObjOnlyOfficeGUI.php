@@ -275,6 +275,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
             ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS), self::POST_VAR_EDIT);
         $edit->setInfo(self::plugin()->translate('allow_edit_info',
             ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS));
+        $edit->setChecked(true);
         $form->addItem($edit);
 
         // Settings for opening a file
