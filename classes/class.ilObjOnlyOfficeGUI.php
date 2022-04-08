@@ -231,6 +231,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $ti->setMaxLength(ilObject::TITLE_LENGTH);
         $ti->setInfo(self::plugin()->translate("create_title_info"));
         $ti->setRequired(true);
+        $ti->setMaxLength(100);
         $form->addItem($ti);
 
         // description
