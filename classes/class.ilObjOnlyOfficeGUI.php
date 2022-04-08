@@ -7,6 +7,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepositor
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
+use srag\Plugins\OnlyOffice\Utils\FileSanitizer;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
 use srag\Plugins\OnlyOffice\InfoService\InfoService;
@@ -325,8 +326,8 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                 $a_new_object->update();
             }
         } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_CREATE) {
-            $sanitized_file_name = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $_POST["title"]);
-            $sanitized_file_name = mb_ereg_replace("([\.]{2,})", '', $sanitized_file_name);
+            $sanitized_file_name = FileSanitizer::sanitizeFileName($_POST["title"]);
+
             $template = $this->storage_service->createFileTemplate(
                 "",
                 $sanitized_file_name,
