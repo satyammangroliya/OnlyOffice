@@ -105,18 +105,6 @@ class ilObjOnlyOfficeListGUI extends ilObjectPluginListGUI
             new ilDBFileVersionRepository(), new ilDBFileRepository(), new ilDBFileChangeRepository());
         $file = $storage->getFile($this->obj_id);
         $last_version = $storage->getLatestVersion($file->getUuid());
-
-        /*
-        $file_versions = FileVersionAR::get();
-        foreach ($file_versions as $file_version) {
-
-            $file_version->getCreatedAt()->increment(-2, ilDateTime::HOUR);
-            die($file_version->getCreatedAt());
-        }
-        die(var_dump($file_versions));
-
-        */
-
         $props = [
             [
                 "alert" => false,
