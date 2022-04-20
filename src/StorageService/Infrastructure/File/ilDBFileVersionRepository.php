@@ -6,6 +6,7 @@ use arException;
 use ilDateTime;
 use ilDateTimeException;
 use ILIAS\DI\Container;
+use ilTimeZone;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 
@@ -39,7 +40,11 @@ class ilDBFileVersionRepository implements FileVersionRepository
             $file_version_AR->setVersion($version);
         }
         $file_version_AR->setUserId($user_id);
-        $file_version_AR->setCreatedAt($created_at);
+
+        $utc_time = $created_at->get(IL_CAL_DATETIME, 'Y-m-d H:i:s', ilTimeZone::UTC);
+        $utc_time_obj = new ilDateTime($utc_time, IL_CAL_DATETIME);
+
+        $file_version_AR->setCreatedAt($utc_time_obj);
         $file_version_AR->setUrl($url);
         $file_version_AR->create();
         return $file_version_AR->getVersion();

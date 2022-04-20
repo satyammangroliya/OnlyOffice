@@ -5,6 +5,7 @@ namespace srag\Plugins\OnlyOffice\StorageService\Infrastructure\File;
 use ActiveRecord;
 use ilDateTime;
 use ilDateTimeException;
+use ilTimeZone;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 
 /**
@@ -127,6 +128,7 @@ class FileVersionAR extends ActiveRecord
      */
     public function getCreatedAt() : ilDateTime
     {
+        $this->created_at->switchTimeZone(ilTimeZone::UTC);
         return $this->created_at;
     }
 
