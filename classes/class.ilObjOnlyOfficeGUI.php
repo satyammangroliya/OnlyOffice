@@ -7,6 +7,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepositor
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
+use srag\Plugins\OnlyOffice\Utils\FileSanitizer;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
 use srag\Plugins\OnlyOffice\InfoService\InfoService;
@@ -54,11 +55,22 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     const TAB_INFO = "info_short";
     const TAB_SHOW_CONTENTS = "show_contents";
 
+    const OPTION_SETTING_CREATE = "create_file";
+    const OPTION_SETTING_UPLOAD = "upload_file";
+
     const POST_VAR_FILE = 'upload_files';
+    const POST_VAR_FILE_SETTING = 'file_setting';
+    const POST_VAR_FILE_CREATION_SETTING = 'file_creation_setting';
     const POST_VAR_OPEN_SETTING = 'open_setting';
     const POST_VAR_ONLINE = 'online';
     const POST_VAR_EDIT = 'allow_edit';
     const POST_VAR_CREATE = 'createFrom';
+
+    const FILE_EXTENSIONS = [
+        "text"     => "docx",
+        "table"    => "xlsx",
+        "presentation"     => "pptx"
+    ];
 
     /**
      * @var ilObjOnlyOffice
@@ -218,6 +230,8 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $ti->setSize(min(40, ilObject::TITLE_LENGTH));
         $ti->setMaxLength(ilObject::TITLE_LENGTH);
         $ti->setInfo(self::plugin()->translate("create_title_info"));
+        $ti->setRequired(true);
+        $ti->setMaxLength(100);
         $form->addItem($ti);
 
         // description
@@ -227,9 +241,32 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $form->addItem($ta);
 
         // file
+        $file_settings = new ilRadioGroupInputGUI(self::plugin()->translate('form_input_file'),
+            self::POST_VAR_FILE_SETTING);
+
+        // file upload option
         $file_input = new ilFileInputGUI(self::plugin()->translate('form_input_file'), self::POST_VAR_FILE);
         $file_input->setRequired(true);
-        $form->addItem($file_input);
+
+        $file_settings_upload_option = new ilRadioOption(self::plugin()->translate('form_input_upload_file'), self::OPTION_SETTING_UPLOAD);
+        $file_settings_upload_option->addSubItem($file_input);
+        $file_settings->addOption($file_settings_upload_option);
+
+        // file create option
+        $file_creation_settings = new ilRadioGroupInputGUI("",
+            self::POST_VAR_FILE_CREATION_SETTING);
+        $file_creation_settings->addOption(new ilRadioOption(self::plugin()->translate('form_input_create_file_text'), "text"));
+        $file_creation_settings->addOption(new ilRadioOption(self::plugin()->translate('form_input_create_file_table'), "table"));
+        $file_creation_settings->addOption(new ilRadioOption(self::plugin()->translate('form_input_create_file_presentation'), "presentation"));
+        $file_creation_settings->setRequired(true);
+
+        $file_settings_create_option = new ilRadioOption(self::plugin()->translate('form_input_create_file'), self::OPTION_SETTING_CREATE);
+        $file_settings_create_option->addSubItem($file_creation_settings);
+        $file_settings->addOption($file_settings_create_option);
+
+        $file_settings->setValue("ilias");
+        $file_settings->setRequired(true);
+        $form->addItem($file_settings);
 
         // online checkbox
         $online = new ilCheckboxInputGUI(self::plugin()->translate('online', ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS),
@@ -241,6 +278,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
             ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS), self::POST_VAR_EDIT);
         $edit->setInfo(self::plugin()->translate('allow_edit_info',
             ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS));
+        $edit->setChecked(true);
         $form->addItem($edit);
 
         // Settings for opening a file
@@ -275,15 +313,30 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     {
         $form = $this->initCreateForm($a_new_object->getType());
         $form->checkInput();
-        self::dic()->upload()->process();
-        $results = self::dic()->upload()->getResults();
-        $result = end($results);
-        $this->storage_service->createNewFileFromUpload($result, $a_new_object->getId());
-        $title = $a_new_object->title;
-        if ($title == "") {
-            $a_new_object->title = explode(".", $result->getName())[0];
-            $a_new_object->update();
+
+        // Handle file upload, otherwise create new document
+        if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_UPLOAD) {
+            self::dic()->upload()->process();
+            $results = self::dic()->upload()->getResults();
+            $result = end($results);
+            $this->storage_service->createNewFileFromUpload($result, $a_new_object->getId());
+
+            $title = $a_new_object->title;
+            if ($title == "") {
+                $a_new_object->title = explode(".", $result->getName())[0];
+                $a_new_object->update();
+            }
+        } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_CREATE) {
+            $sanitized_file_name = FileSanitizer::sanitizeFileName($_POST["title"]);
+
+            $template = $this->storage_service->createFileTemplate(
+                "",
+                $sanitized_file_name,
+                self::FILE_EXTENSIONS[$_POST[self::POST_VAR_FILE_CREATION_SETTING]]
+            );
+            $this->storage_service->createNewFileFromTemplate($template, $a_new_object->getId());
         }
+
         parent::afterSave($a_new_object);
     }
 

@@ -96,6 +96,15 @@ class xonoContentGUI extends xonoAbstractGUI
         $ext = pathinfo($file->getTitle(), PATHINFO_EXTENSION);
         $fileName = rtrim($file->getTitle(), '.' . $ext);
         $json = json_encode($fileVersions);
+        // Insert properly converted datetime
+        $json_decoded = json_decode($json);
+        $i = 0;
+        foreach ($fileVersions as $fileVersion) {
+            $json_decoded[$i]->createdAt = $fileVersion->getCreatedAt()->get(IL_CAL_FKT_DATE, 'd.m.Y H:i', self::dic()->user()->getTimeZone());
+            $i++;
+        }
+        $json = json_encode($json_decoded);
+
         $url = $this->getDownloadUrlArray($fileVersions, $fileName, $ext);
 
         ilUtil::sendInfo($this->plugin->txt('xono_reload_info'));
