@@ -27,7 +27,7 @@ $decrypted = \srag\Plugins\OnlyOffice\CryptoService\JwtService::jwtDecode($encry
 //$DIC->logger()->root()->info($decrypted);
 $data = json_decode($decrypted, true);
 
-if ($data["status"] == 2 && !$data["notmodified"] || $data["status"] == 6) {
+if ($data["status"] == 2) {
     $DIC->logger()->root()->info("Save File");
     $uuid = $_GET['uuid'];
     $file_id = $_GET['file_id'];
