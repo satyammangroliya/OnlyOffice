@@ -70,4 +70,12 @@ foreach ($file_versions as $file_version) {
     $DIC->database()->manipulate(sprintf("UPDATE %s SET created_at = '%s' WHERE file_uuid = '%s'", $table_to_update, $new_date_time, $file_uuid));
 }
 ?>
+<#15>
+<?php
+global $DIC;
+$file_change_table = \srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeAR::TABLE_NAME;
+
+$DIC->database()->modifyTableColumn($file_change_table, 'changes_object_string',
+    array("type" => "clob"));
+?>
 

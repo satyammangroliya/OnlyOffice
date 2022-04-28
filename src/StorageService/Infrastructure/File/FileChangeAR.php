@@ -51,8 +51,7 @@ class FileChangeAR extends ActiveRecord
     /**
      * @var string
      * @con_has_field true
-     * @con_fieldtype text
-     * @con_length    1024
+     * @con_fieldtype clob
      */
     protected $changes_object_string;
     /**
