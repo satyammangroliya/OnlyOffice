@@ -284,13 +284,13 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         // Settings for opening a file
         $opening_setting = new ilRadioGroupInputGUI(self::plugin()->translate("form_open_setting"),
             self::POST_VAR_OPEN_SETTING);
-        $opening_setting->addOption(new ilRadioOption(self::plugin()->translate("open_setting_ilias",
-            self::LANG_MODULE_SETTINGS), "ilias"));
         $opening_setting->addOption(new ilRadioOption(self::plugin()->translate("open_setting_editor",
             self::LANG_MODULE_SETTINGS), "editor"));
+        $opening_setting->addOption(new ilRadioOption(self::plugin()->translate("open_setting_ilias",
+            self::LANG_MODULE_SETTINGS), "ilias"));
         $opening_setting->addOption(new ilRadioOption(self::plugin()->translate("open_setting_download",
             self::LANG_MODULE_SETTINGS), "download"));
-        $opening_setting->setValue("ilias");
+        $opening_setting->setValue("editor");
         $opening_setting->setRequired(true);
         $form->addItem($opening_setting);
 
