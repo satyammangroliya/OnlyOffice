@@ -10,8 +10,8 @@ xono_new#:#OnlyOffice anlegen
 xono_read#:#Lesen
 xono_visible#:#Sichtbar
 xono_write#:#Bearbeiten
-xono_edit_button#:#Datei bearbeiten
-xono_view_button#:#Datei anzeigen
+xono_edit_button#:#Aktuellste Version in OnlyOffice bearbeiten
+xono_view_button#:#Aktuellste Version in OnlyOffice anzeigen
 xono_back_button#:#Zurück zu ILIAS
 xono_version#:#Version
 xono_date#:#Datum
@@ -53,7 +53,7 @@ settings_open_setting_ilias#:#Versionsverlauf auf ILIAS anzeigen
 settings_open_setting_editor#:#Im ONLYOFFICE online Editor öffnen
 settings_open_setting_download#:#Datei herunterladen
 settings_number_of_versions#:#Max. Anzahl Versionen
-rep_robj_xono_perm_editFile#:#Datei bearbeiten
+rep_robj_xono_perm_editFile#:#Aktuellste Version in OnlyOffice bearbeiten
 form_input_file#:#Datei
 form_input_upload_file#:#Datei hochladen
 form_input_create_file#:#Neue Datei erstellen
@@ -61,12 +61,12 @@ form_input_create_file_text#:#Text
 form_input_create_file_table#:#Tabelle
 form_input_create_file_presentation#:#Präsentation
 object_tab_info#:#Info
-xono_reload_info#:#Kehren Sie vom ONLYOFFICE editor zurück und können Ihre neuste Version noch nicht sehen?<br>Bitte warten Sie 10s und drücken Sie dann F5.
+xono_reload_info#:#OnlyOffice legt eine neue Version an, sobald alle Personen das Dokument verlassen haben und 10 Sekunden verstrichen sind. Dann können Sie diese Seite neu laden und sehen die neue Version.
 create_title_info#:#Falls kein Titel eingegeben wird, wird der Titel der Datei übernommen.
 config_number_of_versions#:#Max. Anzahl Versionen
 config_number_of_versions_info#:#Die Anzahl Versionen, die im Versionsverlauf geladen werden (default = 10).
 last_edit#:#Zuletzt bearbeitet
 -edit_settings-#:#Inhalt Bearbeiten
 -show_versions-#:#Versionen
-settings_allow_edit#:#Benutzer dürfen bearbeiten
-settings_allow_edit_info#:#Alle Benutzer mit Leserecht dürfen die Datei auch bearbeiten
+settings_allow_edit#:#Mitglieder dürfen bearbeiten
+settings_allow_edit_info#:#Wenn diese Option aktiviert ist, dürfen auch Kurs-/Gruppenmitglieder die Datei bearbeiten. Ansonsten wird ihnen die Datei schreibgeschützt im OnlyOffice-Editor angezeigt.
