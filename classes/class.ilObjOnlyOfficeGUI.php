@@ -363,10 +363,9 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_CREATE) {
             $sanitized_file_name = FileSanitizer::sanitizeFileName($_POST["title"]);
 
-            $template = $this->storage_service->createFileTemplate(
-                "",
+            $template = $this->storage_service->createNewFileFromDraft(
                 $sanitized_file_name,
-                self::FILE_EXTENSIONS[$_POST[self::POST_VAR_FILE_CREATION_SETTING]]
+                $a_new_object->getId()
             );
         } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_TEMPLATE) {
             $this->storage_service->createNewFileFromTemplate(

@@ -95,12 +95,9 @@ class StorageService
 
     public function createNewFileFromDraft(string $title, int $obj_id) : File
     {
-        $sanitized_file_name = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $title);
-        $sanitized_file_name = mb_ereg_replace("([\.]{2,})", '', $sanitized_file_name);
-
         $new_file_id = new UUID();
         $path = $this->createFileDraft(
-            $sanitized_file_name,
+            $title,
             ilObjOnlyOfficeGUI::FILE_EXTENSIONS[$_POST[ilObjOnlyOfficeGUI::POST_VAR_FILE_CREATION_SETTING]],
             $obj_id,
             $new_file_id->asString()
