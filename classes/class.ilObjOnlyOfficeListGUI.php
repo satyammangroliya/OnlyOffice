@@ -1,5 +1,6 @@
 <?php
 
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionAR;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
@@ -115,7 +116,7 @@ class ilObjOnlyOfficeListGUI extends ilObjectPluginListGUI
                 "alert" => false,
                 "property" => self::plugin()->translate('last_edit'),
                 // ToDo: Evtl. Datumformat noch nach Kundenwunsch anpassen
-                "value" => $last_version->getCreatedAt()->get(IL_CAL_FKT_DATE, 'd.m.Y H:i'),
+                "value" => $last_version->getCreatedAt()->get(IL_CAL_FKT_DATE, 'd.m.Y H:i', self::dic()->user()->getTimeZone()),
                 'propertyNameVisible' => true
             ]
         ];

@@ -8,6 +8,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDbFileTemplateR
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
+use srag\Plugins\OnlyOffice\Utils\FileSanitizer;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
 use srag\Plugins\OnlyOffice\InfoService\InfoService;
@@ -73,7 +74,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         "table"    => "xlsx",
         "presentation"     => "pptx"
     ];
-
 
     /**
      * @var ilObjOnlyOffice
@@ -233,6 +233,8 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $ti->setSize(min(40, ilObject::TITLE_LENGTH));
         $ti->setMaxLength(ilObject::TITLE_LENGTH);
         $ti->setInfo(self::plugin()->translate("create_title_info"));
+        $ti->setRequired(true);
+        $ti->setMaxLength(100);
         $form->addItem($ti);
 
         // description
@@ -260,7 +262,6 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $file_creation_settings->addOption(new ilRadioOption(self::plugin()->translate('form_input_create_file_table'), "table"));
         $file_creation_settings->addOption(new ilRadioOption(self::plugin()->translate('form_input_create_file_presentation'), "presentation"));
         $file_creation_settings->setRequired(true);
-
 
         $file_settings_create_option = new ilRadioOption(self::plugin()->translate('form_input_create_file'), self::OPTION_SETTING_CREATE);
         $file_settings_create_option->addSubItem($file_creation_settings);
@@ -311,6 +312,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
             ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS), self::POST_VAR_EDIT);
         $edit->setInfo(self::plugin()->translate('allow_edit_info',
             ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS));
+        $edit->setChecked(true);
         $form->addItem($edit);
 
         // Settings for opening a file
@@ -359,9 +361,12 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
                 $a_new_object->update();
             }
         } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_CREATE) {
-            $this->storage_service->createNewFileFromDraft(
-                $_POST["title"],
-                $a_new_object->getId()
+            $sanitized_file_name = FileSanitizer::sanitizeFileName($_POST["title"]);
+
+            $template = $this->storage_service->createFileTemplate(
+                "",
+                $sanitized_file_name,
+                self::FILE_EXTENSIONS[$_POST[self::POST_VAR_FILE_CREATION_SETTING]]
             );
         } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_TEMPLATE) {
             $this->storage_service->createNewFileFromTemplate(
