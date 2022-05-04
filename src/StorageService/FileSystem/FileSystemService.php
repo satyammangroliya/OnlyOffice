@@ -263,7 +263,7 @@ class FileSystemService
      * @param string $extension file extension
      * @throws IOException
      */
-    public function createFileFromTemplate(string $template_path, int $obj_id, string $new_file_id) : string
+    public function createFileFromTemplate(string $new_title, string $template_path, int $obj_id, string $new_file_id) : string
     {
         $extension = pathinfo($template_path, PATHINFO_EXTENSION);
         $name = pathinfo($template_path, PATHINFO_FILENAME);
@@ -275,7 +275,7 @@ class FileSystemService
             $this->dic->filesystem()->web()->createDir($path);
         }
 
-        $file_name = $name . "." . $extension;
+        $file_name = $new_title . "." . $extension;
         $path .= $file_name;
 
         $this->dic->filesystem()->web()->copy($template_path, $path);

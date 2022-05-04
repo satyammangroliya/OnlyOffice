@@ -116,12 +116,13 @@ class StorageService
         return $file;
     }
 
-    public function createNewFileFromTemplate(string $template_path, int $obj_id)
+    public function createNewFileFromTemplate(string $title, string $template_path, int $obj_id)
     {
         $new_file_id = new UUID();
         $extension = pathinfo($template_path, PATHINFO_EXTENSION);
 
         $path = $this->createFileFromTemplate(
+            $title,
             $template_path,
             $obj_id,
             $new_file_id->asString()
@@ -185,8 +186,8 @@ class StorageService
         return $this->file_system_service->storeDraft($name, $extension, $obj_id, $new_file_id);
     }
 
-    public function createFileFromTemplate(string $template_path, int $obj_id, string $new_file_id) {
-        return $this->file_system_service->createFileFromTemplate($template_path, $obj_id, $new_file_id);
+    public function createFileFromTemplate(string $new_title, string $template_path, int $obj_id, string $new_file_id) {
+        return $this->file_system_service->createFileFromTemplate($new_title, $template_path, $obj_id, $new_file_id);
     }
 
     public function modifyFileTemplate(string $prevTitle, string $prevExtension, string $title, string $description) : bool {
