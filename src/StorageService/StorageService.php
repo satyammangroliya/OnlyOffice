@@ -172,6 +172,12 @@ class StorageService
     public function createFileTemplate(UploadResult $upload_result, string $title, string $description): string {
         $extension = pathinfo($upload_result->getName(), PATHINFO_EXTENSION);
         $type = File::determineDocType($extension, false);
+
+        // If file extension not supported/recongnized by OnlyOffice
+        if (empty($type)) {
+            return "";
+        }
+
         $path = $this->file_system_service->storeTemplate($upload_result, $type, $title, $description, $extension);
 
         return $path;

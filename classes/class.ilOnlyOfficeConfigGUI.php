@@ -2,7 +2,6 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\Plugins\OnlyOffice\StorageService\DTO\File;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileTemplate;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
@@ -263,6 +262,7 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
         $form = $this->initCreateTemplateForm();
 
         if (!$form->checkInput()) {
+            $form->setValuesByPost();
             self::output()->output($form);
             return;
         }
@@ -274,7 +274,23 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
         $results = self::dic()->upload()->getResults();
         $result = end($results);
 
-        $this->storage_service->createFileTemplate($result, $_POST["title"], $_POST["desc"]);
+        // Return if file extension not whitelisted by ILIAS instance
+        if (!ilFileUtils::hasValidExtension($result->getName())) {
+            ilUtil::sendFailure(self::plugin()->translate("template_invalid_extension", self::LANG_MODULE), true);
+            $form->setValuesByPost();
+            self::output()->output($form);
+            return;
+        }
+
+        $path = $this->storage_service->createFileTemplate($result, $_POST["title"], $_POST["desc"]);
+
+        // Return if file extension not recognized by OnlyOffice
+        if (empty($path)) {
+            ilUtil::sendFailure(self::plugin()->translate("template_unrecognised_extension", self::LANG_MODULE), true);
+            $form->setValuesByPost();
+            self::output()->output($form);
+            return;
+        }
 
         ilUtil::sendSuccess(self::plugin()->translate("template_saved", self::LANG_MODULE), true);
         self::dic()->ctrl()->redirect($this, self::CMD_TEMPLATES);
@@ -283,6 +299,9 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
 
     protected function editTemplate()
     {
+        self::dic()->tabs()->activateTab(self::TAB_CONFIGURATION);
+        self::dic()->tabs()->activateSubTab(self::TAB_SUB_TEMPLATES);
+
         $target = $_GET["ootarget"];
         $extension = $_GET["ooextension"];
 
@@ -309,31 +328,71 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
         $description = $_POST["desc"];
         $prevTitle = $_GET["prevTitle"];
         $prevExtension = $_GET["prevExtension"];
-        $extension = $_POST["desc"];
 
         $form = $this->initCreateTemplateForm(true);
 
-        if ($form->checkInput()) {
-            $uploaded_file = $_FILES["file"]["name"];
-
-            // If no file is uploaded, merely change title and description
-            if (empty($uploaded_file)) {
-                // Dont delete previous template
-                $this->storage_service->modifyFileTemplate($prevTitle, $prevExtension, $target, $description);
-            } else {
-                $success = $this->storage_service->deleteFileTemplate($target, $extension);
-
-                self::dic()->upload()->process();
-                $results = self::dic()->upload()->getResults();
-                $result = end($results);
-
-                $this->storage_service->createFileTemplate($result, $_POST["title"], $_POST["desc"]);
-            }
-
-            ilUtil::sendSuccess(self::plugin()->translate("template_edited", self::LANG_MODULE), true);
-            self::dic()->ctrl()->redirect($this, self::CMD_TEMPLATES);
+        if (!$form->checkInput()) {
+            $form->setValuesByPost();
+            self::output()->output($form);
+            return;
         }
 
+        $uploaded_file = $_FILES["file"]["name"];
+
+        // If no file is uploaded, merely change title and description
+        if (empty($uploaded_file)) {
+            // Dont delete previous template
+            $this->storage_service->modifyFileTemplate($prevTitle, $prevExtension, $target, $description);
+        } else {
+
+            self::dic()->upload()->process();
+            $results = self::dic()->upload()->getResults();
+            $result = end($results);
+
+            // Return if file extension not whitelisted by ILIAS instance
+            if (!ilFileUtils::hasValidExtension($result->getName())) {
+                // Fix bug where previous title and name don't get saved into the form action
+                $adjustedUrl = str_replace("prevTitle=", "prevTitle=" . urlencode($prevTitle), $form->getFormAction());
+                $adjustedUrl = str_replace("prevExtension=", "prevExtension=" . urlencode($prevExtension), $adjustedUrl);
+                $form->setFormAction($adjustedUrl);
+
+                ilUtil::sendFailure(self::plugin()->translate("template_invalid_extension", self::LANG_MODULE), true);
+                $template = $this->storage_service->fetchTemplate($prevTitle, $prevExtension);
+                $value_array = [
+                    "title" => $_POST["title"],
+                    "desc" => $_POST["desc"],
+                    "file" => $template->getPath()
+                ];
+                $form->setValuesByArray($value_array);
+                self::output()->output($form);
+                return;
+            }
+
+            // Return if file extension not recognized by OnlyOffice
+            if (empty($path)) {
+                // Fix bug where previous title and name don't get saved into the form action
+                $adjustedUrl = str_replace("prevTitle=", "prevTitle=" . urlencode($prevTitle), $form->getFormAction());
+                $adjustedUrl = str_replace("prevExtension=", "prevExtension=" . urlencode($prevExtension), $adjustedUrl);
+                $form->setFormAction($adjustedUrl);
+                
+                ilUtil::sendFailure(self::plugin()->translate("template_unrecognised_extension", self::LANG_MODULE), true);
+                $template = $this->storage_service->fetchTemplate($prevTitle, $prevExtension);
+                $value_array = [
+                    "title" => $_POST["title"],
+                    "desc" => $_POST["desc"],
+                    "file" => $template->getPath()
+                ];
+                $form->setValuesByArray($value_array);
+                self::output()->output($form);
+                return;
+            }
+
+            $success = $this->storage_service->deleteFileTemplate($target, $prevExtension);
+            $path = $this->storage_service->createFileTemplate($result, $_POST["title"], $_POST["desc"]);
+        }
+
+        ilUtil::sendSuccess(self::plugin()->translate("template_edited", self::LANG_MODULE), true);
+        self::dic()->ctrl()->redirect($this, self::CMD_TEMPLATES);
     }
 
 
