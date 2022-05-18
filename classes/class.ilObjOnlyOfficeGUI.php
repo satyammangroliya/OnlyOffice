@@ -279,8 +279,10 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         foreach ($templates as $template) {
             $type_translation = sprintf("form_template_%s", $template->getType());
             $description = empty($template->getDescription()) ? "-" : $template->getDescription();
-            $option = new ilRadioOption(sprintf("%s%s", self::plugin()->translate($type_translation), $template->getTitle()), $template->getPath());
-            $option->setInfo(sprintf("%s: %s", self::plugin()->translate("settings_desc"), $description));
+            $option = new ilRadioOption(sprintf("%s %s", $template->getTitle(), self::plugin()->translate($type_translation)), $template->getPath());
+            if (!empty($template->getDescription())) {
+                $option->setInfo($template->getDescription());
+            }
             $template_settings->addOption($option);
         }
 

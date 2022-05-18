@@ -52,11 +52,11 @@ form_input_file#:#File
 form_input_upload_file#:#Upload a File
 form_input_create_file#:#Create a new File
 form_input_create_file_text#:#Text
-form_template_text#:#<b>Text Template: </b>
+form_template_text#:#(Type: Text)
 form_input_create_file_table#:#Table
-form_template_table#:#<b>Table Template: </b>
+form_template_table#:#(Type: Table)
 form_input_create_file_presentation#:#Presentation
-form_template_presentation#:#<b>Presentation Template: </b>
+form_template_presentation#:#(Type: Presentation)
 form_input_template#:#Create from Template
 form_input_template_no_templates#:#Add a template in the plugin configuration to create a new file from a template.
 object_tab_info#:#Information

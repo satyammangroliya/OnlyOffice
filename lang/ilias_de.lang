@@ -58,11 +58,11 @@ form_input_file#:#Datei
 form_input_upload_file#:#Datei hochladen
 form_input_create_file#:#Neue Datei erstellen
 form_input_create_file_text#:#Text
-form_template_text#:#<b>Textvorlage: </b>
+form_template_text#:#(Typ: Text)
 form_input_create_file_table#:#Tabelle
-form_template_table#:#<b>Tabellenvorlage: </b>
+form_template_table#:#(Typ: Tabelle)
 form_input_create_file_presentation#:#Präsentation
-form_template_presentation#:#<b>Präsentationsvorlage: </b>
+form_template_presentation#:#(Typ: Präsentation)
 form_input_template#:#Aus Vorlage erstellen
 form_input_template_no_templates#:#Fügen Sie eine Vorlage in der Plugin-Konfiguration hinzu, um eine Datei aus einer Vorlage zu erstellen.
 object_tab_info#:#Info
