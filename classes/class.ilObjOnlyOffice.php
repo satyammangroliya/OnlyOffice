@@ -61,10 +61,10 @@ class ilObjOnlyOffice extends ilObjectPlugin
         $this->object_settings = new ObjectSettings();
         $this->object_settings->setObjId($this->id);
         $this->object_settings->setTitle($title);
-        $this->object_settings->setDescription($description);
-        $this->object_settings->setAllowEdit($allow_edit);
-        $this->object_settings->setOnline($online);
-        $this->object_settings->setOpen($open_settings);
+        $this->object_settings->setDescription(is_null($description) ? "" : $description);
+        $this->object_settings->setAllowEdit(is_null($allow_edit) ? false : $allow_edit);
+        $this->object_settings->setOnline(is_null($online) ? false : $online);
+        $this->object_settings->setOpen(is_null($open_settings) ? "" : $open_settings);
 
         self::onlyOffice()->objectSettings()->storeObjectSettings($this->object_settings);
     }
