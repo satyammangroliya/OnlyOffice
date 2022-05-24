@@ -128,6 +128,9 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     protected function storeValue(string $key, $value)/*: void*/
     {
         switch ($key) {
+            case "desc":
+                Items::setter($this->object, "description", $value);
+                break;
             default:
                 Items::setter($this->object, $key, $value);
                 break;
