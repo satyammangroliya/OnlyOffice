@@ -87,6 +87,7 @@ config_template_edited#:#Vorlage erfolgreich bearbeitet
 config_template_deleted#:#Vorlage erfolgreich gelöscht
 config_template_invalid_extension#:#Die Dateierweiterung der hochgeladenen Vorlage is ungültig. Bitte überprüfen Sie jeweils die Blacklist und Whitelist Ihrer ILIAS-Instanz.
 config_template_unrecognised_extension#:#Die Dateierweiterung der hochgeladenen Vorlage wird nicht von OnlyOffice unterstützt. Bitte benutzen Sie einen unterschiedlichen Dateityp.
+config_template_delete#:#Möchten Sie die folgende Vorlage wirklich löschen?
 last_edit#:#Zuletzt bearbeitet
 -edit_settings-#:#Inhalt Bearbeiten
 -show_versions-#:#Versionen

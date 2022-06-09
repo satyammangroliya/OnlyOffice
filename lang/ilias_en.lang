@@ -80,6 +80,7 @@ config_template_edited#:#Template successfully edited
 config_template_deleted#:#Template successfully deleted
 config_template_invalid_extension#:#The file extension of the uploaded template is invalid. Please consult the whitelist or blacklist of your ILIAS instance respectively.
 config_template_unrecognised_extension#:#The file extension of the uploaded template is not supported by OnlyOffice. Please use a different file type.
+config_template_delete#:#Do you really want to delete the following template?
 number_of_versions_info#:#The number of versions loaded in the version history (default = 10).
 last_edit#:#Last edited
 edit_settings#:#Edit Content

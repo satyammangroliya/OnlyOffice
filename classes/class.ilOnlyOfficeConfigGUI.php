@@ -33,6 +33,7 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
     const CMD_DELETE_TEMPLATE = "deleteTemplate";
     const CMD_UPDATE_CONFIGURE = "updateConfigure";
     const CMD_UPDATE_TEMPLATES = "updateTemplates";
+    const CMD_CONFIRM_DELETE = "confirmDelete";
     const LANG_MODULE = "config";
     const TAB_CONFIGURATION = "configuration";
     const TAB_SUB_CONFIGURATION = "subConfiguration";
@@ -80,6 +81,10 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
                     case self::CMD_DELETE_TEMPLATE:
                     case self::CMD_UPDATE_CONFIGURE:
                     case self::CMD_UPDATE_TEMPLATES:
+                    case self::CMD_CONFIRM_DELETE:
+                        if (!ilObjOnlyOfficeAccess::hasWriteAccess()) {
+                            ilObjOnlyOfficeAccess::redirectNonAccess($this);
+                        }
                         $this->{$cmd}();
                         break;
 
@@ -174,7 +179,7 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
                 "",
                 self::dic()->ctrl()->getLinkTargetByClass(
                     self::class,
-                    sprintf($ctrlFormat, self::CMD_DELETE_TEMPLATE, urlencode($template->getTitle()), urlencode($template->getExtension()))
+                    sprintf($ctrlFormat, self::CMD_CONFIRM_DELETE, urlencode($template->getTitle()), urlencode($template->getExtension()))
                 )
             );
             $tpl->setVariable('SETTINGS', $ilSelect->getHTML());
@@ -200,17 +205,9 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
     {
         $form = new ilPropertyFormGUI();
         $form->setTarget("_top");
+        $form->setFormAction(self::dic()->ctrl()->getFormAction($this));
 
-        if ($edit) {
-            $form->setTitle(self::plugin()->translate("edit_template", self::LANG_MODULE));
-            $form->setFormAction(self::dic()->ctrl()->getLinkTargetByClass(
-                self::class,
-                self::CMD_SAVE_EDIT_TEMPLATE . "&prevTitle=" . urlencode($_GET["ootarget"]) . "&prevExtension=" . urlencode($_GET["ooextension"])
-            ));
-        } else {
-            $form->setTitle(self::plugin()->translate("create_template", self::LANG_MODULE));
-            $form->setFormAction(self::dic()->ctrl()->getLinkTargetByClass(self::class, self::CMD_UPDATE_TEMPLATES));
-        }
+
 
         // title
         $ti = new ilTextInputGUI(self::plugin()->translate("table_title", self::LANG_MODULE), "title");
@@ -229,8 +226,19 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
         $file_input->setRequired(!$edit);
         $form->addItem($file_input);
 
-        $form->addCommandButton("save", self::plugin()->translate("settings_save"));
-        $form->addCommandButton("cancel", self::plugin()->translate("settings_cancel"));
+        if ($edit) {
+            $form->setTitle(self::plugin()->translate("edit_template", self::LANG_MODULE));
+            $target = self::dic()->ctrl()->getLinkTargetByClass(
+                self::class,
+                self::CMD_SAVE_EDIT_TEMPLATE . "&prevTitle=" . urlencode($_GET["ootarget"]) . "&prevExtension=" . urlencode($_GET["ooextension"])
+            );
+            $form->addCommandButton($target, self::plugin()->translate("settings_save"));
+        } else {
+            $form->setTitle(self::plugin()->translate("create_template", self::LANG_MODULE));
+            $form->addCommandButton(self::CMD_UPDATE_TEMPLATES, self::plugin()->translate("settings_save"));
+        }
+
+        $form->addCommandButton(self::CMD_TEMPLATES, self::plugin()->translate("settings_cancel"));
 
         return $form;
     }
@@ -393,6 +401,24 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
 
         ilUtil::sendSuccess(self::plugin()->translate("template_edited", self::LANG_MODULE), true);
         self::dic()->ctrl()->redirect($this, self::CMD_TEMPLATES);
+    }
+
+
+    public function confirmDelete()
+    {
+        self::dic()->ctrl()->saveParameter($this, "ootarget");
+        self::dic()->ctrl()->saveParameter($this, "ooextension");
+
+        $conf = new ilConfirmationGUI();
+        $conf->setFormAction(self::dic()->ctrl()->getFormAction($this));
+        $conf->setHeaderText(self::plugin()->translate('config_template_delete'));
+
+        $conf->addItem('tableview', 1, $_GET["ootarget"]);
+
+        $conf->setConfirm(self::dic()->language()->txt('delete'), self::CMD_DELETE_TEMPLATE);
+        $conf->setCancel(self::dic()->language()->txt('cancel'), self::CMD_TEMPLATES);
+
+        self::output()->output($conf->getHTML());
     }
 
 
