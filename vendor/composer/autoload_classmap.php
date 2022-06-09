@@ -147,6 +147,7 @@ return array(
     'srag\\Plugins\\OnlyOffice\\Repository' => $baseDir . '/src/Repository.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\File' => $baseDir . '/src/StorageService/DTO/File.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\FileChange' => $baseDir . '/src/StorageService/DTO/FileChange.php',
+    'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\FileTemplate' => $baseDir . '/src/StorageService/DTO/FileTemplate.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\DTO\\FileVersion' => $baseDir . '/src/StorageService/DTO/FileVersion.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\FileSystem\\FileSystemService' => $baseDir . '/src/StorageService/FileSystem/FileSystemService.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\Infrastructure\\Common\\UUID' => $baseDir . '/src/StorageService/Infrastructure/Common/UUID.php',

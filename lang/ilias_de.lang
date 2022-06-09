@@ -58,13 +58,36 @@ form_input_file#:#Datei
 form_input_upload_file#:#Datei hochladen
 form_input_create_file#:#Neue Datei erstellen
 form_input_create_file_text#:#Text
+form_template_text#:#(Typ: Text)
 form_input_create_file_table#:#Tabelle
+form_template_table#:#(Typ: Tabelle)
 form_input_create_file_presentation#:#Präsentation
+form_template_presentation#:#(Typ: Präsentation)
+form_input_template#:#Aus Vorlage erstellen
+form_input_template_no_templates#:#Fügen Sie eine Vorlage in der Plugin-Konfiguration hinzu, um eine Datei aus einer Vorlage zu erstellen.
 object_tab_info#:#Info
 xono_reload_info#:#OnlyOffice legt eine neue Version an, sobald alle Personen das Dokument verlassen haben und 10 Sekunden verstrichen sind. Dann können Sie diese Seite neu laden und sehen die neue Version.
 create_title_info#:#Falls kein Titel eingegeben wird, wird der Titel der Datei übernommen.
 config_number_of_versions#:#Max. Anzahl Versionen
 config_number_of_versions_info#:#Die Anzahl Versionen, die im Versionsverlauf geladen werden (default = 10).
+config_tab_general#:#Allgemein
+config_tab_templates#:#Vorlagen
+config_create_template#:#Neue Vorlage erstellen
+config_edit_template#:#Vorlage bearbeiten
+config_table_type#:#Typ
+config_table_title#:#Titel
+config_table_description#:#Beschreibung
+config_table_extension#:#Erweiterung
+config_table_settings#:#Einstellungen
+config_table_options#:#Optionen
+config_table_edit#:#Bearbeiten
+config_table_delete#:#Löschen
+config_template_saved#:#Vorlage gespeichert
+config_template_edited#:#Vorlage erfolgreich bearbeitet
+config_template_deleted#:#Vorlage erfolgreich gelöscht
+config_template_invalid_extension#:#Die Dateierweiterung der hochgeladenen Vorlage is ungültig. Bitte überprüfen Sie jeweils die Blacklist und Whitelist Ihrer ILIAS-Instanz.
+config_template_unrecognised_extension#:#Die Dateierweiterung der hochgeladenen Vorlage wird nicht von OnlyOffice unterstützt. Bitte benutzen Sie einen unterschiedlichen Dateityp.
+config_template_delete#:#Möchten Sie die folgende Vorlage wirklich löschen?
 last_edit#:#Zuletzt bearbeitet
 -edit_settings-#:#Inhalt Bearbeiten
 -show_versions-#:#Versionen

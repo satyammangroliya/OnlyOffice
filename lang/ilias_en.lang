@@ -52,12 +52,35 @@ form_input_file#:#File
 form_input_upload_file#:#Upload a File
 form_input_create_file#:#Create a new File
 form_input_create_file_text#:#Text
+form_template_text#:#(Type: Text)
 form_input_create_file_table#:#Table
+form_template_table#:#(Type: Table)
 form_input_create_file_presentation#:#Presentation
+form_template_presentation#:#(Type: Presentation)
+form_input_template#:#Create from Template
+form_input_template_no_templates#:#Add a template in the plugin configuration to create a new file from a template.
 object_tab_info#:#Information
 xono_reload_info#:#Are you returning from ONLYOFFICE editor and cannot see your newly created file version?<br>Please wait 10s and press F5.
 create_title_info#:#If no title is specified, the title of the uploaded file is taken.
 config_number_of_versions#:#Max. Number of Versions
+config_tab_general#:#General
+config_tab_templates#:#Templates
+config_create_template#:#Create New Template
+config_edit_template#:#Edit Template
+config_table_type#:#Type
+config_table_title#:#Title
+config_table_description#:#Description
+config_table_extension#:#Extension
+config_table_settings#:#Settings
+config_table_options#:#Options
+config_table_edit#:#Edit
+config_table_delete#:#Delete
+config_template_saved#:#Template saved
+config_template_edited#:#Template successfully edited
+config_template_deleted#:#Template successfully deleted
+config_template_invalid_extension#:#The file extension of the uploaded template is invalid. Please consult the whitelist or blacklist of your ILIAS instance respectively.
+config_template_unrecognised_extension#:#The file extension of the uploaded template is not supported by OnlyOffice. Please use a different file type.
+config_template_delete#:#Do you really want to delete the following template?
 number_of_versions_info#:#The number of versions loaded in the version history (default = 10).
 last_edit#:#Last edited
 edit_settings#:#Edit Content

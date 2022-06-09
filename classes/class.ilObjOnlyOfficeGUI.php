@@ -4,6 +4,7 @@ use ILIAS\Filesystem\Exception\IOException;
 use ILIAS\FileUpload\Exception\IllegalStateException;
 use srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettingsFormGUI;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDbFileTemplateRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
@@ -57,10 +58,12 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
 
     const OPTION_SETTING_CREATE = "create_file";
     const OPTION_SETTING_UPLOAD = "upload_file";
+    const OPTION_SETTING_TEMPLATE = "template_file";
 
     const POST_VAR_FILE = 'upload_files';
     const POST_VAR_FILE_SETTING = 'file_setting';
     const POST_VAR_FILE_CREATION_SETTING = 'file_creation_setting';
+    const POST_VAR_FILE_TEMPLATE_SETTING = 'file_template_setting';
     const POST_VAR_OPEN_SETTING = 'open_setting';
     const POST_VAR_ONLINE = 'online';
     const POST_VAR_EDIT = 'allow_edit';
@@ -264,6 +267,39 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $file_settings_create_option->addSubItem($file_creation_settings);
         $file_settings->addOption($file_settings_create_option);
 
+        // file template option
+        $text_templates = $this->storage_service->fetchTemplates("text");
+        $table_templates = $this->storage_service->fetchTemplates("table");
+        $presentation_templates = $this->storage_service->fetchTemplates("presentation");
+        $templates = array_merge($text_templates, $table_templates, $presentation_templates);
+
+        $template_settings = new ilRadioGroupInputGUI("",
+            self::POST_VAR_FILE_TEMPLATE_SETTING);
+
+        foreach ($templates as $template) {
+            $type_translation = sprintf("form_template_%s", $template->getType());
+            $description = empty($template->getDescription()) ? "-" : $template->getDescription();
+            $option = new ilRadioOption(sprintf("%s %s", $template->getTitle(), self::plugin()->translate($type_translation)), $template->getPath());
+            if (!empty($template->getDescription())) {
+                $option->setInfo($template->getDescription());
+            }
+            $template_settings->addOption($option);
+        }
+
+        $template_settings->setRequired(true);
+
+
+        $file_settings_template_option = new ilRadioOption(self::plugin()->translate('form_input_template'), self::OPTION_SETTING_TEMPLATE);
+        $file_settings_template_option->addSubItem($template_settings);
+
+        if (count($templates) >= 1) {
+            $file_settings->addOption($file_settings_template_option);
+        } else {
+            $file_settings->setInfo(self::plugin()->translate('form_input_template_no_templates'));
+        }
+
+
+
         $file_settings->setValue("ilias");
         $file_settings->setRequired(true);
         $form->addItem($file_settings);
@@ -329,12 +365,18 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_CREATE) {
             $sanitized_file_name = FileSanitizer::sanitizeFileName($_POST["title"]);
 
-            $template = $this->storage_service->createFileTemplate(
-                "",
+            $template = $this->storage_service->createNewFileFromDraft(
                 $sanitized_file_name,
-                self::FILE_EXTENSIONS[$_POST[self::POST_VAR_FILE_CREATION_SETTING]]
+                $a_new_object->getId()
             );
-            $this->storage_service->createNewFileFromTemplate($template, $a_new_object->getId());
+        } else if ($_POST[self::POST_VAR_FILE_SETTING] === self::OPTION_SETTING_TEMPLATE) {
+            $sanitized_file_name = FileSanitizer::sanitizeFileName($_POST["title"]);
+
+            $this->storage_service->createNewFileFromTemplate(
+                $sanitized_file_name,
+                $_POST[self::POST_VAR_FILE_TEMPLATE_SETTING],
+                $a_new_object->getId()
+            );
         }
 
         parent::afterSave($a_new_object);
