@@ -205,9 +205,7 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
     {
         $form = new ilPropertyFormGUI();
         $form->setTarget("_top");
-        $form->setFormAction(self::dic()->ctrl()->getFormAction($this));
-
-
+        $form->setFormAction(self::dic()->ctrl()->getFormAction($this) . "&prevTitle=" . urlencode($_GET["ootarget"]) . "&prevExtension=" . urlencode($_GET["ooextension"]));
 
         // title
         $ti = new ilTextInputGUI(self::plugin()->translate("table_title", self::LANG_MODULE), "title");
@@ -228,11 +226,7 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
 
         if ($edit) {
             $form->setTitle(self::plugin()->translate("edit_template", self::LANG_MODULE));
-            $target = self::dic()->ctrl()->getLinkTargetByClass(
-                self::class,
-                self::CMD_SAVE_EDIT_TEMPLATE . "&prevTitle=" . urlencode($_GET["ootarget"]) . "&prevExtension=" . urlencode($_GET["ooextension"])
-            );
-            $form->addCommandButton($target, self::plugin()->translate("settings_save"));
+            $form->addCommandButton(self::CMD_SAVE_EDIT_TEMPLATE, self::plugin()->translate("settings_save"));
         } else {
             $form->setTitle(self::plugin()->translate("create_template", self::LANG_MODULE));
             $form->addCommandButton(self::CMD_UPDATE_TEMPLATES, self::plugin()->translate("settings_save"));
