@@ -126,7 +126,7 @@ class xonoEditorGUI extends xonoAbstractGUI
         $extension = pathinfo($fileVersion->getUrl(), PATHINFO_EXTENSION);
 
         // general config
-        $as_array['documentType'] = $this->determineDocType($extension);
+        $as_array['documentType'] = File::determineDocType($extension);
 
         // document config
         $document = array(); // SubArray "document"
@@ -249,42 +249,6 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     }
 
-    /**
-     * Determines the doc type (word, cell, or slide) based on the file extension
-     * @param string $extension
-     * @return string
-     */
-    protected function determineDocType(string $extension) : string
-    {
-        switch ($extension) {
-            case "pptx":
-            case "fodp":
-            case "odp":
-            case "otp":
-            case "pot":
-            case "potm":
-            case "potx":
-            case "pps":
-            case "ppsm":
-            case "ppsx":
-            case "ppt":
-            case "pptm":
-                return "slide";
-            case "xlsx":
-            case "csv":
-            case "fods":
-            case "ods":
-            case "ots":
-            case "xls":
-            case "xlsm":
-            case "xlt":
-            case "xltm":
-            case "xltx":
-                return "cell";
-            default:
-                return "word";
-        }
-    }
 
     /**
      * generates the callback URL for the only office document server

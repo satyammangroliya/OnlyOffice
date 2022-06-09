@@ -3,9 +3,11 @@
 namespace srag\Plugins\OnlyOffice\StorageService\FileSystem;
 
 use ILIAS\DI\Container;
+use ILIAS\Filesystem\Exception\FileNotFoundException;
 use ILIAS\Filesystem\Exception\IOException;
 use ILIAS\FileUpload\DTO\UploadResult;
 use ILIAS\FileUpload\Location;
+use srag\Plugins\OnlyOffice\StorageService\DTO\FileTemplate;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
 use ILIAS\Filesystem\Stream\Streams;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileChange;
@@ -20,6 +22,7 @@ class FileSystemService
 {
 
     const BASE_PATH = '/only_office/';
+    const BASE_TEMPLATE_PATH = '/only_office/templates/';
     /**
      * @var Container
      */
@@ -82,26 +85,204 @@ class FileSystemService
      * @param string $extension file extension
      * @throws IOException
      */
-    public function storeTemplate(string $tmp_path, string $type, string $extension) : string
+    public function storeTemplate(UploadResult $upload_result, string $type, string $title, string $description, string $extension) : string
     {
         // Define path and create it if it does not exist
-        $path = self::BASE_PATH . "templates/" . $type . "/";
+        $path = self::BASE_TEMPLATE_PATH . $type . "/";
+
         if (!$this->dic->filesystem()->web()->hasDir($path)) {
             $this->dic->filesystem()->web()->createDir($path);
         }
-        $file_name = $type . "." . $extension;
-        $path .= $file_name;
+
+        $file_name = $title . "." . $extension;
+        $full_path = $path . $file_name;
 
         // delete the old template file if it already exists
+        if ($this->dic->filesystem()->web()->has($full_path)) {
+            $this->dic->filesystem()->web()->delete($full_path);
+        }
+
+        $this->dic->upload()->moveOneFileTo(
+            $upload_result,
+            $path,
+            Location::WEB,
+            $file_name
+        );
+
+        // Create a description in a separate folder, if available
+
+        $this->generateTemplateDescription($description, $type, $title);
+
+        return $full_path;
+    }
+
+    public function fetchTemplate(string $target, string $extension, string $type)
+    {
+        $path = self::BASE_TEMPLATE_PATH . $type . "/";
+        $file_name = $target . "." . $extension;
+        $full_path = $path . $file_name;
+
+        if ($this->dic->filesystem()->web()->has($full_path)) {
+            $extension = pathinfo($full_path, PATHINFO_EXTENSION);
+            $title = pathinfo($full_path, PATHINFO_FILENAME);
+
+            $template = new FileTemplate();
+            $template->setTitle($title);
+            $template->setType($type);
+            $template->setPath($full_path);
+            $template->setExtension($extension);
+
+            $description_path = $path . "descriptions/" . $title . ".txt";
+
+            try {
+                $description_stream = $this->dic->filesystem()->web()->readStream($description_path);
+                $template->setDescription($description_stream->getContents());
+            } catch (FileNotFoundException $ex) {
+                $template->setDescription("");
+            }
+
+            return $template;
+        }
+        return null;
+    }
+
+    /**
+     * @param string $type
+     * @return array
+     */
+    public function fetchTemplates(string $type) {
+        $path = self::BASE_TEMPLATE_PATH . $type . "/";
+        $converted_files = array();
+
+        if ($this->dic->filesystem()->web()->hasDir($path)) {
+            $files = $this->dic->filesystem()->web()->listContents($path);
+
+            foreach ($files as $file) {
+                $file = $file->getPath();
+                $extension = pathinfo($file, PATHINFO_EXTENSION);
+
+                if (empty($extension)) {
+                    continue;
+                }
+
+                $title = pathinfo($file, PATHINFO_FILENAME);
+
+                $converted_file = new FileTemplate();
+                $converted_file->setTitle($title);
+                $converted_file->setType($type);
+                $converted_file->setPath($file);
+                $converted_file->setExtension($extension);
+
+                $description_path = $path . "descriptions/" . $title . ".txt";
+
+                try {
+                    $description_stream = $this->dic->filesystem()->web()->readStream($description_path);
+                    $converted_file->setDescription($description_stream->getContents());
+                } catch (FileNotFoundException $ex) {
+                    $converted_file->setDescription("");
+                }
+
+                $converted_files[] = $converted_file;
+            }
+        }
+
+        return $converted_files;
+    }
+
+    public function deleteTemplate(string $target, string $extension, string $type) : bool {
+        $path = self::BASE_TEMPLATE_PATH . $type . "/";
+        $file_name = $target . "." . $extension;
+        $full_path = $path . $file_name;
+
+        if ($this->dic->filesystem()->web()->has($full_path)) {
+            // Delete template
+            $this->dic->filesystem()->web()->delete($full_path);
+            $this->deleteTemplateDescription($path, $target);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function modifyTemplate(string $type, string $prevTitle, string $extension, string $title, string $description) : bool
+    {
+        $path = self::BASE_TEMPLATE_PATH . $type . "/";
+        $old_file_name = $prevTitle . "." . $extension;
+        $full_old_path = $path . $old_file_name;
+
+        $new_file_name = $title . "." . $extension;
+        $full_new_path = $path . $new_file_name;
+
+        if (!empty($title)) {
+            if ($this->dic->filesystem()->web()->has($full_old_path) && $full_old_path !== $full_new_path) {
+                $this->dic->filesystem()->web()->rename($full_old_path, $full_new_path);
+            }
+        }
+
+        if (!empty($description)) {
+            $this->deleteTemplateDescription($path, $prevTitle);
+            $this->generateTemplateDescription($description, $type, $title);
+        }
+
+        return true;
+    }
+
+    /**
+     * Store a draft
+     * @param string $name  the preferred name
+     * @param string $extension file extension
+     * @throws IOException
+     */
+    public function storeDraft(string $name, string $extension, int $obj_id, string $new_file_id) : string
+    {
+        $path = $this->createAndGetPath($obj_id, $new_file_id);
+
+        // Define path and create it if it does not exist
+        if (!$this->dic->filesystem()->web()->hasDir($path)) {
+            $this->dic->filesystem()->web()->createDir($path);
+        }
+        $file_name = $name . "." . $extension;
+        $path .= $file_name;
+
+        // delete the old draft file if it already exists
         if ($this->dic->filesystem()->web()->has($path)) {
             $this->dic->filesystem()->web()->delete($path);
         }
-        // store the new template file
-        $stream = Streams::ofString($tmp_path);
+        // store the new draft file
+        $stream = Streams::ofString("");
         $this->dic->filesystem()->web()->writeStream($path, $stream);
         return $path;
 
     }
+
+
+    /**
+     * Store a draft
+     * @param string $name  the preferred name
+     * @param string $extension file extension
+     * @throws IOException
+     */
+    public function createFileFromTemplate(string $new_title, string $template_path, int $obj_id, string $new_file_id) : string
+    {
+        $extension = pathinfo($template_path, PATHINFO_EXTENSION);
+        $name = pathinfo($template_path, PATHINFO_FILENAME);
+
+        $path = $this->createAndGetPath($obj_id, $new_file_id);
+
+        // Define path and create it if it does not exist
+        if (!$this->dic->filesystem()->web()->hasDir($path)) {
+            $this->dic->filesystem()->web()->createDir($path);
+        }
+
+        $file_name = $new_title . "." . $extension;
+        $path .= $file_name;
+
+        $this->dic->filesystem()->web()->copy($template_path, $path);
+
+        return $path;
+    }
+
 
     public function storeChanges(string $content, int $obj_id, string $uuid, int $version, string $extension) : string
     {
@@ -160,5 +341,46 @@ class FileSystemService
         }
 
         return $path;
+    }
+
+    /**
+     * @param string $description
+     * @param string $type
+     * @param string $title
+     * @return void
+     * @throws IOException
+     */
+    private function generateTemplateDescription(string $description, string $type, string $title)
+    {
+        if (!empty($description)) {
+            $description_path = self::BASE_TEMPLATE_PATH . $type . "/descriptions/";
+
+            if (!$this->dic->filesystem()->web()->hasDir($description_path)) {
+                $this->dic->filesystem()->web()->createDir($description_path);
+            }
+
+            // Add file name to path
+            $description_path .= $title . ".txt";
+
+            $stream = Streams::ofString($description);
+            $this->dic->filesystem()->web()->writeStream($description_path, $stream);
+        }
+    }
+
+    /**
+     * @param string $path
+     * @param string $target
+     * @return void
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    private function deleteTemplateDescription(string $path, string $target)
+    {
+        // Delete template description
+        $full_path_description = $path . "descriptions/" . $target . ".txt";
+
+        if ($this->dic->filesystem()->web()->has($full_path_description)) {
+            $this->dic->filesystem()->web()->delete($full_path_description);
+        }
     }
 }

@@ -7,11 +7,14 @@ use ilDateTimeException;
 use ILIAS\DI\Container;
 use ILIAS\Filesystem\Exception\IOException;
 use ILIAS\FileUpload\DTO\UploadResult;
+use ilObjOnlyOfficeGUI;
 use srag\Plugins\OnlyOffice\StorageService\DTO\File;
+use srag\Plugins\OnlyOffice\StorageService\DTO\FileTemplate;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
 use srag\Plugins\OnlyOffice\StorageService\FileSystem\FileSystemService;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileRepository;
+use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileTemplateRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileChangeRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileAR;
@@ -90,12 +93,20 @@ class StorageService
         return $file;
     }
 
-    public function createNewFileFromTemplate(string $path, int $obj_id) : File
+    public function createNewFileFromDraft(string $title, int $obj_id) : File
     {
+        $new_file_id = new UUID();
+        $path = $this->createFileDraft(
+            $title,
+            ilObjOnlyOfficeGUI::FILE_EXTENSIONS[$_POST[ilObjOnlyOfficeGUI::POST_VAR_FILE_CREATION_SETTING]],
+            $obj_id,
+            $new_file_id->asString()
+        );
+
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
         // Create DB Entries for File & FileVersion
-        $new_file_id = new UUID();
+
         $this->file_repository->create($new_file_id, $obj_id, basename($path), $extension, $this->dic->filesystem()->web()->getMimeType($path));
         list($created_at, $version) = $this->createNewFile($new_file_id, $path);
 
@@ -105,7 +116,28 @@ class StorageService
         return $file;
     }
 
+    public function createNewFileFromTemplate(string $title, string $template_path, int $obj_id)
+    {
+        $new_file_id = new UUID();
+        $extension = pathinfo($template_path, PATHINFO_EXTENSION);
 
+        $path = $this->createFileFromTemplate(
+            $title,
+            $template_path,
+            $obj_id,
+            $new_file_id->asString()
+        );
+
+        // Create DB Entries for File & FileVersion
+
+        $this->file_repository->create($new_file_id, $obj_id, basename($path), $extension, $this->dic->filesystem()->web()->getMimeType($path));
+        list($created_at, $version) = $this->createNewFile($new_file_id, $path);
+
+        // Create & Return FileVersion object
+        $file_version = new FileVersion($version, $created_at, $this->dic->user()->getId(), $path, $new_file_id);
+        $file = new File($new_file_id, $obj_id, basename($path), $extension, $this->dic->filesystem()->web()->getMimeType($path));
+        return $file;
+    }
 
     public function updateFileFromUpload(
         string $file_content,
@@ -137,10 +169,51 @@ class StorageService
         return $fileVersion;
     }
 
-    public function createFileTemplate(string $tmp_path, string $type, string $extension): string {
-        return $this->file_system_service->storeTemplate($tmp_path, $type, $extension);
+    public function createFileTemplate(UploadResult $upload_result, string $title, string $description): string {
+        $extension = pathinfo($upload_result->getName(), PATHINFO_EXTENSION);
+        $type = File::determineDocType($extension, false);
 
+        // If file extension not supported/recongnized by OnlyOffice
+        if (empty($type)) {
+            return "";
+        }
 
+        $path = $this->file_system_service->storeTemplate($upload_result, $type, $title, $description, $extension);
+
+        return $path;
+    }
+
+    public function deleteFileTemplate(string $target, string $extension) : bool {
+        $type = File::determineDocType($extension, false);
+        return $this->file_system_service->deleteTemplate($target, $extension, $type);
+    }
+
+    public function createFileDraft(string $name, string $extension, int $obj_id, string $new_file_id): string {
+        return $this->file_system_service->storeDraft($name, $extension, $obj_id, $new_file_id);
+    }
+
+    public function createFileFromTemplate(string $new_title, string $template_path, int $obj_id, string $new_file_id) {
+        return $this->file_system_service->createFileFromTemplate($new_title, $template_path, $obj_id, $new_file_id);
+    }
+
+    public function modifyFileTemplate(string $prevTitle, string $prevExtension, string $title, string $description) : bool {
+        $prevType = File::determineDocType($prevExtension, false);
+        return $this->file_system_service->modifyTemplate($prevType, $prevTitle, $prevExtension, $title, $description);
+    }
+
+    /**
+     * @param string $type text, table or presentation
+     * @return FileTemplate[]
+     */
+    public function fetchTemplates(string $type) : array
+    {
+        return $this->file_system_service->fetchTemplates($type);
+    }
+
+    public function fetchTemplate(string $target, string $extension) : FileTemplate
+    {
+        $type = File::determineDocType($extension, false);
+        return $this->file_system_service->fetchTemplate($target, $extension, $type);
     }
 
     public function createClone(int $child_id, int $parent_id)
