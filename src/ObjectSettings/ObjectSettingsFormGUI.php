@@ -92,10 +92,10 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
                 self::PROPERTY_CLASS => ilRadioGroupInputGUI::class,
                 self::PROPERTY_REQUIRED => true,
                 self::PROPERTY_SUBITEMS => [
-                    "ilias" => [
+                    "editor" => [
                         self::PROPERTY_CLASS => ilRadioOption::class
                     ],
-                    "editor" => [
+                    "ilias" => [
                         self::PROPERTY_CLASS => ilRadioOption::class
                     ],
                     "download" => [
