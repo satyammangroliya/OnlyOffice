@@ -6,6 +6,7 @@ This plugin offers a way to connect an OnlyOffice document server to ILIAS. User
 ### Requirements
 
 * ILIAS 6.x / 7.x
+* OnlyOffice Docs 7.0
 
 ### Simple Docker Installation Guide for Developers
 
