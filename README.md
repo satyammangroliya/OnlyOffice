@@ -49,6 +49,9 @@ Next you must navigate to the plugin's configuration form.
 Enter the root URL of your OnlyOffice Docs installation.
 Enter the JWT-Secret which you specified in OnlyOffice's docker-compose.yml file.
 
+### Troubleshooting
+1. If the OnlyOffice window opens up but you can't access the file make sure that your webserver user has read and write access to the plugin folder and the data folder where the files are saved.
+
 ## Authors
 
 This is an OpenSource project by fluxlabs ag (https://fluxlabs.ch)
