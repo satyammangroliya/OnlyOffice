@@ -2,6 +2,7 @@
 
 namespace srag\Plugins\OnlyOffice\ObjectSettings;
 
+use ilDateTime;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use ActiveRecord;
 use arConnector;
@@ -92,6 +93,28 @@ class ObjectSettings extends ActiveRecord
      * @con_is_notnull true
      */
     protected $allow_edit;
+
+    /**
+     * @var ilDateTime
+     * @db_has_field         true
+     * @db_fieldtype         timestamp
+     */
+    protected $start_time;
+
+    /**
+     * @var ilDateTime
+     * @db_has_field         true
+     * @db_fieldtype         timestamp
+     */
+    protected $end_time;
+
+    /**
+     * @var bool
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_length     1
+     */
+    protected $limited_period;
 
     /**
      * ObjectSettings constructor
@@ -203,5 +226,53 @@ class ObjectSettings extends ActiveRecord
     public function setOpen(string $open)
     {
         $this->open_setting = $open;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStartTime() : ?string
+    {
+        return $this->start_time;
+    }
+
+    /**
+     * @param ilDateTime $start_time
+     */
+    public function setStartTime(ilDateTime $start_time)
+    {
+        $this->start_time = $start_time;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndTime() : ?string
+    {
+        return $this->end_time;
+    }
+
+    /**
+     * @param ilDateTime $end_time
+     */
+    public function setEndTime(ilDateTime $end_time)
+    {
+        $this->end_time = $end_time;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLimitedPeriod() : ?bool
+    {
+        return $this->limited_period;
+    }
+
+    /**
+     * @param bool $limited_period
+     */
+    public function setLimitedPeriod(bool $limited_period)
+    {
+        $this->limited_period = $limited_period;
     }
 }

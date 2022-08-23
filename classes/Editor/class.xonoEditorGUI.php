@@ -1,5 +1,6 @@
 <?php
 
+use srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings;
 use srag\Plugins\OnlyOffice\StorageService\DTO\File;
 use srag\Plugins\OnlyOffice\StorageService\DTO\FileVersion;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\Common\UUID;
@@ -13,6 +14,7 @@ use srag\Plugins\OnlyOffice\InfoService\InfoService;
 use srag\Plugins\OnlyOffice\CryptoService\JwtService;
 use \ILIAS\DI\Container;
 use srag\Plugins\OnlyOffice\CryptoService\WebAccessService;
+use srag\Plugins\OnlyOffice\Utils\DateFetcher;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 
 
@@ -94,19 +96,42 @@ class xonoEditorGUI extends xonoAbstractGUI
 
     protected function editFile()
     {
+        $object_settings = self::onlyOffice()->objectSettings()->getObjectSettingsById($this->file_id);
+
         $file = $this->storage_service->getFile($this->file_id);
         $all_versions = $this->storage_service->getAllVersions($this->file_id);
         $latest_version = $this->storage_service->getLatestVersion($file->getUuid());
 
         $tpl = $this->plugin->getTemplate('html/tpl.editor.html');
+
+        $withinPotentialTimelimit = true;
+
+        if (!is_null($object_settings)) {
+
+            if(ilObjOnlyOfficeAccess::hasEditFileAccess() === false) {
+                 $withinPotentialTimelimit = DateFetcher::isWithinPotentialTimeLimit($file->getObjId());
+                $tpl->setVariable('IS_LIMITED', $object_settings->isLimitedPeriod());
+                $tpl->setVariable('WITHIN_POTENTIAL_TIME_LIMIT', $withinPotentialTimelimit);
+                if (DateFetcher::editingPeriodIsFetchable($this->file_id)) {
+                    $editing_period = DateFetcher::fetchEditingPeriod($this->file_id);
+                    $tpl->setVariable('EDIT_PERIOD_TXT', sprintf($this->plugin->txt('editor_edit_period'), $editing_period));
+                    $tpl->setVariable('TIME_UP_TXT', $this->plugin->txt('editor_edit_timeup'));
+                    $tpl->setVariable('TIME_WAS_UP_TXT', $this->plugin->txt('editor_edit_timewasup'));
+                    $tpl->setVariable('START_TIME', $object_settings->getStartTime());
+                    $tpl->setVariable('END_TIME', $object_settings->getEndTime());
+                }
+            }
+        }
+
         $tpl->setVariable('FILE_TITLE', $file->getTitle());
         $tpl->setVariable('BUTTON', $this->plugin->txt('xono_back_button'));
         $tpl->setVariable('SCRIPT_SRC', self::ONLYOFFICE_URL . '/web-apps/apps/api/documents/api.js');
-        $tpl->setVariable('CONFIG', $this->config($file, $latest_version));
+        $tpl->setVariable('CONFIG', $this->config($file, $latest_version, $object_settings, $withinPotentialTimelimit));
         $tpl->setVariable('RETURN', $this->generateReturnUrl());
         $tpl->setVariable('LATEST', $latest_version->getVersion());
         $tpl->setVariable('HISTORY', $this->history($latest_version, $all_versions));
         $tpl->setVariable('HISTORY_DATA', $this->historyData($all_versions));
+
         $content = $tpl->get();
         echo $content;
         exit;
@@ -120,7 +145,7 @@ class xonoEditorGUI extends xonoAbstractGUI
      * @param FileVersion $fileVersion
      * @return string
      */
-    protected function config(File $file, FileVersion $fileVersion) : string
+    protected function config(File $file, FileVersion $fileVersion, ObjectSettings $objectSettings, bool $withinPotentialTimeLimit) : string
     {
         $as_array = array(); // Config Array
         $extension = pathinfo($fileVersion->getUrl(), PATHINFO_EXTENSION);
@@ -141,14 +166,16 @@ class xonoEditorGUI extends xonoAbstractGUI
         $editor['callbackUrl'] = $this->generateCallbackUrl($file->getUuid(),
             $file->getObjId(), $extension);
         $editor['user'] = $this->buildUserArray($this->dic->user()->getId());
-        $editor['mode'] = $this->determineAccessRights();
+        $editor['mode'] = $this->determineAccessRights($withinPotentialTimeLimit);
         $editor['lang'] = $this->dic->user()->getLanguage();
         $editor['customization']= array("forcesave" => true);
         $as_array['editorConfig'] = $editor;
 
         // events config
         $as_array['events'] = array("onRequestHistory" => "#!!onRequestHistory!!#",
-                                    "onRequestHistoryData" => "#!!onRequestHistoryData!!#"
+                                    "onRequestHistoryData" => "#!!onRequestHistoryData!!#",
+                                    "onDocumentStateChange" => "#!!onDocumentStateChange!!#",
+                                    "onAppReady" => "#!!onAppReady!!#"
         );
 
         // add token
@@ -294,9 +321,15 @@ class xonoEditorGUI extends xonoAbstractGUI
      * Determines access rights based on object settings and RBAC
      * @return string
      */
-    protected function determineAccessRights(): string {
-        if (self::onlyOffice()->objectSettings()->getObjectSettingsById($this->file_id)->allowEdit() ||
-            ilObjOnlyOfficeAccess::hasEditFileAccess())
+    protected function determineAccessRights(bool $withinPotentialTimeLimit): string {
+        if (
+            (
+                self::onlyOffice()->objectSettings()->getObjectSettingsById($this->file_id)->allowEdit() 
+                && 
+                $withinPotentialTimeLimit
+            ) 
+            || ilObjOnlyOfficeAccess::hasEditFileAccess()
+            )
             return "edit";
         else
             return "view";

@@ -1,6 +1,7 @@
 <?php
 
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\FileVersionAR;
+use srag\Plugins\OnlyOffice\Utils\DateFetcher;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 use srag\DIC\OnlyOffice\DICTrait;
 use srag\Plugins\OnlyOffice\StorageService\StorageService;
@@ -105,21 +106,7 @@ class ilObjOnlyOfficeListGUI extends ilObjectPluginListGUI
             new ilDBFileVersionRepository(), new ilDBFileRepository(), new ilDBFileChangeRepository());
         $file = $storage->getFile($this->obj_id);
         $last_version = $storage->getLatestVersion($file->getUuid());
-        $props = [
-            [
-                "alert" => false,
-                "property" => "datatype",
-                "value" => $file->getFileType(),
-                'propertyNameVisible' => false
-            ],
-            [
-                "alert" => false,
-                "property" => self::plugin()->translate('last_edit'),
-                // ToDo: Evtl. Datumformat noch nach Kundenwunsch anpassen
-                "value" => $last_version->getCreatedAt()->get(IL_CAL_FKT_DATE, 'd.m.Y H:i', self::dic()->user()->getTimeZone()),
-                'propertyNameVisible' => true
-            ]
-        ];
+        $props = [];
 
         if (ilObjOnlyOfficeAccess::_isOffline($this->obj_id)) {
             array_push($props, [
@@ -127,6 +114,34 @@ class ilObjOnlyOfficeListGUI extends ilObjectPluginListGUI
                 "property" => self::plugin()->translate("status", ilObjOnlyOfficeGUI::LANG_MODULE_OBJECT),
                 "value" => self::plugin()->translate("offline", ilObjOnlyOfficeGUI::LANG_MODULE_OBJECT)
             ]);
+        }
+
+        $props[] = [
+            "alert" => false,
+            'newline' => true,
+            "property" => "datatype",
+            "value" => $file->getFileType(),
+            'propertyNameVisible' => false
+        ];
+
+        $props[] = [
+            "alert" => false,
+            'newline' => true,
+            "property" => self::plugin()->translate('last_edit'),
+            // ToDo: Evtl. Datumformat noch nach Kundenwunsch anpassen
+            "value" => $last_version->getCreatedAt()->get(IL_CAL_FKT_DATE, 'd.m.Y H:i', self::dic()->user()->getTimeZone()),
+            'propertyNameVisible' => true
+        ];
+
+        if (DateFetcher::editingPeriodIsFetchable($file->getObjId())) {
+            $editing_time = DateFetcher::fetchEditingPeriod($file->getObjId());
+            $props[] = [
+                "alert" => false,
+                'newline' => true,
+                "property" => self::plugin()->translate('editing_period'),
+                "value" => $editing_time,
+                'propertyNameVisible' => true
+            ];
         }
 
         return $props;

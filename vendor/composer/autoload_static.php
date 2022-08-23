@@ -227,6 +227,7 @@ class ComposerStaticInitdeddd02a31326b02407601afe4c5b12b
         'srag\\Plugins\\OnlyOffice\\StorageService\\Infrastructure\\File\\ilDBFileRepository' => __DIR__ . '/../..' . '/src/StorageService/Infrastructure/File/ilDBFileRepository.php',
         'srag\\Plugins\\OnlyOffice\\StorageService\\Infrastructure\\File\\ilDBFileVersionRepository' => __DIR__ . '/../..' . '/src/StorageService/Infrastructure/File/ilDBFileVersionRepository.php',
         'srag\\Plugins\\OnlyOffice\\StorageService\\StorageService' => __DIR__ . '/../..' . '/src/StorageService/StorageService.php',
+        'srag\\Plugins\\OnlyOffice\\Utils\\DateFetcher' => __DIR__ . '/../..' . '/src/Utils/DateFetcher.php',
         'srag\\Plugins\\OnlyOffice\\Utils\\FileSanitizer' => __DIR__ . '/../..' . '/src/Utils/FileSanitizer.php',
         'srag\\Plugins\\OnlyOffice\\Utils\\OnlyOfficeTrait' => __DIR__ . '/../..' . '/src/Utils/OnlyOfficeTrait.php',
         'srag\\RemovePluginDataConfirm\\OnlyOffice\\BasePluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/BasePluginUninstallTrait.php',

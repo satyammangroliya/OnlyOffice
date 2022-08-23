@@ -161,6 +161,7 @@ return array(
     'srag\\Plugins\\OnlyOffice\\StorageService\\Infrastructure\\File\\ilDBFileRepository' => $baseDir . '/src/StorageService/Infrastructure/File/ilDBFileRepository.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\Infrastructure\\File\\ilDBFileVersionRepository' => $baseDir . '/src/StorageService/Infrastructure/File/ilDBFileVersionRepository.php',
     'srag\\Plugins\\OnlyOffice\\StorageService\\StorageService' => $baseDir . '/src/StorageService/StorageService.php',
+    'srag\\Plugins\\OnlyOffice\\Utils\\DateFetcher' => $baseDir . '/src/Utils/DateFetcher.php',
     'srag\\Plugins\\OnlyOffice\\Utils\\FileSanitizer' => $baseDir . '/src/Utils/FileSanitizer.php',
     'srag\\Plugins\\OnlyOffice\\Utils\\OnlyOfficeTrait' => $baseDir . '/src/Utils/OnlyOfficeTrait.php',
     'srag\\RemovePluginDataConfirm\\OnlyOffice\\BasePluginUninstallTrait' => $vendorDir . '/srag/removeplugindataconfirm/src/BasePluginUninstallTrait.php',

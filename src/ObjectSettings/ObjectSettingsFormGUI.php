@@ -2,6 +2,8 @@
 
 namespace srag\Plugins\OnlyOffice\ObjectSettings;
 
+use ilDateTime;
+use ilDateTimeInputGUI;
 use ilOnlyOfficePlugin;
 use ilCheckboxInputGUI;
 use ilObjOnlyOffice;
@@ -10,6 +12,7 @@ use ilTextAreaInputGUI;
 use ilTextInputGUI;
 use ilRadioOption;
 use ilRadioGroupInputGUI;
+use ilUtil;
 use srag\CustomInputGUIs\OnlyOffice\PropertyFormGUI\Items\Items;
 use srag\CustomInputGUIs\OnlyOffice\PropertyFormGUI\PropertyFormGUI;
 
@@ -86,7 +89,27 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
             ],
             ilObjOnlyOfficeGUI::POST_VAR_EDIT => [
                 self::PROPERTY_CLASS => ilCheckboxInputGUI::class,
-                self::PROPERTY_VALUE => $this->object->isAllowedEdit()
+                self::PROPERTY_VALUE => $this->object->isAllowedEdit(),
+                self::PROPERTY_SUBITEMS => [
+                    ilObjOnlyOfficeGUI::POST_VAR_EDIT_LIMITED => [
+                    self::PROPERTY_CLASS => ilCheckboxInputGUI::class,
+                    self::PROPERTY_VALUE => $this->object->object_settings->isLimitedPeriod(),
+                    self::PROPERTY_SUBITEMS => [
+                        ilObjOnlyOfficeGUI::POST_VAR_EDIT_LIMITED_START => [
+                            self::PROPERTY_CLASS => ilDateTimeInputGUI::class,
+                            self::PROPERTY_VALUE => $this->object->object_settings->getStartTime(),
+                            self::PROPERTY_REQUIRED => true,
+                            "setShowTime" => true
+                        ],
+                        ilObjOnlyOfficeGUI::POST_VAR_EDIT_LIMITED_END => [
+                            self::PROPERTY_CLASS => ilDateTimeInputGUI::class,
+                            self::PROPERTY_VALUE => $this->object->object_settings->getEndTime(),
+                            self::PROPERTY_REQUIRED => true,
+                            "setShowTime" => true
+                        ]
+                    ]
+                ]
+                ]
             ],
             ilObjOnlyOfficeGUI::POST_VAR_OPEN_SETTING => [
                 self::PROPERTY_CLASS => ilRadioGroupInputGUI::class,
@@ -102,7 +125,7 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
                         self::PROPERTY_CLASS => ilRadioOption::class
                     ]
                 ]
-            ]
+            ],
         ];
     }
 
@@ -144,6 +167,15 @@ class ObjectSettingsFormGUI extends PropertyFormGUI
     {
         if (!parent::storeForm()) {
             return false;
+        }
+
+        if ($_POST[ilObjOnlyOfficeGUI::POST_VAR_EDIT_LIMITED]) {
+            $start_time = new ilDateTime($_POST[ilObjOnlyOfficeGUI::POST_VAR_EDIT_LIMITED_START], IL_CAL_DATETIME);
+            $end_time = new ilDateTime($_POST[ilObjOnlyOfficeGUI::POST_VAR_EDIT_LIMITED_END], IL_CAL_DATETIME);
+            if ($start_time->getUnixTime() >= $end_time->getUnixTime()) {
+                ilUtil::sendFailure(self::plugin()->translate("time_greater_than", self::LANG_MODULE), true);
+                return false;
+            }
         }
 
         $this->object->update();

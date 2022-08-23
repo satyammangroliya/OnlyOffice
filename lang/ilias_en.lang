@@ -47,6 +47,9 @@ settings_open_setting_ilias#:#Show Version History on ILIAS
 settings_open_setting_editor#:#Open in ONLYOFFICE Online Editor
 settings_open_setting_download#:#Download the File
 settings_number_of_versions#:#Max. Number of Versions
+settings_start_time#:#Start Time
+settings_end_time#:#End Time
+settings_time_greater_than#:#The start time of the limited period must be smaller than the end time. Please try again.
 rep_robj_xono_perm_editFile#:#Edit File
 form_input_file#:#File
 form_input_upload_file#:#Upload a File
@@ -83,8 +86,15 @@ config_template_unrecognised_extension#:#The file extension of the uploaded temp
 config_template_delete#:#Do you really want to delete the following template?
 number_of_versions_info#:#The number of versions loaded in the version history (default = 10).
 last_edit#:#Last edited
+editing_period#:#Editing Period
 edit_settings#:#Edit Content
 show_versions#:#Versions
 settings_allow_edit#:#Users are allowed to edit
+settings_allow_edit_limited#:#Limited Period
+settings_allow_edit_limited_start#:#Start Time
+settings_allow_edit_limited_end#:#End Time
 settings_allow_edit_info#:#All users that are allowed to read the file are allowed to edit it.
+editor_edit_timeup#:#The editing period for the document has expired. The document is now in read-only mode.
+editor_edit_timewasup#:#The current time does not match the editing period for the document. The document is now in read-only mode.
+editor_edit_period#:#The editing period for the document is %s.
 

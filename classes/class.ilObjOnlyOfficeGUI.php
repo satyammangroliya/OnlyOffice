@@ -67,6 +67,9 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     const POST_VAR_OPEN_SETTING = 'open_setting';
     const POST_VAR_ONLINE = 'online';
     const POST_VAR_EDIT = 'allow_edit';
+    const POST_VAR_EDIT_LIMITED = 'allow_edit_limited';
+    const POST_VAR_EDIT_LIMITED_START = 'start_time';
+    const POST_VAR_EDIT_LIMITED_END = 'end_time';
     const POST_VAR_CREATE = 'createFrom';
 
     const FILE_EXTENSIONS = [
@@ -221,12 +224,12 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
     /**
      * @inheritDoc
      */
-    public function initCreateForm(/*string*/ $a_new_type) : ilPropertyFormGUI
+    public function initCreateForm(/*string*/ $a_new_type = null) : ilPropertyFormGUI
     {
         $form = new ilPropertyFormGUI();
         $form->setTarget("_top");
         $form->setFormAction($this->ctrl->getFormAction($this, "save"));
-        $form->setTitle($this->txt($a_new_type . "_new"));
+        $form->setTitle($this->txt("xono_new"));
 
         // title
         $ti = new ilTextInputGUI($this->lng->txt("title"), "title");
@@ -315,6 +318,25 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $edit->setInfo(self::plugin()->translate('allow_edit_info',
             ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS));
         $edit->setChecked(true);
+
+        $lim_period = new ilCheckboxInputGUI(self::plugin()->translate('allow_edit_limited',
+            ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS), self::POST_VAR_EDIT_LIMITED);
+
+        $start_date_time = new ilDateTimeInputGUI(self::plugin()->translate('allow_edit_limited_start',
+            ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS), self::POST_VAR_EDIT_LIMITED_START);
+        $start_date_time->setShowTime(true);
+        $start_date_time->setRequired(true);
+        $end_date_time = new ilDateTimeInputGUI(self::plugin()->translate('allow_edit_limited_end',
+            ilObjOnlyOfficeGUI::LANG_MODULE_SETTINGS), self::POST_VAR_EDIT_LIMITED_END);
+        $end_date_time->setShowTime(true);
+        $end_date_time->setRequired(true);
+
+
+        $lim_period->addSubItem($start_date_time);
+        $lim_period->addSubItem($end_date_time);
+
+
+        $edit->addSubItem($lim_period);
         $form->addItem($edit);
 
         // Settings for opening a file
@@ -331,7 +353,7 @@ class ilObjOnlyOfficeGUI extends ilObjectPluginGUI
         $form->addItem($opening_setting);
 
         // Buttons
-        $form->addCommandButton("save", $this->txt($a_new_type . "_add"));
+        $form->addCommandButton("save", $this->txt("xono_add"));
         $form->addCommandButton("cancel", $this->lng->txt("cancel"));
 
         return $form;
