@@ -53,6 +53,9 @@ settings_open_setting_ilias#:#Versionsverlauf auf ILIAS anzeigen
 settings_open_setting_editor#:#Im ONLYOFFICE online Editor öffnen
 settings_open_setting_download#:#Datei herunterladen
 settings_number_of_versions#:#Max. Anzahl Versionen
+settings_start_time#:#Startzeit
+settings_end_time#:#Endzeit
+settings_time_greater_than#:#Die Startzeit des begrenzten Zeitraumes muss kleiner sein als die Endzeit. Bitte erneut versuchen.
 rep_robj_xono_perm_editFile#:#Aktuellste Version in OnlyOffice bearbeiten
 form_input_file#:#Datei
 form_input_upload_file#:#Datei hochladen
@@ -89,7 +92,14 @@ config_template_invalid_extension#:#Die Dateierweiterung der hochgeladenen Vorla
 config_template_unrecognised_extension#:#Die Dateierweiterung der hochgeladenen Vorlage wird nicht von OnlyOffice unterstützt. Bitte benutzen Sie einen unterschiedlichen Dateityp.
 config_template_delete#:#Möchten Sie die folgende Vorlage wirklich löschen?
 last_edit#:#Zuletzt bearbeitet
+editing_period#:#Bearbeitungszeitraum
 -edit_settings-#:#Inhalt Bearbeiten
 -show_versions-#:#Versionen
-settings_allow_edit#:#Mitglieder dürfen bearbeiten
-settings_allow_edit_info#:#Wenn diese Option aktiviert ist, dürfen auch Kurs-/Gruppenmitglieder die Datei bearbeiten. Ansonsten wird ihnen die Datei schreibgeschützt im OnlyOffice-Editor angezeigt.
+settings_allow_edit#:#Benutzer dürfen bearbeiten
+settings_allow_edit_limited#:#Begrenzter Zeitraum
+settings_allow_edit_limited_start#:#Startzeit
+settings_allow_edit_limited_end#:#Endzeit
+settings_allow_edit_info#:#Alle Benutzer mit Leserecht dürfen die Datei auch bearbeiten.
+editor_edit_timeup#:#Der Bearbeitungszeitraum für das Dokument ist abgelaufen. Das Dokument befindet sich nun im Lesemodus.
+editor_edit_timewasup#:#Die aktuelle Zeit liegt ausserhalb des Bearbeitungszeitraumes für das Dokument. Das Dokument befindet sich nun im Lesemodus.
+editor_edit_period#:#Der Bearbeitungszeitraum für das Dokument ist %s.

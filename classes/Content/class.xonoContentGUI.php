@@ -7,6 +7,7 @@ use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileVersionRe
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileRepository;
 use srag\Plugins\OnlyOffice\StorageService\Infrastructure\File\ilDBFileChangeRepository;
 use srag\Plugins\OnlyOffice\InfoService\InfoService;
+use srag\Plugins\OnlyOffice\Utils\DateFetcher;
 use srag\Plugins\OnlyOffice\Utils\OnlyOfficeTrait;
 
 /**
@@ -122,6 +123,11 @@ class xonoContentGUI extends xonoAbstractGUI
         $tpl->setVariable('EDITOR', $this->plugin->txt('xono_editor'));
         $tpl->setVariable('DOWNLOAD', $this->plugin->txt('xono_download'));
         $tpl->setVariable('LIMIT', InfoService::getNumberOfVersions());
+
+        if (DateFetcher::editingPeriodIsFetchable($file->getObjId())) {
+            $editing_period = DateFetcher::fetchEditingPeriod($file->getObjId());
+            $tpl->setVariable('EDITING_PERIOD', sprintf("<p>%s: %s</p>", $this->plugin->txt('editing_period'), $editing_period));
+        }
         //$tpl->setVariable('RELOAD_INFO', );
         $content = $tpl->get();
         $this->dic->ui()->mainTemplate()->setContent($content);
@@ -144,9 +150,46 @@ class xonoContentGUI extends xonoAbstractGUI
      * @return string
      */
     protected function buttonName()
-    {
-        if (self::onlyOffice()->objectSettings()->getObjectSettingsById($this->file_id)->allowEdit() ||
-            ilObjOnlyOfficeAccess::hasEditFileAccess()) {
+    {  
+        //
+        //todo if works place this to ilObjOnlyOfficeAccess
+        
+        $allowEdit = false;
+
+        //ILIAS RBAC EDIT_FILE Access is granted
+        if(ilObjOnlyOfficeAccess::hasEditFileAccess() === true) {
+            $allowEdit = true;
+        }
+
+        //setting ALLOW_EDIT is checked 
+        //setting EDITING_PERIOD is not configured
+        if(
+            self::onlyOffice()->objectSettings()->getObjectSettingsById($this->file_id)->allowEdit() === true
+            &&
+            DateFetcher::editingPeriodIsFetchable($this->file_id) === false
+        ) {
+            $allowEdit = true;
+        }
+
+        //setting ALLOW_EDIT is checked 
+        //setting EDITING_PERIOD is configured
+        //current time is within configured EDITING_PERIOD
+        if(
+            self::onlyOffice()->objectSettings()->getObjectSettingsById($this->file_id)->allowEdit()  === true
+            &&
+            DateFetcher::editingPeriodIsFetchable($this->file_id) === true
+            &&
+            DateFetcher::isWithinPotentialTimeLimit($this->file_id) === true
+        ) {
+            $allowEdit = true;
+        }
+
+        ////
+        
+
+
+        if ($allowEdit === true)
+        {
             return $this->plugin->txt('xono_edit_button');
         } else {
             return $this->plugin->txt('xono_view_button');

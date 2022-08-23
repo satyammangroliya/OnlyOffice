@@ -1,4 +1,4 @@
 # Changelog
 
-## [0.1.0]
-- First version
+## [2.0.0] 2022-08-23
+- New Feature: Time Based Editing

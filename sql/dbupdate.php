@@ -78,4 +78,8 @@ $file_change_table = \srag\Plugins\OnlyOffice\StorageService\Infrastructure\File
 $DIC->database()->modifyTableColumn($file_change_table, 'changes_object_string',
     array("type" => "clob"));
 ?>
+<#16>
+<?php
+\srag\Plugins\OnlyOffice\ObjectSettings\ObjectSettings::updateDB();
+?>
 
