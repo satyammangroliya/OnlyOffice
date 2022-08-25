@@ -95,7 +95,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
         $this->object_settings->setAllowEdit(is_null($allow_edit) ? false : $allow_edit);
         $this->object_settings->setOnline(is_null($online) ? false : $online);
         $this->object_settings->setOpen(is_null($open_settings) ? "" : $open_settings);
-        $this->object_settings->setLimitedPeriod($limited_period);
+        $this->object_settings->setLimitedPeriod(is_null($limited_period) ? false : $limited_period);
         self::onlyOffice()->objectSettings()->storeObjectSettings($this->object_settings);
     }
 
