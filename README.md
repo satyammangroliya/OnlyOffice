@@ -149,9 +149,12 @@ This project is licensed under the GPL v3 License
 
 ## Contributing :purple_heart:
 Please ...
+
 ... create pull requests :fire:
 
 ## Adjustment suggestions / bug reporting :feet:
 Please ...
+
 ... discuss it: https://github.com/fluxapps/OnlyOffice/discussions/categories/ideas
+
 ... [Read and create issues](https://github.com/fluxapps/OnlyOffice/issues)
