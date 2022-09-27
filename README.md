@@ -1,4 +1,11 @@
 # ILIAS Plugin OnlyOffice
+
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/fluxapps/onlyoffice?style=flat-square)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/fluxapps/onlyoffice?style=flat-square&color=success)
+[![GitHub issues](https://img.shields.io/github/issues/fluxapps/onlyoffice?style=flat-square&color=yellow)](https://github.com/fluxapps/onlyoffice/issues)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/fluxapps/onlyoffice?style=flat-square&color=success)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/fluxapps/onlyoffice?style=flat-square&color=yellow)
+
 This plugin offers a way to connect an OnlyOffice document server to ILIAS. Users can upload files by creating an ILIAS repository object, which then can be collaboratively edited in OnlyOffice's online editors.
 
 ## Getting Started
@@ -139,22 +146,9 @@ Enter the JWT-Secret which you specified in OnlyOffice's docker-compose.yml file
 ##### Troubleshooting
 1. If the OnlyOffice window opens up but you can't access the file make sure that your webserver user has read and write access to the plugin folder and the data folder where the files are saved.
 
-## Authors
-
-This is an OpenSource project by fluxlabs ag (https://fluxlabs.ch)
-
 ## License
 
 This project is licensed under the GPL v3 License
 
-## Contributing :purple_heart:
-Please ...
-
-... create pull requests :fire:
-
-## Adjustment suggestions / bug reporting :feet:
-Please ...
-
-... discuss it: https://github.com/fluxapps/OnlyOffice/discussions/categories/ideas
-
-... [Read and create issues](https://github.com/fluxapps/OnlyOffice/issues)
+## Maintenance
+This is an OpenSource project by fluxlabs ag, support@fluxlabs.ch
