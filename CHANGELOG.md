@@ -1,4 +1,6 @@
 # Changelog
+## [2023.01.26]
+- Deactivate plugins on api call
 
 ## [2.0.1] 2022-08-25
 - Fixed Bug: copy only office objects
