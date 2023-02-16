@@ -42,6 +42,10 @@ services:
 
 Use `http[s]://%host%:8181` as `ONLYOFFICE root URL` in plugin configuration
 
+#### Other Installations
+
+Please have a look at the configurations files docker-compose-ee.example.yml, env.example.config, nginx.reverse.example.config for the deployment of onlyoffice-enterprise in the doc folder.
+
 ##### Development
 
 Unfortunately port forward to host's loopback network is not possible, because ILIAS and OnlyOffice communicates with the same `ONLYOFFICE root URL` configuration
@@ -100,7 +104,7 @@ Use `http://%onlyoffice_ip%` as `ONLYOFFICE root URL` in plugin configuration
 
 * ILIAS 6.x / 7.x
 * PHP >= 7.1
-* OnlyOffice Docs 7.0
+* OnlyOffice Docs 7.2.2
 
 ##### Simple Docker Installation Guide for Developers
 

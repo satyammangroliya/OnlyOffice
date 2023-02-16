@@ -1,0 +1,16 @@
+version: '3'
+services:
+  documentserver-ee:
+    image: onlyoffice/documentserver-ee:7.2.2
+    container_name: documentserver-ee
+    env_file: <path_to_env_file>
+    restart: unless-stopped
+    volumes:
+      - /app/onlyoffice/DocumentServer/logs:/var/log/onlyoffice
+      - /app/onlyoffice/DocumentServer/data:/var/www/onlyoffice/Data
+      - /app/onlyoffice/DocumentServer/lib:/var/lib/onlyoffice
+      - /app/onlyoffice/DocumentServer/db:/var/lib/postgresql
+    ports:
+      - "127.0.0.1:8080:80"
+        #- "80:80"
+        #- "443:443" #enable this if you want the docker container to make the https connection and uncomment letsencrypt in the .env file
