@@ -37,12 +37,12 @@ class ilObjOnlyOffice extends ilObjectPlugin
     /**
      * @inheritDoc
      */
-    public final function initType()/*: void*/
+    public final function initType(): void
     {
         $this->setType(ilOnlyOfficePlugin::PLUGIN_ID);
     }
 
-    protected function beforeCreate()
+    protected function beforeCreate():bool
     {
         if ($_POST[ilObjOnlyOfficeGUI::POST_VAR_EDIT_LIMITED]) {
             $start_time = new ilDateTime($_POST[ilObjOnlyOfficeGUI::POST_VAR_EDIT_LIMITED_START], IL_CAL_DATETIME);
@@ -50,7 +50,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
             if ($start_time->getUnixTime() >= $end_time->getUnixTime()) {
                 ilUtil::sendFailure(self::plugin()->translate("settings_time_greater_than"), true);
                 self::dic()->ctrl()->redirectByClass("ilRepositoryGUI");
-                return;
+                return false;
             }
         }
         return parent::beforeCreate();
@@ -60,7 +60,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
     /**
      * @inheritDoc
      */
-    public function doCreate()/*: void*/
+    public function doCreate(bool $clone_mode = false): void
     {
         $this->object_settings = new ObjectSettings();
         $title = $_POST['title'];
@@ -102,7 +102,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
     /**
      * @inheritDoc
      */
-    public function doRead()/*: void*/
+    public function doRead(): void
     {
         $this->object_settings = self::onlyOffice()->objectSettings()->getObjectSettingsById(intval($this->id));
     }
@@ -110,7 +110,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
     /**
      * @inheritDoc
      */
-    public function doUpdate()/*: void*/
+    public function doUpdate(): void
     {
         $start_time = $_POST[ilObjOnlyOfficeGUI::POST_VAR_EDIT_LIMITED_START];
         $end_time = $_POST[ilObjOnlyOfficeGUI::POST_VAR_EDIT_LIMITED_END];
@@ -139,7 +139,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
     /**
      * @inheritDoc
      */
-    public function doDelete()/*: void*/
+    public function doDelete(): void
     {
         if ($this->object_settings !== null) {
             self::onlyOffice()->objectSettings()->deleteObjectSettings($this->object_settings);
@@ -154,8 +154,7 @@ class ilObjOnlyOffice extends ilObjectPlugin
      * @inheritDoc
      * @param ilObjOnlyOffice $new_obj
      */
-    protected function doCloneObject(/*ilObjOnlyOffice*/ $new_obj, /*int*/ $a_target_id, /*?int*/ $a_copy_id = null
-    )/*: void*/
+    protected function doCloneObject(ilObject2 $new_obj, int $a_target_id, ?int $a_copy_id = null): void
     {
         $new_obj->object_settings = self::onlyOffice()->objectSettings()->cloneObjectSettings($this->object_settings);
         $new_obj->object_settings->setObjId($new_obj->id);

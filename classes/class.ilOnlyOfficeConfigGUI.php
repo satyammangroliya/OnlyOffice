@@ -62,7 +62,7 @@ class ilOnlyOfficeConfigGUI extends ilPluginConfigGUI
     /**
      * @inheritDoc
      */
-    public function performCommand(/*string*/ $cmd)/*:void*/
+    public function performCommand(string $cmd):void
     {
         $this->setTabs();
 
